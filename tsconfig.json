@@ -13,6 +13,8 @@
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types/"],
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -21,5 +23,8 @@
     },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "exclude": [
+    "node_modules"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }],
 }

@@ -1,51 +1,89 @@
 <template>
-    <div class="list">
-        <MenuItem
-            :menu-item="menuItem"
-            v-for="menuItem in menuItems"
-            :key="menuItem.id"
-        >
-        </MenuItem>
+    <div>
+        <MenuSelector @menu-item-change="setSelectedMenuItem"></MenuSelector>
+        <div v-if="showPopup">
+            <label>
+                <span>Email:</span>
+                <input class="input" type="email" v-model="email" />
+            </label>
+            <label>
+                <span>Name:</span>
+                <input class="input" type="text" v-model="name" />
+            </label>
+            <button class="button save-button" @click="saveMenu">
+                Speichern
+            </button>
+        </div>
+        <button class="button add-button" @click="addMenu">
+            + Menü speichern
+        </button>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import MenuItem from "@/components/MenuItem.vue";
-import MenuItemType from "@/types/MenuItem";
+import { defineComponent, ref, computed } from "vue";
+import MenuSelector from "@/components/MenuSelector.vue";
+import { saveMenu as saveMenuRest } from "@/interfaces/menu";
+import { useGuestStore } from "@/stores/GuestStore";
 
 export default defineComponent({
     components: {
-        MenuItem,
+        MenuSelector,
     },
     setup() {
-        const menuItems = ref<MenuItemType[]>([]);
-
-        menuItems.value.push({
-            id: "1",
-            name: "Ramen",
-            description:
-                "A Japanese noodle soup dish consisting of Chinese-style wheat noodles served in a meat- or (occasionally) fish-based broth, often flavored with soy sauce or miso, and uses toppings such as sliced pork, dried seaweed, kamaboko, and green onions.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Soy_ramen.jpg/220px-Soy_ramen.jpg",
+        const email = ref("");
+        const emailExists = computed(() => {
+            return email.value.includes("@");
         });
+        const name = ref("");
+        const showPopup = ref(false);
+        const currentMenuItem = ref<string>("");
+        const guestStore = useGuestStore();
 
-        menuItems.value.push({
-            id: "2",
-            name: "Sushi",
-            description:
-                "Sushi is a Japanese dish of cooked rice that is usually served with raw fish, vegetables, or other ingredients such as sesame seeds, as well as other ingredients such as rice, seaweed, and sugar.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Soy_ramen.jpg/220px-Soy_ramen.jpg",
-        });
+        function addMenu() {
+            showPopup.value = true;
+        }
+
+        function saveMenu() {
+            if (name.value === "") {
+                return;
+            }
+
+            guestStore.$state.guests.push({
+                id: Math.random().toString(),
+                name: name.value,
+                email: email.value,
+                selectedMenus: [currentMenuItem.value],
+            });
+            saveMenuRest();
+
+            name.value = "";
+            showPopup.value = false;
+        }
+
+        function setSelectedMenuItem(menuItemId: string) {
+            currentMenuItem.value = menuItemId;
+        }
 
         return {
-            menuItems,
+            email,
+            emailExists,
+            addMenu,
+            saveMenu,
+            name,
+            showPopup,
+            setSelectedMenuItem,
         };
     },
 });
 </script>
 
 <style scoped lang="postcss">
-.list {
-    @apply flex flex-row space-x-40;
+.input {
+    @apply border border-gray-300 rounded-lg;
+}
+
+.save-button {
+    @apply py-2 px-5 bg-blue-500 text-white rounded-lg;
 }
 </style>

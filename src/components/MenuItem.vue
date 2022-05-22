@@ -1,6 +1,11 @@
 <template>
     <label>
-        <input type="radio" name="menu" :value="menuItem.id" />
+        <input
+            type="radio"
+            name="menu"
+            @change="update(menuItem.id)"
+            :value="menuItem.id"
+        />
         <div class="name">{{ menuItem.name }}</div>
         <div class="image">
             <img
@@ -14,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import MenuItem from "@/types/MenuItem";
+import MenuItem from "@/types/IMenuItem";
 import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
@@ -24,8 +29,15 @@ export default defineComponent({
             required: true,
         },
     },
-    setup() {
-        return {};
+    emits: ["menuItemChange"],
+    setup(_, { emit }) {
+        function update(menuItemId: string) {
+            emit("menuItemChange", menuItemId);
+        }
+
+        return {
+            update,
+        };
     },
 });
 </script>

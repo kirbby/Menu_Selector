@@ -1,5 +1,6 @@
 export default interface IGuest {
     id: string;
     name: string;
-    selectedMenus: Number[];
+    email: string;
+    selectedMenus: string[];
 }

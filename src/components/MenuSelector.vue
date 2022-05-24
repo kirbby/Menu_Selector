@@ -15,7 +15,8 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import MenuItem from "@/components/MenuItem.vue";
-import MenuItemType from "@/types/IMenuItem";
+import MenuItemType from "@/types/MenuItem";
+import { getMenuItems } from "@/interfaces/menu";
 
 export default defineComponent({
     components: {
@@ -23,7 +24,7 @@ export default defineComponent({
     },
     emits: ["menuItemChange"],
     setup(_, { emit }) {
-        const menuItems = ref<MenuItemType[]>([]);
+        const menuItems = ref<MenuItemType[]>(getMenuItems());
 
         function setSelectedMenuItem(menuItemId: string) {
             emit("menuItemChange", menuItemId);

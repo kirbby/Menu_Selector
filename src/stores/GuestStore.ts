@@ -1,4 +1,4 @@
-import Guest from "@/types/IGuest";
+import Guest from "@/types/Guest";
 import { defineStore } from "pinia";
 
 export const useGuestStore = defineStore("guest", {

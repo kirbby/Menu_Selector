@@ -1,4 +1,4 @@
-export default interface IGuest {
+export default interface Guest {
     id: string;
     name: string;
     email: string;

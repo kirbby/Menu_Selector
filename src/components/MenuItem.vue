@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import MenuItem from "@/types/IMenuItem";
+import MenuItem from "@/types/MenuItem";
 import { defineComponent, PropType } from "vue";
 
 export default defineComponent({

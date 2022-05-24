@@ -1,22 +1,22 @@
 <template>
     <div>
-        <MenuSelector @menu-item-change="setSelectedMenuItem"></MenuSelector>
+        <button class="button add-button" @click="addMenu">
+            + Menü speichern
+        </button>
         <div v-if="showPopup">
             <label>
                 <span>Email:</span>
                 <input class="input" type="email" v-model="email" />
             </label>
-            <label>
+            <label>                
                 <span>Name:</span>
                 <input class="input" type="text" v-model="name" />
             </label>
             <button class="button save-button" @click="saveMenu">
                 Speichern
             </button>
-        </div>
-        <button class="button add-button" @click="addMenu">
-            + Menü speichern
-        </button>
+        </div>        
+        <MenuSelector @menu-item-change="setSelectedMenuItem"></MenuSelector>
     </div>
 </template>
 
@@ -31,13 +31,13 @@ export default defineComponent({
         MenuSelector,
     },
     setup() {
-        const email = ref("");
+        const email = ref("test");
         const emailExists = computed(() => {
             return email.value.includes("@");
         });
         const name = ref("");
         const showPopup = ref(false);
-        const currentMenuItem = ref<string>("");
+        const currentMenuItem = ref("");
         const guestStore = useGuestStore();
 
         function addMenu() {
@@ -80,7 +80,7 @@ export default defineComponent({
 
 <style scoped lang="postcss">
 .input {
-    @apply border border-gray-300 rounded-lg;
+    @apply border border-gray-300 rounded-lg text-black;
 }
 
 .save-button {

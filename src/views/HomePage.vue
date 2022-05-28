@@ -1,22 +1,24 @@
 <template>
-    <div>
-        <button class="button add-button" @click="addMenu">
-            + Menü speichern
-        </button>
-        <div v-if="showPopup">
-            <label>
-                <span>Email:</span>
-                <input class="input" type="email" v-model="email" />
-            </label>
-            <label>                
+    <div class="home-page">
+        <GuestList class="guest-list"></GuestList>
+        <div class="guest-data">
+            <h1>Gast:</h1>
+            <label class="guest-label">
                 <span>Name:</span>
                 <input class="input" type="text" v-model="name" />
             </label>
-            <button class="button save-button" @click="saveMenu">
-                Speichern
+            <label class="guest-label">
+                <span>Email:</span>
+                <input class="input" type="email" v-model="email" />
+            </label>
+            <button class="button add-button" @click="addGuest">
+                Gast hinzufügen
             </button>
-        </div>        
+        </div>
         <MenuSelector @menu-item-change="setSelectedMenuItem"></MenuSelector>
+        <button class="button save-button" @click="addMenu">
+            Menü speichern
+        </button>
     </div>
 </template>
 
@@ -25,10 +27,12 @@ import { defineComponent, ref, computed } from "vue";
 import MenuSelector from "@/components/MenuSelector.vue";
 import { saveMenu as saveMenuRest } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";
+import GuestList from "@/components/GuestList.vue";
 
 export default defineComponent({
     components: {
         MenuSelector,
+        GuestList
     },
     setup() {
         const email = ref("test");
@@ -44,7 +48,7 @@ export default defineComponent({
             showPopup.value = true;
         }
 
-        function saveMenu() {
+        function addGuest() {
             if (name.value === "") {
                 return;
             }
@@ -53,12 +57,10 @@ export default defineComponent({
                 id: Math.random().toString(),
                 name: name.value,
                 email: email.value,
-                selectedMenus: [currentMenuItem.value],
+                selectedMenus: [],
             });
-            saveMenuRest();
 
             name.value = "";
-            showPopup.value = false;
         }
 
         function setSelectedMenuItem(menuItemId: string) {
@@ -69,7 +71,7 @@ export default defineComponent({
             email,
             emailExists,
             addMenu,
-            saveMenu,
+            addGuest,
             name,
             showPopup,
             setSelectedMenuItem,
@@ -83,7 +85,27 @@ export default defineComponent({
     @apply border border-gray-300 rounded-lg text-black;
 }
 
-.save-button {
+.button {
     @apply py-2 px-5 bg-blue-500 text-white rounded-lg;
+}
+
+.guest-data {
+    @apply flex flex-col space-y-4;
+}
+
+.guest-label {
+    @apply space-x-2 items-center;
+}
+
+.add-button {
+    @apply mx-auto;
+}
+
+.home-page {
+    @apply space-y-10;
+}
+
+.guest-list {
+    @apply absolute top-10 right-10 bg-red-600 p-4 rounded-lg;
 }
 </style>

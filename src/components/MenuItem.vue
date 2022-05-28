@@ -1,21 +1,15 @@
 <template>
-    <label>
-        <input
-            type="radio"
-            name="menu"
-            @change="update(menuItem.id)"
-            :value="menuItem.id"
-        />
-        <div class="name">{{ menuItem.name }}</div>
-        <div class="image">
-            <img
-                v-if="menuItem.image != null && menuItem.image != ''"
-                :src="menuItem.image"
-            />
-            <span v-else class="material-icon">ramen</span>
-        </div>
-        <div class="description">{{ menuItem.description }}</div>
-    </label>
+    <div>
+        <label>
+            <input type="radio" name="menu" @change="update(menuItem.id)" :value="menuItem.id" />
+            <div class="name">{{ menuItem.name }}</div>
+            <div class="image">
+                <img v-if="menuItem.image != null && menuItem.image != ''" :src="menuItem.image" />
+                <span v-else class="material-icon">ramen</span>
+            </div>
+            <div class="description">{{ menuItem.description }}</div>
+        </label>
+    </div>
 </template>
 
 <script lang="ts">
@@ -42,4 +36,5 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="postcss"></style>
+<style scoped lang="postcss">
+</style>

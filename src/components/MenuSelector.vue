@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>Menü für {{ activeGuest.name }}:</div>
+        <div v-if="activeGuest?.id">Menü für {{ activeGuest.name }}:</div>
         <div class="list">
             <div class="menu-item" v-for="menuItem in menuItems" :key="menuItem.id">
                 <MenuItem :menu-item="menuItem" @menu-item-change="setSelectedMenuItem">
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import MenuItem from "@/components/MenuItem.vue";
 import MenuItemType from "@/types/MenuItem";
 import { getMenuItems } from "@/interfaces/menu";
@@ -28,8 +28,8 @@ export default defineComponent({
         const menuItems = ref<MenuItemType[]>(getMenuItems());
         const { getActiveGuest: activeGuest } = storeToRefs(guestStore);
 
-        function setSelectedMenuItem(menuItemId: string) {
-            emit("menuItemChange", menuItemId);
+        function setSelectedMenuItem(menuItem: MenuItemType) {
+            emit("menuItemChange", menuItem);
         }
 
         return {

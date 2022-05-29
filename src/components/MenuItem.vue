@@ -1,7 +1,7 @@
 <template>
     <div>
         <label>
-            <input type="radio" name="menu" @change="update(menuItem.id)" :value="menuItem.id" />
+            <input type="radio" name="menu" @change="update(menuItem)" :value="menuItem.id" v-model="selected" />
             <div class="name">{{ menuItem.name }}</div>
             <div class="image">
                 <img v-if="menuItem.image != null && menuItem.image != ''" :src="menuItem.image" />
@@ -13,8 +13,10 @@
 </template>
 
 <script lang="ts">
+import { useGuestStore } from "@/stores/GuestStore";
 import MenuItem from "@/types/MenuItem";
-import { defineComponent, PropType } from "vue";
+import { storeToRefs } from "pinia";
+import { defineComponent, PropType, ref, watch } from "vue";
 
 export default defineComponent({
     props: {
@@ -24,13 +26,24 @@ export default defineComponent({
         },
     },
     emits: ["menuItemChange"],
-    setup(_, { emit }) {
-        function update(menuItemId: string) {
+    setup(props, { emit }) {
+        const guestStore = useGuestStore();
+        const { getActiveGuest: activeGuest } = storeToRefs(guestStore);
+        const selected = ref("");
+        watch(() => activeGuest.value?.id, (newValue) => {
+            if (newValue) {
+                selected.value = "";
+                selected.value = activeGuest.value?.selectedMenus.includes(props.menuItem) ? "2" : "2";
+            }
+        });
+
+        function update(menuItemId: MenuItem) {
             emit("menuItemChange", menuItemId);
         }
 
         return {
             update,
+            selected,
         };
     },
 });

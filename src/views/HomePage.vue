@@ -16,7 +16,7 @@
             </button>
         </div>
         <MenuSelector @menu-item-change="setSelectedMenuItem"></MenuSelector>
-        <button class="button save-button" @click="addMenu">
+        <button class="button save-button" @click="saveMenu">
             Menü speichern
         </button>
     </div>
@@ -25,9 +25,10 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import MenuSelector from "@/components/MenuSelector.vue";
-import { saveMenu as saveMenuRest } from "@/interfaces/menu";
+import { saveMenu } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";
 import GuestList from "@/components/GuestList.vue";
+import MenuItem from "@/types/MenuItem";
 
 export default defineComponent({
     components: {
@@ -41,40 +42,39 @@ export default defineComponent({
         });
         const name = ref("");
         const showPopup = ref(false);
-        const currentMenuItem = ref("");
         const guestStore = useGuestStore();
-
-        function addMenu() {
-            showPopup.value = true;
-        }
 
         function addGuest() {
             if (name.value === "") {
                 return;
             }
 
-            guestStore.$state.guests.push({
+            const newGuest = {
                 id: Math.random().toString(),
                 name: name.value,
                 email: email.value,
                 selectedMenus: [],
-            });
+            };
+
+            guestStore.$state.guests.push(newGuest);
+
+            guestStore.$state.activeGuestId = newGuest.id;
 
             name.value = "";
         }
 
-        function setSelectedMenuItem(menuItemId: string) {
-            currentMenuItem.value = menuItemId;
+        function setSelectedMenuItem(menuItem: MenuItem) {
+            guestStore.changeGuestMenu(menuItem);
         }
 
         return {
             email,
             emailExists,
-            addMenu,
             addGuest,
             name,
             showPopup,
             setSelectedMenuItem,
+            saveMenu,
         };
     },
 });

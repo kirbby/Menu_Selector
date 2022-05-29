@@ -1,10 +1,11 @@
 import Guest from "@/types/Guest";
+import MenuItem from "@/types/MenuItem";
 import { defineStore } from "pinia";
 
 export const useGuestStore = defineStore("guest", {
     state: () => ({
         guests: [] as Guest[],
-        activeGuest: {} as Guest,
+        activeGuestId: "",
     }),
     getters: {
         getGuests(state): Guest[] {
@@ -14,8 +15,8 @@ export const useGuestStore = defineStore("guest", {
             return (id: string) =>
                 state.guests.find((guest: Guest) => guest.id === id);
         },
-        getActiveGuest(state): Guest {
-            return state.activeGuest;
+        getActiveGuest(state): Guest | undefined {
+            return state.guests.find((guest: Guest) => guest.id === state.activeGuestId);;
         }
     },
     actions: {
@@ -24,9 +25,23 @@ export const useGuestStore = defineStore("guest", {
                 (g: Guest) => g.id !== guest.id
             );
 
-            if (guest == this.activeGuest && this.guests.length > 0) {
-                this.activeGuest = this.guests[0];
+            if (guest.id == this.activeGuestId && this.guests.length > 0) {
+                this.activeGuestId = this.guests[0].id;
             }
+        },
+        changeGuestMenu(menuItem: MenuItem) {
+            if (!this.getActiveGuest?.selectedMenus.includes(menuItem)) {
+                const activeGuest = this.getGuestOnId(this.getActiveGuest?.id ?? "");
+
+                if (!activeGuest) {
+                    return;
+                }
+
+                activeGuest.selectedMenus = activeGuest.selectedMenus.filter(
+                    x => x.categoryId !== menuItem.categoryId
+                );
+                activeGuest.selectedMenus.push(menuItem);
+            }            
         }
     },
     persist: true,

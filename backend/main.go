@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/kirbby/Menu_Selector/ent"
 	"go.uber.org/zap"
 
@@ -26,13 +27,20 @@ func main() {
 	}
 
 	// Serve Frontend
-	fs := http.FileServer(http.Dir("../frontend/dist"))
+	http.Handle("/", http.FileServer(http.Dir("../frontend/dist")))
+	// Server Frontend on different path
+	//http.Handle("/selector/", http.StripPrefix("/selector/", http.FileServer(http.Dir("../frontend/dist"))))
 
-	http.Handle("/", fs)
-	http.Handle("/api", elk.NewHandler(c, zap.NewExample()))
+	r := chi.NewRouter()
+	elk.MountRoutes(c, zap.NewExample(), r)
+
+	r2 := chi.NewRouter()
+	r2.Mount("/api", r)
+
+	//http.Handle("/api", elk.NewHandler(c, zap.NewExample()))
 
 	log.Print("Listening on :3000...")
-	derr := http.ListenAndServe(":3000", nil)
+	derr := http.ListenAndServe(":3000", r2)
 	// Start listen to incoming requests.
 	//derr := http.ListenAndServe(":3000", elk.NewHandler(c, zap.NewExample()))
 	if derr != nil {

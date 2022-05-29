@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"github.com/kirbby/Menu_Selector/ent"
-	elk "github.com/kirbby/Menu_Selector/ent/http"
-
-	_ "github.com/mattn/go-sqlite3"
 	"go.uber.org/zap"
+
+	elk "github.com/kirbby/Menu_Selector/ent/http"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
@@ -24,16 +24,21 @@ func main() {
 	if err := c.Schema.Create(context.Background()); err != nil {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
+
+	// Serve Frontend
+	fs := http.FileServer(http.Dir("../frontend/dist"))
+
+	http.Handle("/", fs)
+	http.Handle("/api", elk.NewHandler(c, zap.NewExample()))
+
+	log.Print("Listening on :3000...")
+	derr := http.ListenAndServe(":3000", nil)
 	// Start listen to incoming requests.
-	if err := http.ListenAndServe(":3000", elk.NewHandler(c, zap.NewExample())); err != nil {
+	//derr := http.ListenAndServe(":3000", elk.NewHandler(c, zap.NewExample()))
+	if derr != nil {
 		log.Fatal(err)
 	}
 
-	//fs := http.FileServer(http.Dir("../frontend/dist"))
-	//http.Handle("/", fs)
-
-	//log.Print("Listening on :3000...")
-	//err := http.ListenAndServe(":3000", nil)
 	//if err != nil {
 	//	log.Fatal(err)
 	//}

@@ -1,9 +1,9 @@
 <template>
 <div>
-    <div v-if="activeGuest?.id">Menü für {{ activeGuest.name }}:</div>
     <div class="list">
         <div class="menu-item" v-for="menuItem in menuItems" :key="menuItem.id">
-            <MenuItem :menu-item="menuItem" :isSelected="menuItem.id === selectedMenuId" @menu-item-selected="setSelectedMenuItem">
+            <MenuItem :menu-item="menuItem" :is-selected="menuItem.id === selectedMenuId" :radio-group="'menu-' + menuItem.categoryId"
+                      @menu-item-selected="setSelectedMenuItem">
             </MenuItem>
         </div>
     </div>
@@ -33,17 +33,17 @@ export default defineComponent({
     components: {
         MenuItem,
     },
-    setup() {
+    setup(props) {
         const guestStore = useGuestStore();
-        const menuItems = ref<MenuItemType[]>(getMenuItems(1));
+        const menuItems = ref<MenuItemType[]>(getMenuItems(props.menuCategoryId));
         const {
             getActiveGuest: activeGuest,
             getActiveGuestMenuIdOnCategoryId: getActiveGuestMenuIdOnCategoryId
         } = storeToRefs(guestStore);
-        const selectedMenuId = ref(getActiveGuestMenuIdOnCategoryId.value(1));
+        const selectedMenuId = ref(getActiveGuestMenuIdOnCategoryId.value(props.menuCategoryId));
 
         watch(() => activeGuest.value, function () {
-            selectedMenuId.value = getActiveGuestMenuIdOnCategoryId.value(1);
+            selectedMenuId.value = getActiveGuestMenuIdOnCategoryId.value(props.menuCategoryId);
         });
 
         function setSelectedMenuItem(menuItem: MenuItemType) {

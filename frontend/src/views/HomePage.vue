@@ -15,7 +15,9 @@
             Gast hinzufügen
         </button>
     </div>
+    <div v-if="activeGuest?.id">Menü für {{ activeGuest.name }}:</div>
     <MenuSelector :menu-category-id="1"></MenuSelector>
+    <MenuSelector :menu-category-id="2"></MenuSelector>
     <button class="button save-button" @click="saveMenu">
         Menü speichern
     </button>
@@ -28,6 +30,7 @@ import MenuSelector from "@/components/MenuSelector.vue";
 import { saveMenu } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";
 import GuestList from "@/components/GuestList.vue";
+import { storeToRefs } from "pinia";
 
 export default defineComponent({
     components: {
@@ -40,6 +43,7 @@ export default defineComponent({
         const name = ref("");
         const showPopup = ref(false);
         const guestStore = useGuestStore();
+        const { getActiveGuest: activeGuest } = storeToRefs(guestStore);
 
         function addGuest() {
             if (name.value === "") {
@@ -67,6 +71,7 @@ export default defineComponent({
             name,
             showPopup,
             saveMenu,
+            activeGuest,
         };
     },
 });

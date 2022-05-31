@@ -18,7 +18,7 @@ export const useGuestStore = defineStore("guest", {
         getActiveGuest(state): Guest | undefined {
             return state.guests.find((guest: Guest) => guest.id === state.activeGuestId);
         },
-        getActiveGuestMenuIdOnCategoryId(state): (categoryId: number) => number {
+        getActiveGuestMenuIdOnCategoryId(): (categoryId: number) => number {
             return (categoryId: number) => {
                 const activeGuest = this.getActiveGuest;
 

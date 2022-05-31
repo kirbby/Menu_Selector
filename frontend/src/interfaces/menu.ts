@@ -20,6 +20,14 @@ export function getMenuItems(categoryId: number): MenuItem[] {
             image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Soy_ramen.jpg/220px-Soy_ramen.jpg",
             categoryId: 1,
         },
+        {
+            id: 3,
+            name: "Pizza",
+            description:
+                "Pizza is a savory dish of Italian origin, consisting of a usually round, flattened base of leavened wheat-based dough topped with tomatoes, cheese, and often various other ingredients baked at a high temperature, traditionally in a wood-fired oven.",
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Soy_ramen.jpg/220px-Soy_ramen.jpg",
+            categoryId: 2,
+        },
     ].filter(item => item.categoryId === categoryId);
 }
 

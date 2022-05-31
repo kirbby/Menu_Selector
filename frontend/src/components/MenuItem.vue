@@ -1,7 +1,7 @@
 <template>
 <div>
     <label>
-        <input type="radio" name="menu" @change="update($event, menuItem)" :value="menuItem.id" v-model="selected" />
+        <input type="radio" :name="$props.radioGroup" @change="update($event, menuItem)" :value="menuItem.id" :checked="selected" />
         <div class="name">{{ menuItem.name }}</div>
         <div class="image">
             <img v-if="menuItem.image != null && menuItem.image != ''" :src="menuItem.image" />
@@ -31,6 +31,10 @@ export default defineComponent({
             type: Boolean as PropType<boolean>,
             default: false,
         },
+        radioGroup: {
+            type: String as PropType<string>,
+            required: true,
+        },
     },
     emits: ["menuItemSelected"],
     setup(props, { emit }) {
@@ -38,7 +42,6 @@ export default defineComponent({
 
         watch(() => props.isSelected, function () {
             selected.value = props.isSelected;
-            console.log(selected.value);
         });
 
         function update(event: Event, menuItemId: MenuItem) {

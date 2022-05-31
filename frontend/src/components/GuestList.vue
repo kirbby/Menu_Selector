@@ -1,20 +1,21 @@
 <template>
-    <div>
-        <ul>
-            <li v-for="guest in guests" :key="guest.id" @click="onGuestClick(guest)" class="guest-item"
-                :class="activeGuest?.id == guest.id ? 'active' : ''">
-                <div>{{ guest.name }}</div>
-                <button class="delete-button" @click.stop="deleteGuest(guest)">X</button>
-            </li>
-        </ul>
-    </div>
+<div>
+    <div>Deine Gäste:</div>
+    <ul>
+        <li v-for="guest in guests" :key="guest.id" @click="onGuestClick(guest)" class="guest-item"
+            :class="activeGuest?.id == guest.id ? 'active' : ''">
+            <div>{{ guest.name }}</div>
+            <button class="delete-button" @click.stop="deleteGuest(guest)">X</button>
+        </li>
+    </ul>
+</div>
 </template>
 
 <script lang="ts">
 import { useGuestStore } from "@/stores/GuestStore";
 import Guest from "@/types/Guest";
 import { storeToRefs } from "pinia";
-import { computed, defineComponent } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
     setup() {

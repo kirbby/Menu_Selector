@@ -5,18 +5,29 @@ import { defineStore } from "pinia";
 export const useGuestStore = defineStore("guest", {
     state: () => ({
         guests: [] as Guest[],
-        activeGuestId: "",
+        activeGuestId: 0,
     }),
     getters: {
         getGuests(state): Guest[] {
             return state.guests;
         },
-        getGuestOnId(state): (id: string) => Guest | undefined {
-            return (id: string) =>
+        getGuestOnId(state): (id: number) => Guest | undefined {
+            return (id: number) =>
                 state.guests.find((guest: Guest) => guest.id === id);
         },
         getActiveGuest(state): Guest | undefined {
-            return state.guests.find((guest: Guest) => guest.id === state.activeGuestId);;
+            return state.guests.find((guest: Guest) => guest.id === state.activeGuestId);
+        },
+        getActiveGuestMenuIdOnCategoryId(state): (categoryId: number) => number {
+            return (categoryId: number) => {
+                const activeGuest = this.getActiveGuest;
+
+                if (!activeGuest) {
+                    return 0;
+                }
+
+                return activeGuest.selectedMenus.find((menuItem: MenuItem) => menuItem.categoryId === categoryId)?.id ?? 0;
+            };
         }
     },
     actions: {
@@ -31,7 +42,7 @@ export const useGuestStore = defineStore("guest", {
         },
         changeGuestMenu(menuItem: MenuItem) {
             if (!this.getActiveGuest?.selectedMenus.includes(menuItem)) {
-                const activeGuest = this.getGuestOnId(this.getActiveGuest?.id ?? "");
+                const activeGuest = this.getActiveGuest;
 
                 if (!activeGuest) {
                     return;
@@ -41,7 +52,7 @@ export const useGuestStore = defineStore("guest", {
                     x => x.categoryId !== menuItem.categoryId
                 );
                 activeGuest.selectedMenus.push(menuItem);
-            }            
+            }
         }
     },
     persist: true,

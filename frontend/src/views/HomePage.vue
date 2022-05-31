@@ -1,25 +1,25 @@
 <template>
-    <div class="home-page">
-        <GuestList class="guest-list"></GuestList>
-        <div class="guest-data">
-            <h1>Gast:</h1>
-            <label class="guest-label">
-                <span>Name:</span>
-                <input class="input" type="text" v-model="name" />
-            </label>
-            <label class="guest-label">
-                <span>Email:</span>
-                <input class="input" type="email" v-model="email" />
-            </label>
-            <button class="button add-button" @click="addGuest">
-                Gast hinzufügen
-            </button>
-        </div>
-        <MenuSelector @menu-item-change="setSelectedMenuItem"></MenuSelector>
-        <button class="button save-button" @click="saveMenu">
-            Menü speichern
+<div class="home-page">
+    <GuestList class="guest-list"></GuestList>
+    <div class="guest-data">
+        <h1>Gast:</h1>
+        <label class="guest-label">
+            <span>Name:</span>
+            <input class="input" type="text" v-model="name" />
+        </label>
+        <label class="guest-label">
+            <span>Email:</span>
+            <input class="input" type="email" v-model="email" />
+        </label>
+        <button class="button add-button" @click="addGuest">
+            Gast hinzufügen
         </button>
     </div>
+    <MenuSelector :menu-category-id="1"></MenuSelector>
+    <button class="button save-button" @click="saveMenu">
+        Menü speichern
+    </button>
+</div>
 </template>
 
 <script lang="ts">
@@ -28,7 +28,6 @@ import MenuSelector from "@/components/MenuSelector.vue";
 import { saveMenu } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";
 import GuestList from "@/components/GuestList.vue";
-import MenuItem from "@/types/MenuItem";
 
 export default defineComponent({
     components: {
@@ -37,9 +36,7 @@ export default defineComponent({
     },
     setup() {
         const email = ref("test");
-        const emailExists = computed(() => {
-            return email.value.includes("@");
-        });
+        const emailExists = computed(() => email.value.includes("@"));
         const name = ref("");
         const showPopup = ref(false);
         const guestStore = useGuestStore();
@@ -50,7 +47,7 @@ export default defineComponent({
             }
 
             const newGuest = {
-                id: Math.random().toString(),
+                id: Math.random(),
                 name: name.value,
                 email: email.value,
                 selectedMenus: [],
@@ -63,17 +60,12 @@ export default defineComponent({
             name.value = "";
         }
 
-        function setSelectedMenuItem(menuItem: MenuItem) {
-            guestStore.changeGuestMenu(menuItem);
-        }
-
         return {
             email,
             emailExists,
             addGuest,
             name,
             showPopup,
-            setSelectedMenuItem,
             saveMenu,
         };
     },

@@ -1,8 +1,10 @@
 import MenuItem from "./MenuItem";
 
-export default interface Guest {
-    id: string;
+interface Guest {
+    id: number;
     name: string;
     email: string;
     selectedMenus: MenuItem[];
 }
+
+export default Guest;

@@ -18,7 +18,7 @@ const (
 )
 
 func main() {
-	fmt.Print("Starting backend ...\n")
+	fmt.Println("Starting backend ...")
 
 	// Create ent client.
 	client, err := ent.Open(dialect.SQLite, "file:ent?mode=memory&cache=shared&_fk=1")

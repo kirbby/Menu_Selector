@@ -2,12 +2,14 @@
 <div>
     <label>
         <input type="radio" :name="$props.radioGroup" @change="update($event, menuItem)" :value="menuItem.id" :checked="selected" />
-        <div class="name">{{ menuItem.name }}</div>
-        <div class="image">
-            <img v-if="menuItem.image != null && menuItem.image != ''" :src="menuItem.image" />
-            <span v-else class="material-icon">ramen</span>
+        <div class="item">
+            <div class="name">{{ menuItem.name }}</div>
+            <div class="image-container">
+                <img v-if="menuItem.image != null && menuItem.image != ''" :src="menuItem.image" />
+                <span v-else class="material-icon">ramen</span>
+            </div>
+            <div class="description">{{ menuItem.description }}</div>
         </div>
-        <div class="description">{{ menuItem.description }}</div>
     </label>
 </div>
 </template>
@@ -61,4 +63,37 @@ export default defineComponent({
 </script>
 
 <style scoped lang="postcss">
+.item {
+    @apply border-2 border-gray-300 rounded-lg p-4;
+}
+
+label {
+    @apply flex flex-col space-y-4 justify-between;
+}
+
+.name {
+    @apply text-2xl font-bold;
+}
+
+.image-container {
+    @apply flex flex-row justify-center items-center;
+}
+
+.image-container img {
+    @apply h-40;
+}
+
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: none;
+}
+
+input[type="radio"]:checked + .item {
+    @apply bg-blue-500;
+}
+
+input[type="radio"]:not(:checked) + .item {
+    @apply bg-gray-700;
+}
 </style>

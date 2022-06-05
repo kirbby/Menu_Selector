@@ -1,31 +1,26 @@
 {
+  "openapi": "3.0.3",
   "info": {
     "title": "Ent Schema API",
     "description": "This is an auto generated API description made out of an Ent schema definition",
-    "termsOfService": "",
-    "contact": {},
-    "license": {
-      "name": ""
-    },
-    "version": "0.0.0"
+    "version": "0.1.0"
   },
   "paths": {
-    "/guests": {
+    "/users": {
       "get": {
-        "summary": "List Guests",
-        "description": "List Guests.",
         "tags": [
-          "Guest"
+          "User"
         ],
-        "operationId": "listGuest",
+        "summary": "List Users",
+        "description": "List Users.",
+        "operationId": "listUser",
         "parameters": [
           {
             "name": "page",
             "in": "query",
             "description": "what page to render",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "integer"
             }
           },
           {
@@ -33,20 +28,19 @@
             "in": "query",
             "description": "item count to render per page",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "integer"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "result Guest list",
+            "description": "result User list",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Guest3946703519View"
+                    "$ref": "#/components/schemas/UserList"
                   }
                 }
               }
@@ -57,6 +51,9 @@
           },
           "404": {
             "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -64,47 +61,51 @@
         }
       },
       "post": {
-        "summary": "Create a new Guest",
-        "description": "Creates a new Guest and persists it to storage.",
         "tags": [
-          "Guest"
+          "User"
         ],
-        "operationId": "createGuest",
+        "summary": "Create a new User",
+        "description": "Creates a new User and persists it to storage.",
+        "operationId": "createUser",
         "requestBody": {
-          "description": "Guest to create",
+          "description": "User to create",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "email",
-                  "name"
-                ],
                 "properties": {
-                  "email": {
-                    "type": "string"
+                  "age": {
+                    "type": "integer"
                   },
                   "name": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "age",
+                  "name"
+                ]
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Guest created",
+            "description": "User created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Guest3946703519View"
+                  "$ref": "#/components/schemas/UserCreate"
                 }
               }
             }
           },
           "400": {
             "$ref": "#/components/responses/400"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -112,33 +113,32 @@
         }
       }
     },
-    "/guests/{id}": {
+    "/users/{id}": {
       "get": {
-        "summary": "Find a Guest by ID",
-        "description": "Finds the Guest with the requested ID and returns it.",
         "tags": [
-          "Guest"
+          "User"
         ],
-        "operationId": "readGuest",
+        "summary": "Find a User by ID",
+        "description": "Finds the User with the requested ID and returns it.",
+        "operationId": "readUser",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of the Guest",
-            "required": true,
+            "description": "ID of the User",
             "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
+              "type": "integer"
+            },
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "Guest with requested ID was found",
+            "description": "User with requested ID was found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Guest3946703519View"
+                  "$ref": "#/components/schemas/UserRead"
                 }
               }
             }
@@ -148,6 +148,9 @@
           },
           "404": {
             "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -155,33 +158,35 @@
         }
       },
       "delete": {
-        "summary": "Deletes a Guest by ID",
-        "description": "Deletes the Guest with the requested ID.",
         "tags": [
-          "Guest"
+          "User"
         ],
-        "operationId": "deleteGuest",
+        "summary": "Deletes a User by ID",
+        "description": "Deletes the User with the requested ID.",
+        "operationId": "deleteUser",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of the Guest to delete",
-            "required": true,
+            "description": "ID of the User",
             "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
+              "type": "integer"
+            },
+            "required": true
           }
         ],
         "responses": {
           "204": {
-            "description": "Guest with requested ID was deleted"
+            "description": "User with requested ID was deleted"
           },
           "400": {
             "$ref": "#/components/responses/400"
           },
           "404": {
             "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -189,37 +194,32 @@
         }
       },
       "patch": {
-        "summary": "Updates a Guest",
-        "description": "Updates a Guest and persists changes to storage.",
         "tags": [
-          "Guest"
+          "User"
         ],
-        "operationId": "updateGuest",
+        "summary": "Updates a User",
+        "description": "Updates a User and persists changes to storage.",
+        "operationId": "updateUser",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of the Guest to update",
-            "required": true,
+            "description": "ID of the User",
             "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
+              "type": "integer"
+            },
+            "required": true
           }
         ],
         "requestBody": {
-          "description": "Guest properties to update",
+          "description": "User properties to update",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "email",
-                  "name"
-                ],
                 "properties": {
-                  "email": {
-                    "type": "string"
+                  "age": {
+                    "type": "integer"
                   },
                   "name": {
                     "type": "string"
@@ -227,15 +227,16 @@
                 }
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Guest updated",
+            "description": "User updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Guest3946703519View"
+                  "$ref": "#/components/schemas/UserUpdate"
                 }
               }
             }
@@ -245,6 +246,9 @@
           },
           "404": {
             "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -255,25 +259,100 @@
   },
   "components": {
     "schemas": {
-      "Guest3946703519View": {
+      "User": {
         "type": "object",
-        "required": [
-          "email",
-          "id",
-          "name"
-        ],
         "properties": {
-          "email": {
-            "type": "string"
-          },
           "id": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
+          },
+          "age": {
+            "type": "integer"
           },
           "name": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "id",
+          "age",
+          "name"
+        ]
+      },
+      "UserCreate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "age",
+          "name"
+        ]
+      },
+      "UserList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "age",
+          "name"
+        ]
+      },
+      "UserRead": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "age",
+          "name"
+        ]
+      },
+      "UserUpdate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "age",
+          "name"
+        ]
       }
     },
     "responses": {
@@ -285,44 +364,40 @@
               "type": "object",
               "properties": {
                 "code": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 400
-                },
-                "errors": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "integer"
                 },
                 "status": {
-                  "type": "string",
-                  "example": "Bad Request"
-                }
-              }
+                  "type": "string"
+                },
+                "errors": {}
+              },
+              "required": [
+                "code",
+                "status"
+              ]
             }
           }
         }
       },
       "403": {
-        "description": "user misses permission",
+        "description": "insufficient permissions",
         "content": {
           "application/json": {
             "schema": {
               "type": "object",
               "properties": {
                 "code": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 403
-                },
-                "errors": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "integer"
                 },
                 "status": {
-                  "type": "string",
-                  "example": "Forbidden"
-                }
-              }
+                  "type": "string"
+                },
+                "errors": {}
+              },
+              "required": [
+                "code",
+                "status"
+              ]
             }
           }
         }
@@ -335,19 +410,17 @@
               "type": "object",
               "properties": {
                 "code": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 404
-                },
-                "errors": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "integer"
                 },
                 "status": {
-                  "type": "string",
-                  "example": "Not Found"
-                }
-              }
+                  "type": "string"
+                },
+                "errors": {}
+              },
+              "required": [
+                "code",
+                "status"
+              ]
             }
           }
         }
@@ -360,19 +433,17 @@
               "type": "object",
               "properties": {
                 "code": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 409
-                },
-                "errors": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "integer"
                 },
                 "status": {
-                  "type": "string",
-                  "example": "Conflict"
-                }
-              }
+                  "type": "string"
+                },
+                "errors": {}
+              },
+              "required": [
+                "code",
+                "status"
+              ]
             }
           }
         }
@@ -385,25 +456,21 @@
               "type": "object",
               "properties": {
                 "code": {
-                  "type": "integer",
-                  "format": "int32",
-                  "example": 500
-                },
-                "errors": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "integer"
                 },
                 "status": {
-                  "type": "string",
-                  "example": "Internal Server Error"
-                }
-              }
+                  "type": "string"
+                },
+                "errors": {}
+              },
+              "required": [
+                "code",
+                "status"
+              ]
             }
           }
         }
       }
-    },
-    "parameters": {}
-  },
-  "openapi": "3.0.3"
+    }
+  }
 }

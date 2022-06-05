@@ -1,16 +1,24 @@
 <template>
-<div class="guest-data">
-    <label class="guest-label">
-        <span>Name:</span>
-        <input class="input" type="text" v-model="name" />
-    </label>
-    <label class="guest-label">
-        <span>Email:</span>
-        <input class="input" type="email" v-model="email" />
-    </label>
-    <button class="button add-button" @click="addGuest">
-        Gast hinzufügen
-    </button>
+<div>
+    <Transition>
+        <div v-if="isGuestInputVisible"  class="guest-data">
+            <label class="guest-label">
+                <span>Name:</span>
+                <input class="input" type="text" v-model="name" />
+            </label>
+            <label class="guest-label">
+                <span>Email:</span>
+                <input class="input" type="email" v-model="email" />
+            </label>
+            <button class="button add-button" @click="addGuest">
+                Gast hinzufügen
+            </button>
+            <button class="button close-button" @click="isGuestInputVisible = false">X</button>
+        </div>
+    </Transition>
+    <Transition name="button">
+        <button v-if="!isGuestInputVisible" class="button" @click="isGuestInputVisible = true">+</button>
+    </Transition>
 </div>
 </template>
 
@@ -24,6 +32,7 @@ export default defineComponent({
         const emailExists = computed(() => email.value.includes("@"));
         const name = ref("");
         const guestStore = useGuestStore();
+        const isGuestInputVisible = ref(true);
 
         function addGuest() {
             if (name.value === "") {
@@ -44,12 +53,11 @@ export default defineComponent({
         }
 
         return {
-
             email,
             emailExists,
             addGuest,
-
             name,
+            isGuestInputVisible,
         };
     }
 });
@@ -57,7 +65,7 @@ export default defineComponent({
 
 <style scoped lang="postcss">
 .guest-data {
-    @apply w-fit p-8 m-auto flex flex-col space-y-6 border-2 border-gray-300 rounded-lg;
+    @apply w-fit py-8 px-12 m-auto flex flex-col space-y-6 border-2 border-gray-300 rounded-lg relative;
 }
 
 .guest-label {
@@ -70,5 +78,43 @@ export default defineComponent({
 
 .input {
     @apply px-3 border border-gray-300 rounded-lg text-black;
+}
+
+.add-button {
+    @apply mx-auto;
+    transition-delay: 1s;
+}
+
+.close-button {
+    @apply absolute top-0 right-0 !px-3 !py-1 !m-1;
+}
+
+.v-enter-active {
+  animation: bounce-in 0.5s;
+}
+.v-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.button-enter-active {
+    transition: opacity 0.5s ease;
+    transition-delay: 0.5s;
+    animation: bounce-in 0.5s;
+    animation-delay: 0.5s;
+}
+
+.button-enter-from {
+    opacity: 0;
 }
 </style>

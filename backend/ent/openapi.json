@@ -6,14 +6,14 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/users": {
+    "/guests": {
       "get": {
         "tags": [
-          "User"
+          "Guest"
         ],
-        "summary": "List Users",
-        "description": "List Users.",
-        "operationId": "listUser",
+        "summary": "List Guests",
+        "description": "List Guests.",
+        "operationId": "listGuest",
         "parameters": [
           {
             "name": "page",
@@ -34,13 +34,13 @@
         ],
         "responses": {
           "200": {
-            "description": "result User list",
+            "description": "result Guest list",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserList"
+                    "$ref": "#/components/schemas/GuestList"
                   }
                 }
               }
@@ -62,28 +62,28 @@
       },
       "post": {
         "tags": [
-          "User"
+          "Guest"
         ],
-        "summary": "Create a new User",
-        "description": "Creates a new User and persists it to storage.",
-        "operationId": "createUser",
+        "summary": "Create a new Guest",
+        "description": "Creates a new Guest and persists it to storage.",
+        "operationId": "createGuest",
         "requestBody": {
-          "description": "User to create",
+          "description": "Guest to create",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "age": {
-                    "type": "integer"
-                  },
                   "name": {
+                    "type": "string"
+                  },
+                  "email": {
                     "type": "string"
                   }
                 },
                 "required": [
-                  "age",
-                  "name"
+                  "name",
+                  "email"
                 ]
               }
             }
@@ -92,11 +92,11 @@
         },
         "responses": {
           "200": {
-            "description": "User created",
+            "description": "Guest created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserCreate"
+                  "$ref": "#/components/schemas/GuestCreate"
                 }
               }
             }
@@ -113,19 +113,19 @@
         }
       }
     },
-    "/users/{id}": {
+    "/guests/{id}": {
       "get": {
         "tags": [
-          "User"
+          "Guest"
         ],
-        "summary": "Find a User by ID",
-        "description": "Finds the User with the requested ID and returns it.",
-        "operationId": "readUser",
+        "summary": "Find a Guest by ID",
+        "description": "Finds the Guest with the requested ID and returns it.",
+        "operationId": "readGuest",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of the User",
+            "description": "ID of the Guest",
             "schema": {
               "type": "integer"
             },
@@ -134,11 +134,11 @@
         ],
         "responses": {
           "200": {
-            "description": "User with requested ID was found",
+            "description": "Guest with requested ID was found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserRead"
+                  "$ref": "#/components/schemas/GuestRead"
                 }
               }
             }
@@ -159,16 +159,16 @@
       },
       "delete": {
         "tags": [
-          "User"
+          "Guest"
         ],
-        "summary": "Deletes a User by ID",
-        "description": "Deletes the User with the requested ID.",
-        "operationId": "deleteUser",
+        "summary": "Deletes a Guest by ID",
+        "description": "Deletes the Guest with the requested ID.",
+        "operationId": "deleteGuest",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of the User",
+            "description": "ID of the Guest",
             "schema": {
               "type": "integer"
             },
@@ -177,7 +177,7 @@
         ],
         "responses": {
           "204": {
-            "description": "User with requested ID was deleted"
+            "description": "Guest with requested ID was deleted"
           },
           "400": {
             "$ref": "#/components/responses/400"
@@ -195,16 +195,16 @@
       },
       "patch": {
         "tags": [
-          "User"
+          "Guest"
         ],
-        "summary": "Updates a User",
-        "description": "Updates a User and persists changes to storage.",
-        "operationId": "updateUser",
+        "summary": "Updates a Guest",
+        "description": "Updates a Guest and persists changes to storage.",
+        "operationId": "updateGuest",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of the User",
+            "description": "ID of the Guest",
             "schema": {
               "type": "integer"
             },
@@ -212,16 +212,16 @@
           }
         ],
         "requestBody": {
-          "description": "User properties to update",
+          "description": "Guest properties to update",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "age": {
-                    "type": "integer"
-                  },
                   "name": {
+                    "type": "string"
+                  },
+                  "email": {
                     "type": "string"
                   }
                 }
@@ -232,11 +232,275 @@
         },
         "responses": {
           "200": {
-            "description": "User updated",
+            "description": "Guest updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserUpdate"
+                  "$ref": "#/components/schemas/GuestUpdate"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/menu-items": {
+      "get": {
+        "tags": [
+          "MenuItem"
+        ],
+        "summary": "List MenuItems",
+        "description": "List MenuItems.",
+        "operationId": "listMenuItem",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "what page to render",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "item count to render per page",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "result MenuItem list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MenuItemList"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MenuItem"
+        ],
+        "summary": "Create a new MenuItem",
+        "description": "Creates a new MenuItem and persists it to storage.",
+        "operationId": "createMenuItem",
+        "requestBody": {
+          "description": "MenuItem to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "categoryId": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "name",
+                  "description",
+                  "image",
+                  "categoryId"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "MenuItem created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemCreate"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/menu-items/{id}": {
+      "get": {
+        "tags": [
+          "MenuItem"
+        ],
+        "summary": "Find a MenuItem by ID",
+        "description": "Finds the MenuItem with the requested ID and returns it.",
+        "operationId": "readMenuItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the MenuItem",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "MenuItem with requested ID was found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "MenuItem"
+        ],
+        "summary": "Deletes a MenuItem by ID",
+        "description": "Deletes the MenuItem with the requested ID.",
+        "operationId": "deleteMenuItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the MenuItem",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "MenuItem with requested ID was deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "MenuItem"
+        ],
+        "summary": "Updates a MenuItem",
+        "description": "Updates a MenuItem and persists changes to storage.",
+        "operationId": "updateMenuItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the MenuItem",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "MenuItem properties to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  },
+                  "categoryId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "MenuItem updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemUpdate"
                 }
               }
             }
@@ -259,99 +523,234 @@
   },
   "components": {
     "schemas": {
-      "User": {
+      "Guest": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "age": {
-            "type": "integer"
-          },
           "name": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           }
         },
         "required": [
           "id",
-          "age",
-          "name"
+          "name",
+          "email"
         ]
       },
-      "UserCreate": {
+      "GuestCreate": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "age": {
-            "type": "integer"
-          },
           "name": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           }
         },
         "required": [
           "id",
-          "age",
-          "name"
+          "name",
+          "email"
         ]
       },
-      "UserList": {
+      "GuestList": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "age": {
-            "type": "integer"
-          },
           "name": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           }
         },
         "required": [
           "id",
-          "age",
-          "name"
+          "name",
+          "email"
         ]
       },
-      "UserRead": {
+      "GuestRead": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "age": {
-            "type": "integer"
-          },
           "name": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           }
         },
         "required": [
           "id",
-          "age",
-          "name"
+          "name",
+          "email"
         ]
       },
-      "UserUpdate": {
+      "GuestUpdate": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "age": {
-            "type": "integer"
-          },
           "name": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           }
         },
         "required": [
           "id",
-          "age",
-          "name"
+          "name",
+          "email"
+        ]
+      },
+      "MenuItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image",
+          "categoryId"
+        ]
+      },
+      "MenuItemCreate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image",
+          "categoryId"
+        ]
+      },
+      "MenuItemList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image",
+          "categoryId"
+        ]
+      },
+      "MenuItemRead": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image",
+          "categoryId"
+        ]
+      },
+      "MenuItemUpdate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image",
+          "categoryId"
         ]
       }
     },

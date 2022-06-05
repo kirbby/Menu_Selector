@@ -70,14 +70,14 @@ var (
 	_ = codes.Unset
 )
 
-func decodeCreateUserRequest(r *http.Request, span trace.Span) (req CreateUserReq, err error) {
+func decodeCreateGuestRequest(r *http.Request, span trace.Span) (req CreateGuestReq, err error) {
 	switch ct := r.Header.Get("Content-Type"); ct {
 	case "application/json":
 		if r.ContentLength == 0 {
 			return req, validate.ErrBodyRequired
 		}
 
-		var request CreateUserReq
+		var request CreateGuestReq
 		buf := getBuf()
 		defer putBuf(buf)
 		written, err := io.Copy(buf, r.Body)
@@ -98,7 +98,7 @@ func decodeCreateUserRequest(r *http.Request, span trace.Span) (req CreateUserRe
 			}
 			return nil
 		}(); err != nil {
-			return req, errors.Wrap(err, "decode CreateUser:application/json request")
+			return req, errors.Wrap(err, "decode CreateGuest:application/json request")
 		}
 		return request, nil
 	default:
@@ -106,14 +106,14 @@ func decodeCreateUserRequest(r *http.Request, span trace.Span) (req CreateUserRe
 	}
 }
 
-func decodeUpdateUserRequest(r *http.Request, span trace.Span) (req UpdateUserReq, err error) {
+func decodeCreateMenuItemRequest(r *http.Request, span trace.Span) (req CreateMenuItemReq, err error) {
 	switch ct := r.Header.Get("Content-Type"); ct {
 	case "application/json":
 		if r.ContentLength == 0 {
 			return req, validate.ErrBodyRequired
 		}
 
-		var request UpdateUserReq
+		var request CreateMenuItemReq
 		buf := getBuf()
 		defer putBuf(buf)
 		written, err := io.Copy(buf, r.Body)
@@ -134,7 +134,79 @@ func decodeUpdateUserRequest(r *http.Request, span trace.Span) (req UpdateUserRe
 			}
 			return nil
 		}(); err != nil {
-			return req, errors.Wrap(err, "decode UpdateUser:application/json request")
+			return req, errors.Wrap(err, "decode CreateMenuItem:application/json request")
+		}
+		return request, nil
+	default:
+		return req, validate.InvalidContentType(ct)
+	}
+}
+
+func decodeUpdateGuestRequest(r *http.Request, span trace.Span) (req UpdateGuestReq, err error) {
+	switch ct := r.Header.Get("Content-Type"); ct {
+	case "application/json":
+		if r.ContentLength == 0 {
+			return req, validate.ErrBodyRequired
+		}
+
+		var request UpdateGuestReq
+		buf := getBuf()
+		defer putBuf(buf)
+		written, err := io.Copy(buf, r.Body)
+		if err != nil {
+			return req, err
+		}
+
+		if written == 0 {
+			return req, validate.ErrBodyRequired
+		}
+
+		d := jx.GetDecoder()
+		defer jx.PutDecoder(d)
+		d.ResetBytes(buf.Bytes())
+		if err := func() error {
+			if err := request.Decode(d); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return req, errors.Wrap(err, "decode UpdateGuest:application/json request")
+		}
+		return request, nil
+	default:
+		return req, validate.InvalidContentType(ct)
+	}
+}
+
+func decodeUpdateMenuItemRequest(r *http.Request, span trace.Span) (req UpdateMenuItemReq, err error) {
+	switch ct := r.Header.Get("Content-Type"); ct {
+	case "application/json":
+		if r.ContentLength == 0 {
+			return req, validate.ErrBodyRequired
+		}
+
+		var request UpdateMenuItemReq
+		buf := getBuf()
+		defer putBuf(buf)
+		written, err := io.Copy(buf, r.Body)
+		if err != nil {
+			return req, err
+		}
+
+		if written == 0 {
+			return req, validate.ErrBodyRequired
+		}
+
+		d := jx.GetDecoder()
+		defer jx.PutDecoder(d)
+		d.ResetBytes(buf.Bytes())
+		if err := func() error {
+			if err := request.Decode(d); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return req, errors.Wrap(err, "decode UpdateMenuItem:application/json request")
 		}
 		return request, nil
 	default:

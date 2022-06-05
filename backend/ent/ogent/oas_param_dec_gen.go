@@ -70,9 +70,9 @@ var (
 	_ = codes.Unset
 )
 
-func decodeDeleteUserParams(args [1]string, r *http.Request) (DeleteUserParams, error) {
+func decodeDeleteGuestParams(args [1]string, r *http.Request) (DeleteGuestParams, error) {
 	var (
-		params DeleteUserParams
+		params DeleteGuestParams
 	)
 	// Decode path: id.
 	{
@@ -108,9 +108,47 @@ func decodeDeleteUserParams(args [1]string, r *http.Request) (DeleteUserParams, 
 	return params, nil
 }
 
-func decodeListUserParams(args [0]string, r *http.Request) (ListUserParams, error) {
+func decodeDeleteMenuItemParams(args [1]string, r *http.Request) (DeleteMenuItemParams, error) {
 	var (
-		params    ListUserParams
+		params DeleteMenuItemParams
+	)
+	// Decode path: id.
+	{
+		param := args[0]
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				s, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToInt(s)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return params, err
+			}
+		} else {
+			return params, errors.New("path: id: not specified")
+		}
+	}
+	return params, nil
+}
+
+func decodeListGuestParams(args [0]string, r *http.Request) (ListGuestParams, error) {
+	var (
+		params    ListGuestParams
 		queryArgs = r.URL.Query()
 	)
 	// Decode query: page.
@@ -186,9 +224,87 @@ func decodeListUserParams(args [0]string, r *http.Request) (ListUserParams, erro
 	return params, nil
 }
 
-func decodeReadUserParams(args [1]string, r *http.Request) (ReadUserParams, error) {
+func decodeListMenuItemParams(args [0]string, r *http.Request) (ListMenuItemParams, error) {
 	var (
-		params ReadUserParams
+		params    ListMenuItemParams
+		queryArgs = r.URL.Query()
+	)
+	// Decode query: page.
+	{
+		values, ok := queryArgs["page"]
+		if ok {
+			d := uri.NewQueryDecoder(uri.QueryDecoderConfig{
+				Values:  values,
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			})
+
+			if err := func() error {
+				var paramsDotPageVal int
+				if err := func() error {
+					s, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToInt(s)
+					if err != nil {
+						return err
+					}
+
+					paramsDotPageVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Page.SetTo(paramsDotPageVal)
+				return nil
+			}(); err != nil {
+				return params, errors.Wrap(err, "query: page: parse")
+			}
+		}
+	}
+	// Decode query: itemsPerPage.
+	{
+		values, ok := queryArgs["itemsPerPage"]
+		if ok {
+			d := uri.NewQueryDecoder(uri.QueryDecoderConfig{
+				Values:  values,
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			})
+
+			if err := func() error {
+				var paramsDotItemsPerPageVal int
+				if err := func() error {
+					s, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToInt(s)
+					if err != nil {
+						return err
+					}
+
+					paramsDotItemsPerPageVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ItemsPerPage.SetTo(paramsDotItemsPerPageVal)
+				return nil
+			}(); err != nil {
+				return params, errors.Wrap(err, "query: itemsPerPage: parse")
+			}
+		}
+	}
+	return params, nil
+}
+
+func decodeReadGuestParams(args [1]string, r *http.Request) (ReadGuestParams, error) {
+	var (
+		params ReadGuestParams
 	)
 	// Decode path: id.
 	{
@@ -224,9 +340,85 @@ func decodeReadUserParams(args [1]string, r *http.Request) (ReadUserParams, erro
 	return params, nil
 }
 
-func decodeUpdateUserParams(args [1]string, r *http.Request) (UpdateUserParams, error) {
+func decodeReadMenuItemParams(args [1]string, r *http.Request) (ReadMenuItemParams, error) {
 	var (
-		params UpdateUserParams
+		params ReadMenuItemParams
+	)
+	// Decode path: id.
+	{
+		param := args[0]
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				s, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToInt(s)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return params, err
+			}
+		} else {
+			return params, errors.New("path: id: not specified")
+		}
+	}
+	return params, nil
+}
+
+func decodeUpdateGuestParams(args [1]string, r *http.Request) (UpdateGuestParams, error) {
+	var (
+		params UpdateGuestParams
+	)
+	// Decode path: id.
+	{
+		param := args[0]
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				s, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToInt(s)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return params, err
+			}
+		} else {
+			return params, errors.New("path: id: not specified")
+		}
+	}
+	return params, nil
+}
+
+func decodeUpdateMenuItemParams(args [1]string, r *http.Request) (UpdateMenuItemParams, error) {
+	var (
+		params UpdateMenuItemParams
 	)
 	// Decode path: id.
 	{

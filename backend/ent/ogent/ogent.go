@@ -8,7 +8,8 @@ import (
 
 	"github.com/go-faster/jx"
 	"github.com/kirbby/Menu_Selector/ent"
-	"github.com/kirbby/Menu_Selector/ent/user"
+	"github.com/kirbby/Menu_Selector/ent/guest"
+	"github.com/kirbby/Menu_Selector/ent/menuitem"
 )
 
 // OgentHandler implements the ogen generated Handler interface and uses Ent as data layer.
@@ -26,12 +27,12 @@ func rawError(err error) jx.Raw {
 	return e.Bytes()
 }
 
-// CreateUser handles POST /users requests.
-func (h *OgentHandler) CreateUser(ctx context.Context, req CreateUserReq) (CreateUserRes, error) {
-	b := h.client.User.Create()
+// CreateGuest handles POST /guests requests.
+func (h *OgentHandler) CreateGuest(ctx context.Context, req CreateGuestReq) (CreateGuestRes, error) {
+	b := h.client.Guest.Create()
 	// Add all fields.
-	b.SetAge(req.Age)
 	b.SetName(req.Name)
+	b.SetEmail(req.Email)
 	// Add all edges.
 	// Persist to storage.
 	e, err := b.Save(ctx)
@@ -55,18 +56,18 @@ func (h *OgentHandler) CreateUser(ctx context.Context, req CreateUserReq) (Creat
 		}
 	}
 	// Reload the entity to attach all eager-loaded edges.
-	q := h.client.User.Query().Where(user.ID(e.ID))
+	q := h.client.Guest.Query().Where(guest.ID(e.ID))
 	e, err = q.Only(ctx)
 	if err != nil {
 		// This should never happen.
 		return nil, err
 	}
-	return NewUserCreate(e), nil
+	return NewGuestCreate(e), nil
 }
 
-// ReadUser handles GET /users/{id} requests.
-func (h *OgentHandler) ReadUser(ctx context.Context, params ReadUserParams) (ReadUserRes, error) {
-	q := h.client.User.Query().Where(user.IDEQ(params.ID))
+// ReadGuest handles GET /guests/{id} requests.
+func (h *OgentHandler) ReadGuest(ctx context.Context, params ReadGuestParams) (ReadGuestRes, error) {
+	q := h.client.Guest.Query().Where(guest.IDEQ(params.ID))
 	e, err := q.Only(ctx)
 	if err != nil {
 		switch {
@@ -87,18 +88,18 @@ func (h *OgentHandler) ReadUser(ctx context.Context, params ReadUserParams) (Rea
 			return nil, err
 		}
 	}
-	return NewUserRead(e), nil
+	return NewGuestRead(e), nil
 }
 
-// UpdateUser handles PATCH /users/{id} requests.
-func (h *OgentHandler) UpdateUser(ctx context.Context, req UpdateUserReq, params UpdateUserParams) (UpdateUserRes, error) {
-	b := h.client.User.UpdateOneID(params.ID)
+// UpdateGuest handles PATCH /guests/{id} requests.
+func (h *OgentHandler) UpdateGuest(ctx context.Context, req UpdateGuestReq, params UpdateGuestParams) (UpdateGuestRes, error) {
+	b := h.client.Guest.UpdateOneID(params.ID)
 	// Add all fields.
-	if v, ok := req.Age.Get(); ok {
-		b.SetAge(v)
-	}
 	if v, ok := req.Name.Get(); ok {
 		b.SetName(v)
+	}
+	if v, ok := req.Email.Get(); ok {
+		b.SetEmail(v)
 	}
 	// Add all edges.
 	// Persist to storage.
@@ -123,18 +124,18 @@ func (h *OgentHandler) UpdateUser(ctx context.Context, req UpdateUserReq, params
 		}
 	}
 	// Reload the entity to attach all eager-loaded edges.
-	q := h.client.User.Query().Where(user.ID(e.ID))
+	q := h.client.Guest.Query().Where(guest.ID(e.ID))
 	e, err = q.Only(ctx)
 	if err != nil {
 		// This should never happen.
 		return nil, err
 	}
-	return NewUserUpdate(e), nil
+	return NewGuestUpdate(e), nil
 }
 
-// DeleteUser handles DELETE /users/{id} requests.
-func (h *OgentHandler) DeleteUser(ctx context.Context, params DeleteUserParams) (DeleteUserRes, error) {
-	err := h.client.User.DeleteOneID(params.ID).Exec(ctx)
+// DeleteGuest handles DELETE /guests/{id} requests.
+func (h *OgentHandler) DeleteGuest(ctx context.Context, params DeleteGuestParams) (DeleteGuestRes, error) {
+	err := h.client.Guest.DeleteOneID(params.ID).Exec(ctx)
 	if err != nil {
 		switch {
 		case ent.IsNotFound(err):
@@ -154,13 +155,13 @@ func (h *OgentHandler) DeleteUser(ctx context.Context, params DeleteUserParams) 
 			return nil, err
 		}
 	}
-	return new(DeleteUserNoContent), nil
+	return new(DeleteGuestNoContent), nil
 
 }
 
-// ListUser handles GET /users requests.
-func (h *OgentHandler) ListUser(ctx context.Context, params ListUserParams) (ListUserRes, error) {
-	q := h.client.User.Query()
+// ListGuest handles GET /guests requests.
+func (h *OgentHandler) ListGuest(ctx context.Context, params ListGuestParams) (ListGuestRes, error) {
+	q := h.client.Guest.Query()
 	page := 1
 	if v, ok := params.Page.Get(); ok {
 		page = v
@@ -191,6 +192,183 @@ func (h *OgentHandler) ListUser(ctx context.Context, params ListUserParams) (Lis
 			return nil, err
 		}
 	}
-	r := NewUserLists(es)
-	return (*ListUserOKApplicationJSON)(&r), nil
+	r := NewGuestLists(es)
+	return (*ListGuestOKApplicationJSON)(&r), nil
+}
+
+// CreateMenuItem handles POST /menu-items requests.
+func (h *OgentHandler) CreateMenuItem(ctx context.Context, req CreateMenuItemReq) (CreateMenuItemRes, error) {
+	b := h.client.MenuItem.Create()
+	// Add all fields.
+	b.SetName(req.Name)
+	b.SetDescription(req.Description)
+	b.SetImage(req.Image)
+	b.SetCategoryId(req.CategoryId)
+	// Add all edges.
+	// Persist to storage.
+	e, err := b.Save(ctx)
+	if err != nil {
+		switch {
+		case ent.IsNotSingular(err):
+			return &R409{
+				Code:   http.StatusConflict,
+				Status: http.StatusText(http.StatusConflict),
+				Errors: rawError(err),
+			}, nil
+		case ent.IsConstraintError(err):
+			return &R409{
+				Code:   http.StatusConflict,
+				Status: http.StatusText(http.StatusConflict),
+				Errors: rawError(err),
+			}, nil
+		default:
+			// Let the server handle the error.
+			return nil, err
+		}
+	}
+	// Reload the entity to attach all eager-loaded edges.
+	q := h.client.MenuItem.Query().Where(menuitem.ID(e.ID))
+	e, err = q.Only(ctx)
+	if err != nil {
+		// This should never happen.
+		return nil, err
+	}
+	return NewMenuItemCreate(e), nil
+}
+
+// ReadMenuItem handles GET /menu-items/{id} requests.
+func (h *OgentHandler) ReadMenuItem(ctx context.Context, params ReadMenuItemParams) (ReadMenuItemRes, error) {
+	q := h.client.MenuItem.Query().Where(menuitem.IDEQ(params.ID))
+	e, err := q.Only(ctx)
+	if err != nil {
+		switch {
+		case ent.IsNotFound(err):
+			return &R404{
+				Code:   http.StatusNotFound,
+				Status: http.StatusText(http.StatusNotFound),
+				Errors: rawError(err),
+			}, nil
+		case ent.IsNotSingular(err):
+			return &R409{
+				Code:   http.StatusConflict,
+				Status: http.StatusText(http.StatusConflict),
+				Errors: rawError(err),
+			}, nil
+		default:
+			// Let the server handle the error.
+			return nil, err
+		}
+	}
+	return NewMenuItemRead(e), nil
+}
+
+// UpdateMenuItem handles PATCH /menu-items/{id} requests.
+func (h *OgentHandler) UpdateMenuItem(ctx context.Context, req UpdateMenuItemReq, params UpdateMenuItemParams) (UpdateMenuItemRes, error) {
+	b := h.client.MenuItem.UpdateOneID(params.ID)
+	// Add all fields.
+	if v, ok := req.Name.Get(); ok {
+		b.SetName(v)
+	}
+	if v, ok := req.Description.Get(); ok {
+		b.SetDescription(v)
+	}
+	if v, ok := req.Image.Get(); ok {
+		b.SetImage(v)
+	}
+	if v, ok := req.CategoryId.Get(); ok {
+		b.SetCategoryId(v)
+	}
+	// Add all edges.
+	// Persist to storage.
+	e, err := b.Save(ctx)
+	if err != nil {
+		switch {
+		case ent.IsNotFound(err):
+			return &R404{
+				Code:   http.StatusNotFound,
+				Status: http.StatusText(http.StatusNotFound),
+				Errors: rawError(err),
+			}, nil
+		case ent.IsConstraintError(err):
+			return &R409{
+				Code:   http.StatusConflict,
+				Status: http.StatusText(http.StatusConflict),
+				Errors: rawError(err),
+			}, nil
+		default:
+			// Let the server handle the error.
+			return nil, err
+		}
+	}
+	// Reload the entity to attach all eager-loaded edges.
+	q := h.client.MenuItem.Query().Where(menuitem.ID(e.ID))
+	e, err = q.Only(ctx)
+	if err != nil {
+		// This should never happen.
+		return nil, err
+	}
+	return NewMenuItemUpdate(e), nil
+}
+
+// DeleteMenuItem handles DELETE /menu-items/{id} requests.
+func (h *OgentHandler) DeleteMenuItem(ctx context.Context, params DeleteMenuItemParams) (DeleteMenuItemRes, error) {
+	err := h.client.MenuItem.DeleteOneID(params.ID).Exec(ctx)
+	if err != nil {
+		switch {
+		case ent.IsNotFound(err):
+			return &R404{
+				Code:   http.StatusNotFound,
+				Status: http.StatusText(http.StatusNotFound),
+				Errors: rawError(err),
+			}, nil
+		case ent.IsConstraintError(err):
+			return &R409{
+				Code:   http.StatusConflict,
+				Status: http.StatusText(http.StatusConflict),
+				Errors: rawError(err),
+			}, nil
+		default:
+			// Let the server handle the error.
+			return nil, err
+		}
+	}
+	return new(DeleteMenuItemNoContent), nil
+
+}
+
+// ListMenuItem handles GET /menu-items requests.
+func (h *OgentHandler) ListMenuItem(ctx context.Context, params ListMenuItemParams) (ListMenuItemRes, error) {
+	q := h.client.MenuItem.Query()
+	page := 1
+	if v, ok := params.Page.Get(); ok {
+		page = v
+	}
+	itemsPerPage := 30
+	if v, ok := params.ItemsPerPage.Get(); ok {
+		itemsPerPage = v
+	}
+	q.Limit(itemsPerPage).Offset((page - 1) * itemsPerPage)
+
+	es, err := q.All(ctx)
+	if err != nil {
+		switch {
+		case ent.IsNotFound(err):
+			return &R404{
+				Code:   http.StatusNotFound,
+				Status: http.StatusText(http.StatusNotFound),
+				Errors: rawError(err),
+			}, nil
+		case ent.IsNotSingular(err):
+			return &R409{
+				Code:   http.StatusConflict,
+				Status: http.StatusText(http.StatusConflict),
+				Errors: rawError(err),
+			}, nil
+		default:
+			// Let the server handle the error.
+			return nil, err
+		}
+	}
+	r := NewMenuItemLists(es)
+	return (*ListMenuItemOKApplicationJSON)(&r), nil
 }

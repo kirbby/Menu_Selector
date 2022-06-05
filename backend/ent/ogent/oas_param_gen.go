@@ -70,24 +70,46 @@ var (
 	_ = codes.Unset
 )
 
-type DeleteUserParams struct {
-	// ID of the User.
+type DeleteGuestParams struct {
+	// ID of the Guest.
 	ID int
 }
 
-type ListUserParams struct {
+type DeleteMenuItemParams struct {
+	// ID of the MenuItem.
+	ID int
+}
+
+type ListGuestParams struct {
 	// What page to render.
 	Page OptInt
 	// Item count to render per page.
 	ItemsPerPage OptInt
 }
 
-type ReadUserParams struct {
-	// ID of the User.
+type ListMenuItemParams struct {
+	// What page to render.
+	Page OptInt
+	// Item count to render per page.
+	ItemsPerPage OptInt
+}
+
+type ReadGuestParams struct {
+	// ID of the Guest.
 	ID int
 }
 
-type UpdateUserParams struct {
-	// ID of the User.
+type ReadMenuItemParams struct {
+	// ID of the MenuItem.
+	ID int
+}
+
+type UpdateGuestParams struct {
+	// ID of the Guest.
+	ID int
+}
+
+type UpdateMenuItemParams struct {
+	// ID of the MenuItem.
 	ID int
 }

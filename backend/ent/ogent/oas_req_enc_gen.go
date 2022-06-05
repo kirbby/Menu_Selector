@@ -70,7 +70,7 @@ var (
 	_ = codes.Unset
 )
 
-func encodeCreateUserRequestJSON(req CreateUserReq, span trace.Span) (data *jx.Writer, err error) {
+func encodeCreateGuestRequestJSON(req CreateGuestReq, span trace.Span) (data *jx.Writer, err error) {
 	e := jx.GetWriter()
 
 	req.Encode(e)
@@ -78,7 +78,23 @@ func encodeCreateUserRequestJSON(req CreateUserReq, span trace.Span) (data *jx.W
 	return e, nil
 }
 
-func encodeUpdateUserRequestJSON(req UpdateUserReq, span trace.Span) (data *jx.Writer, err error) {
+func encodeCreateMenuItemRequestJSON(req CreateMenuItemReq, span trace.Span) (data *jx.Writer, err error) {
+	e := jx.GetWriter()
+
+	req.Encode(e)
+
+	return e, nil
+}
+
+func encodeUpdateGuestRequestJSON(req UpdateGuestReq, span trace.Span) (data *jx.Writer, err error) {
+	e := jx.GetWriter()
+
+	req.Encode(e)
+
+	return e, nil
+}
+
+func encodeUpdateMenuItemRequestJSON(req UpdateMenuItemReq, span trace.Span) (data *jx.Writer, err error) {
 	e := jx.GetWriter()
 
 	req.Encode(e)

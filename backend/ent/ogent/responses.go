@@ -4,118 +4,242 @@ package ogent
 
 import "github.com/kirbby/Menu_Selector/ent"
 
-func NewUserCreate(e *ent.User) *UserCreate {
+func NewGuestCreate(e *ent.Guest) *GuestCreate {
 	if e == nil {
 		return nil
 	}
-	var ret UserCreate
+	var ret GuestCreate
 	ret.ID = e.ID
-	ret.Age = e.Age
 	ret.Name = e.Name
+	ret.Email = e.Email
 	return &ret
 }
 
-func NewUserCreates(es []*ent.User) []UserCreate {
+func NewGuestCreates(es []*ent.Guest) []GuestCreate {
 	if len(es) == 0 {
 		return nil
 	}
-	r := make([]UserCreate, len(es))
+	r := make([]GuestCreate, len(es))
 	for i, e := range es {
-		r[i] = NewUserCreate(e).Elem()
+		r[i] = NewGuestCreate(e).Elem()
 	}
 	return r
 }
 
-func (u *UserCreate) Elem() UserCreate {
-	if u == nil {
-		return UserCreate{}
+func (gu *GuestCreate) Elem() GuestCreate {
+	if gu == nil {
+		return GuestCreate{}
 	}
-	return *u
+	return *gu
 }
 
-func NewUserList(e *ent.User) *UserList {
+func NewGuestList(e *ent.Guest) *GuestList {
 	if e == nil {
 		return nil
 	}
-	var ret UserList
+	var ret GuestList
 	ret.ID = e.ID
-	ret.Age = e.Age
 	ret.Name = e.Name
+	ret.Email = e.Email
 	return &ret
 }
 
-func NewUserLists(es []*ent.User) []UserList {
+func NewGuestLists(es []*ent.Guest) []GuestList {
 	if len(es) == 0 {
 		return nil
 	}
-	r := make([]UserList, len(es))
+	r := make([]GuestList, len(es))
 	for i, e := range es {
-		r[i] = NewUserList(e).Elem()
+		r[i] = NewGuestList(e).Elem()
 	}
 	return r
 }
 
-func (u *UserList) Elem() UserList {
-	if u == nil {
-		return UserList{}
+func (gu *GuestList) Elem() GuestList {
+	if gu == nil {
+		return GuestList{}
 	}
-	return *u
+	return *gu
 }
 
-func NewUserRead(e *ent.User) *UserRead {
+func NewGuestRead(e *ent.Guest) *GuestRead {
 	if e == nil {
 		return nil
 	}
-	var ret UserRead
+	var ret GuestRead
 	ret.ID = e.ID
-	ret.Age = e.Age
 	ret.Name = e.Name
+	ret.Email = e.Email
 	return &ret
 }
 
-func NewUserReads(es []*ent.User) []UserRead {
+func NewGuestReads(es []*ent.Guest) []GuestRead {
 	if len(es) == 0 {
 		return nil
 	}
-	r := make([]UserRead, len(es))
+	r := make([]GuestRead, len(es))
 	for i, e := range es {
-		r[i] = NewUserRead(e).Elem()
+		r[i] = NewGuestRead(e).Elem()
 	}
 	return r
 }
 
-func (u *UserRead) Elem() UserRead {
-	if u == nil {
-		return UserRead{}
+func (gu *GuestRead) Elem() GuestRead {
+	if gu == nil {
+		return GuestRead{}
 	}
-	return *u
+	return *gu
 }
 
-func NewUserUpdate(e *ent.User) *UserUpdate {
+func NewGuestUpdate(e *ent.Guest) *GuestUpdate {
 	if e == nil {
 		return nil
 	}
-	var ret UserUpdate
+	var ret GuestUpdate
 	ret.ID = e.ID
-	ret.Age = e.Age
 	ret.Name = e.Name
+	ret.Email = e.Email
 	return &ret
 }
 
-func NewUserUpdates(es []*ent.User) []UserUpdate {
+func NewGuestUpdates(es []*ent.Guest) []GuestUpdate {
 	if len(es) == 0 {
 		return nil
 	}
-	r := make([]UserUpdate, len(es))
+	r := make([]GuestUpdate, len(es))
 	for i, e := range es {
-		r[i] = NewUserUpdate(e).Elem()
+		r[i] = NewGuestUpdate(e).Elem()
 	}
 	return r
 }
 
-func (u *UserUpdate) Elem() UserUpdate {
-	if u == nil {
-		return UserUpdate{}
+func (gu *GuestUpdate) Elem() GuestUpdate {
+	if gu == nil {
+		return GuestUpdate{}
 	}
-	return *u
+	return *gu
+}
+
+func NewMenuItemCreate(e *ent.MenuItem) *MenuItemCreate {
+	if e == nil {
+		return nil
+	}
+	var ret MenuItemCreate
+	ret.ID = e.ID
+	ret.Name = e.Name
+	ret.Description = e.Description
+	ret.Image = e.Image
+	ret.CategoryId = e.CategoryId
+	return &ret
+}
+
+func NewMenuItemCreates(es []*ent.MenuItem) []MenuItemCreate {
+	if len(es) == 0 {
+		return nil
+	}
+	r := make([]MenuItemCreate, len(es))
+	for i, e := range es {
+		r[i] = NewMenuItemCreate(e).Elem()
+	}
+	return r
+}
+
+func (mi *MenuItemCreate) Elem() MenuItemCreate {
+	if mi == nil {
+		return MenuItemCreate{}
+	}
+	return *mi
+}
+
+func NewMenuItemList(e *ent.MenuItem) *MenuItemList {
+	if e == nil {
+		return nil
+	}
+	var ret MenuItemList
+	ret.ID = e.ID
+	ret.Name = e.Name
+	ret.Description = e.Description
+	ret.Image = e.Image
+	ret.CategoryId = e.CategoryId
+	return &ret
+}
+
+func NewMenuItemLists(es []*ent.MenuItem) []MenuItemList {
+	if len(es) == 0 {
+		return nil
+	}
+	r := make([]MenuItemList, len(es))
+	for i, e := range es {
+		r[i] = NewMenuItemList(e).Elem()
+	}
+	return r
+}
+
+func (mi *MenuItemList) Elem() MenuItemList {
+	if mi == nil {
+		return MenuItemList{}
+	}
+	return *mi
+}
+
+func NewMenuItemRead(e *ent.MenuItem) *MenuItemRead {
+	if e == nil {
+		return nil
+	}
+	var ret MenuItemRead
+	ret.ID = e.ID
+	ret.Name = e.Name
+	ret.Description = e.Description
+	ret.Image = e.Image
+	ret.CategoryId = e.CategoryId
+	return &ret
+}
+
+func NewMenuItemReads(es []*ent.MenuItem) []MenuItemRead {
+	if len(es) == 0 {
+		return nil
+	}
+	r := make([]MenuItemRead, len(es))
+	for i, e := range es {
+		r[i] = NewMenuItemRead(e).Elem()
+	}
+	return r
+}
+
+func (mi *MenuItemRead) Elem() MenuItemRead {
+	if mi == nil {
+		return MenuItemRead{}
+	}
+	return *mi
+}
+
+func NewMenuItemUpdate(e *ent.MenuItem) *MenuItemUpdate {
+	if e == nil {
+		return nil
+	}
+	var ret MenuItemUpdate
+	ret.ID = e.ID
+	ret.Name = e.Name
+	ret.Description = e.Description
+	ret.Image = e.Image
+	ret.CategoryId = e.CategoryId
+	return &ret
+}
+
+func NewMenuItemUpdates(es []*ent.MenuItem) []MenuItemUpdate {
+	if len(es) == 0 {
+		return nil
+	}
+	r := make([]MenuItemUpdate, len(es))
+	for i, e := range es {
+		r[i] = NewMenuItemUpdate(e).Elem()
+	}
+	return r
+}
+
+func (mi *MenuItemUpdate) Elem() MenuItemUpdate {
+	if mi == nil {
+		return MenuItemUpdate{}
+	}
+	return *mi
 }

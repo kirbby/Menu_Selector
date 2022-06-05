@@ -3,22 +3,41 @@
 package ent
 
 import (
+	"github.com/kirbby/Menu_Selector/ent/guest"
+	"github.com/kirbby/Menu_Selector/ent/menuitem"
 	"github.com/kirbby/Menu_Selector/ent/schema"
-	"github.com/kirbby/Menu_Selector/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	userFields := schema.User{}.Fields()
-	_ = userFields
-	// userDescAge is the schema descriptor for age field.
-	userDescAge := userFields[0].Descriptor()
-	// user.AgeValidator is a validator for the "age" field. It is called by the builders before save.
-	user.AgeValidator = userDescAge.Validators[0].(func(int) error)
-	// userDescName is the schema descriptor for name field.
-	userDescName := userFields[1].Descriptor()
-	// user.DefaultName holds the default value on creation for the name field.
-	user.DefaultName = userDescName.Default.(string)
+	guestFields := schema.Guest{}.Fields()
+	_ = guestFields
+	// guestDescName is the schema descriptor for name field.
+	guestDescName := guestFields[0].Descriptor()
+	// guest.DefaultName holds the default value on creation for the name field.
+	guest.DefaultName = guestDescName.Default.(string)
+	// guestDescEmail is the schema descriptor for email field.
+	guestDescEmail := guestFields[1].Descriptor()
+	// guest.DefaultEmail holds the default value on creation for the email field.
+	guest.DefaultEmail = guestDescEmail.Default.(string)
+	menuitemFields := schema.MenuItem{}.Fields()
+	_ = menuitemFields
+	// menuitemDescName is the schema descriptor for name field.
+	menuitemDescName := menuitemFields[0].Descriptor()
+	// menuitem.DefaultName holds the default value on creation for the name field.
+	menuitem.DefaultName = menuitemDescName.Default.(string)
+	// menuitemDescDescription is the schema descriptor for description field.
+	menuitemDescDescription := menuitemFields[1].Descriptor()
+	// menuitem.DefaultDescription holds the default value on creation for the description field.
+	menuitem.DefaultDescription = menuitemDescDescription.Default.(string)
+	// menuitemDescImage is the schema descriptor for image field.
+	menuitemDescImage := menuitemFields[2].Descriptor()
+	// menuitem.DefaultImage holds the default value on creation for the image field.
+	menuitem.DefaultImage = menuitemDescImage.Default.(string)
+	// menuitemDescCategoryId is the schema descriptor for categoryId field.
+	menuitemDescCategoryId := menuitemFields[3].Descriptor()
+	// menuitem.DefaultCategoryId holds the default value on creation for the categoryId field.
+	menuitem.DefaultCategoryId = menuitemDescCategoryId.Default.(int)
 }

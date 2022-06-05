@@ -8,21 +8,36 @@ import (
 )
 
 var (
-	// UsersColumns holds the columns for the "users" table.
-	UsersColumns = []*schema.Column{
+	// GuestsColumns holds the columns for the "guests" table.
+	GuestsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "age", Type: field.TypeInt},
 		{Name: "name", Type: field.TypeString, Default: "unknown"},
+		{Name: "email", Type: field.TypeString, Default: "unknown"},
 	}
-	// UsersTable holds the schema information for the "users" table.
-	UsersTable = &schema.Table{
-		Name:       "users",
-		Columns:    UsersColumns,
-		PrimaryKey: []*schema.Column{UsersColumns[0]},
+	// GuestsTable holds the schema information for the "guests" table.
+	GuestsTable = &schema.Table{
+		Name:       "guests",
+		Columns:    GuestsColumns,
+		PrimaryKey: []*schema.Column{GuestsColumns[0]},
+	}
+	// MenuItemsColumns holds the columns for the "menu_items" table.
+	MenuItemsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Default: "unknown"},
+		{Name: "description", Type: field.TypeString, Default: "unknown"},
+		{Name: "image", Type: field.TypeString, Default: "unknown"},
+		{Name: "category_id", Type: field.TypeInt, Default: 0},
+	}
+	// MenuItemsTable holds the schema information for the "menu_items" table.
+	MenuItemsTable = &schema.Table{
+		Name:       "menu_items",
+		Columns:    MenuItemsColumns,
+		PrimaryKey: []*schema.Column{MenuItemsColumns[0]},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		UsersTable,
+		GuestsTable,
+		MenuItemsTable,
 	}
 )
 

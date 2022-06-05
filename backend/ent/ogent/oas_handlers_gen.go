@@ -70,21 +70,21 @@ var (
 	_ = codes.Unset
 )
 
-// HandleCreateUserRequest handles createUser operation.
+// HandleCreateGuestRequest handles createGuest operation.
 //
-// POST /users
-func (s *Server) handleCreateUserRequest(args [0]string, w http.ResponseWriter, r *http.Request) {
+// POST /guests
+func (s *Server) handleCreateGuestRequest(args [0]string, w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("createUser"),
+		otelogen.OperationID("createGuest"),
 	}
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "CreateUser",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "CreateGuest",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindServer),
 	)
 	s.requests.Add(ctx, 1, otelAttrs...)
 	defer span.End()
-	request, err := decodeCreateUserRequest(r, span)
+	request, err := decodeCreateGuestRequest(r, span)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "BadRequest")
@@ -93,7 +93,7 @@ func (s *Server) handleCreateUserRequest(args [0]string, w http.ResponseWriter, 
 		return
 	}
 
-	response, err := s.h.CreateUser(ctx, request)
+	response, err := s.h.CreateGuest(ctx, request)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Internal")
@@ -102,7 +102,7 @@ func (s *Server) handleCreateUserRequest(args [0]string, w http.ResponseWriter, 
 		return
 	}
 
-	if err := encodeCreateUserResponse(response, w, span); err != nil {
+	if err := encodeCreateGuestResponse(response, w, span); err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Response")
 		s.errors.Add(ctx, 1, otelAttrs...)
@@ -113,21 +113,21 @@ func (s *Server) handleCreateUserRequest(args [0]string, w http.ResponseWriter, 
 	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
 }
 
-// HandleDeleteUserRequest handles deleteUser operation.
+// HandleCreateMenuItemRequest handles createMenuItem operation.
 //
-// DELETE /users/{id}
-func (s *Server) handleDeleteUserRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
+// POST /menu-items
+func (s *Server) handleCreateMenuItemRequest(args [0]string, w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("deleteUser"),
+		otelogen.OperationID("createMenuItem"),
 	}
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "DeleteUser",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "CreateMenuItem",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindServer),
 	)
 	s.requests.Add(ctx, 1, otelAttrs...)
 	defer span.End()
-	params, err := decodeDeleteUserParams(args, r)
+	request, err := decodeCreateMenuItemRequest(r, span)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "BadRequest")
@@ -136,7 +136,7 @@ func (s *Server) handleDeleteUserRequest(args [1]string, w http.ResponseWriter, 
 		return
 	}
 
-	response, err := s.h.DeleteUser(ctx, params)
+	response, err := s.h.CreateMenuItem(ctx, request)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Internal")
@@ -145,7 +145,7 @@ func (s *Server) handleDeleteUserRequest(args [1]string, w http.ResponseWriter, 
 		return
 	}
 
-	if err := encodeDeleteUserResponse(response, w, span); err != nil {
+	if err := encodeCreateMenuItemResponse(response, w, span); err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Response")
 		s.errors.Add(ctx, 1, otelAttrs...)
@@ -156,21 +156,21 @@ func (s *Server) handleDeleteUserRequest(args [1]string, w http.ResponseWriter, 
 	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
 }
 
-// HandleListUserRequest handles listUser operation.
+// HandleDeleteGuestRequest handles deleteGuest operation.
 //
-// GET /users
-func (s *Server) handleListUserRequest(args [0]string, w http.ResponseWriter, r *http.Request) {
+// DELETE /guests/{id}
+func (s *Server) handleDeleteGuestRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("listUser"),
+		otelogen.OperationID("deleteGuest"),
 	}
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "ListUser",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "DeleteGuest",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindServer),
 	)
 	s.requests.Add(ctx, 1, otelAttrs...)
 	defer span.End()
-	params, err := decodeListUserParams(args, r)
+	params, err := decodeDeleteGuestParams(args, r)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "BadRequest")
@@ -179,7 +179,7 @@ func (s *Server) handleListUserRequest(args [0]string, w http.ResponseWriter, r 
 		return
 	}
 
-	response, err := s.h.ListUser(ctx, params)
+	response, err := s.h.DeleteGuest(ctx, params)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Internal")
@@ -188,7 +188,7 @@ func (s *Server) handleListUserRequest(args [0]string, w http.ResponseWriter, r 
 		return
 	}
 
-	if err := encodeListUserResponse(response, w, span); err != nil {
+	if err := encodeDeleteGuestResponse(response, w, span); err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Response")
 		s.errors.Add(ctx, 1, otelAttrs...)
@@ -199,21 +199,21 @@ func (s *Server) handleListUserRequest(args [0]string, w http.ResponseWriter, r 
 	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
 }
 
-// HandleReadUserRequest handles readUser operation.
+// HandleDeleteMenuItemRequest handles deleteMenuItem operation.
 //
-// GET /users/{id}
-func (s *Server) handleReadUserRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
+// DELETE /menu-items/{id}
+func (s *Server) handleDeleteMenuItemRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("readUser"),
+		otelogen.OperationID("deleteMenuItem"),
 	}
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "ReadUser",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "DeleteMenuItem",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindServer),
 	)
 	s.requests.Add(ctx, 1, otelAttrs...)
 	defer span.End()
-	params, err := decodeReadUserParams(args, r)
+	params, err := decodeDeleteMenuItemParams(args, r)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "BadRequest")
@@ -222,7 +222,7 @@ func (s *Server) handleReadUserRequest(args [1]string, w http.ResponseWriter, r 
 		return
 	}
 
-	response, err := s.h.ReadUser(ctx, params)
+	response, err := s.h.DeleteMenuItem(ctx, params)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Internal")
@@ -231,7 +231,7 @@ func (s *Server) handleReadUserRequest(args [1]string, w http.ResponseWriter, r 
 		return
 	}
 
-	if err := encodeReadUserResponse(response, w, span); err != nil {
+	if err := encodeDeleteMenuItemResponse(response, w, span); err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Response")
 		s.errors.Add(ctx, 1, otelAttrs...)
@@ -242,29 +242,21 @@ func (s *Server) handleReadUserRequest(args [1]string, w http.ResponseWriter, r 
 	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
 }
 
-// HandleUpdateUserRequest handles updateUser operation.
+// HandleListGuestRequest handles listGuest operation.
 //
-// PATCH /users/{id}
-func (s *Server) handleUpdateUserRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
+// GET /guests
+func (s *Server) handleListGuestRequest(args [0]string, w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("updateUser"),
+		otelogen.OperationID("listGuest"),
 	}
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "UpdateUser",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "ListGuest",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindServer),
 	)
 	s.requests.Add(ctx, 1, otelAttrs...)
 	defer span.End()
-	params, err := decodeUpdateUserParams(args, r)
-	if err != nil {
-		span.RecordError(err)
-		span.SetStatus(codes.Error, "BadRequest")
-		s.errors.Add(ctx, 1, otelAttrs...)
-		respondError(w, http.StatusBadRequest, err)
-		return
-	}
-	request, err := decodeUpdateUserRequest(r, span)
+	params, err := decodeListGuestParams(args, r)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "BadRequest")
@@ -273,7 +265,7 @@ func (s *Server) handleUpdateUserRequest(args [1]string, w http.ResponseWriter, 
 		return
 	}
 
-	response, err := s.h.UpdateUser(ctx, request, params)
+	response, err := s.h.ListGuest(ctx, params)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Internal")
@@ -282,7 +274,238 @@ func (s *Server) handleUpdateUserRequest(args [1]string, w http.ResponseWriter, 
 		return
 	}
 
-	if err := encodeUpdateUserResponse(response, w, span); err != nil {
+	if err := encodeListGuestResponse(response, w, span); err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Response")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		return
+	}
+	span.SetStatus(codes.Ok, "Ok")
+	elapsedDuration := time.Since(startTime)
+	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+}
+
+// HandleListMenuItemRequest handles listMenuItem operation.
+//
+// GET /menu-items
+func (s *Server) handleListMenuItemRequest(args [0]string, w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("listMenuItem"),
+	}
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "ListMenuItem",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindServer),
+	)
+	s.requests.Add(ctx, 1, otelAttrs...)
+	defer span.End()
+	params, err := decodeListMenuItemParams(args, r)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "BadRequest")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	response, err := s.h.ListMenuItem(ctx, params)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Internal")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err := encodeListMenuItemResponse(response, w, span); err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Response")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		return
+	}
+	span.SetStatus(codes.Ok, "Ok")
+	elapsedDuration := time.Since(startTime)
+	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+}
+
+// HandleReadGuestRequest handles readGuest operation.
+//
+// GET /guests/{id}
+func (s *Server) handleReadGuestRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("readGuest"),
+	}
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "ReadGuest",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindServer),
+	)
+	s.requests.Add(ctx, 1, otelAttrs...)
+	defer span.End()
+	params, err := decodeReadGuestParams(args, r)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "BadRequest")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	response, err := s.h.ReadGuest(ctx, params)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Internal")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err := encodeReadGuestResponse(response, w, span); err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Response")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		return
+	}
+	span.SetStatus(codes.Ok, "Ok")
+	elapsedDuration := time.Since(startTime)
+	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+}
+
+// HandleReadMenuItemRequest handles readMenuItem operation.
+//
+// GET /menu-items/{id}
+func (s *Server) handleReadMenuItemRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("readMenuItem"),
+	}
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "ReadMenuItem",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindServer),
+	)
+	s.requests.Add(ctx, 1, otelAttrs...)
+	defer span.End()
+	params, err := decodeReadMenuItemParams(args, r)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "BadRequest")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	response, err := s.h.ReadMenuItem(ctx, params)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Internal")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err := encodeReadMenuItemResponse(response, w, span); err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Response")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		return
+	}
+	span.SetStatus(codes.Ok, "Ok")
+	elapsedDuration := time.Since(startTime)
+	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+}
+
+// HandleUpdateGuestRequest handles updateGuest operation.
+//
+// PATCH /guests/{id}
+func (s *Server) handleUpdateGuestRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateGuest"),
+	}
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "UpdateGuest",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindServer),
+	)
+	s.requests.Add(ctx, 1, otelAttrs...)
+	defer span.End()
+	params, err := decodeUpdateGuestParams(args, r)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "BadRequest")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusBadRequest, err)
+		return
+	}
+	request, err := decodeUpdateGuestRequest(r, span)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "BadRequest")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	response, err := s.h.UpdateGuest(ctx, request, params)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Internal")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err := encodeUpdateGuestResponse(response, w, span); err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Response")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		return
+	}
+	span.SetStatus(codes.Ok, "Ok")
+	elapsedDuration := time.Since(startTime)
+	s.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+}
+
+// HandleUpdateMenuItemRequest handles updateMenuItem operation.
+//
+// PATCH /menu-items/{id}
+func (s *Server) handleUpdateMenuItemRequest(args [1]string, w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateMenuItem"),
+	}
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "UpdateMenuItem",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindServer),
+	)
+	s.requests.Add(ctx, 1, otelAttrs...)
+	defer span.End()
+	params, err := decodeUpdateMenuItemParams(args, r)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "BadRequest")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusBadRequest, err)
+		return
+	}
+	request, err := decodeUpdateMenuItemRequest(r, span)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "BadRequest")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	response, err := s.h.UpdateMenuItem(ctx, request, params)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, "Internal")
+		s.errors.Add(ctx, 1, otelAttrs...)
+		respondError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err := encodeUpdateMenuItemResponse(response, w, span); err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, "Response")
 		s.errors.Add(ctx, 1, otelAttrs...)

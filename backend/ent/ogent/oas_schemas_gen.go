@@ -70,19 +70,111 @@ var (
 	_ = codes.Unset
 )
 
-type CreateUserReq struct {
-	Age  int    "json:\"age\""
-	Name string "json:\"name\""
+type CreateGuestReq struct {
+	Name  string "json:\"name\""
+	Email string "json:\"email\""
 }
 
-// DeleteUserNoContent is response for DeleteUser operation.
-type DeleteUserNoContent struct{}
+type CreateMenuItemReq struct {
+	Name        string "json:\"name\""
+	Description string "json:\"description\""
+	Image       string "json:\"image\""
+	CategoryId  int    "json:\"categoryId\""
+}
 
-func (*DeleteUserNoContent) deleteUserRes() {}
+// DeleteGuestNoContent is response for DeleteGuest operation.
+type DeleteGuestNoContent struct{}
 
-type ListUserOKApplicationJSON []UserList
+func (*DeleteGuestNoContent) deleteGuestRes() {}
 
-func (ListUserOKApplicationJSON) listUserRes() {}
+// DeleteMenuItemNoContent is response for DeleteMenuItem operation.
+type DeleteMenuItemNoContent struct{}
+
+func (*DeleteMenuItemNoContent) deleteMenuItemRes() {}
+
+// Ref: #/components/schemas/GuestCreate
+type GuestCreate struct {
+	ID    int    "json:\"id\""
+	Name  string "json:\"name\""
+	Email string "json:\"email\""
+}
+
+func (*GuestCreate) createGuestRes() {}
+
+// Ref: #/components/schemas/GuestList
+type GuestList struct {
+	ID    int    "json:\"id\""
+	Name  string "json:\"name\""
+	Email string "json:\"email\""
+}
+
+// Ref: #/components/schemas/GuestRead
+type GuestRead struct {
+	ID    int    "json:\"id\""
+	Name  string "json:\"name\""
+	Email string "json:\"email\""
+}
+
+func (*GuestRead) readGuestRes() {}
+
+// Ref: #/components/schemas/GuestUpdate
+type GuestUpdate struct {
+	ID    int    "json:\"id\""
+	Name  string "json:\"name\""
+	Email string "json:\"email\""
+}
+
+func (*GuestUpdate) updateGuestRes() {}
+
+type ListGuestOKApplicationJSON []GuestList
+
+func (ListGuestOKApplicationJSON) listGuestRes() {}
+
+type ListMenuItemOKApplicationJSON []MenuItemList
+
+func (ListMenuItemOKApplicationJSON) listMenuItemRes() {}
+
+// Ref: #/components/schemas/MenuItemCreate
+type MenuItemCreate struct {
+	ID          int    "json:\"id\""
+	Name        string "json:\"name\""
+	Description string "json:\"description\""
+	Image       string "json:\"image\""
+	CategoryId  int    "json:\"categoryId\""
+}
+
+func (*MenuItemCreate) createMenuItemRes() {}
+
+// Ref: #/components/schemas/MenuItemList
+type MenuItemList struct {
+	ID          int    "json:\"id\""
+	Name        string "json:\"name\""
+	Description string "json:\"description\""
+	Image       string "json:\"image\""
+	CategoryId  int    "json:\"categoryId\""
+}
+
+// Ref: #/components/schemas/MenuItemRead
+type MenuItemRead struct {
+	ID          int    "json:\"id\""
+	Name        string "json:\"name\""
+	Description string "json:\"description\""
+	Image       string "json:\"image\""
+	CategoryId  int    "json:\"categoryId\""
+}
+
+func (*MenuItemRead) readMenuItemRes() {}
+
+// Ref: #/components/schemas/MenuItemUpdate
+type MenuItemUpdate struct {
+	ID          int    "json:\"id\""
+	Name        string "json:\"name\""
+	Description string "json:\"description\""
+	Image       string "json:\"image\""
+	CategoryId  int    "json:\"categoryId\""
+}
+
+func (*MenuItemUpdate) updateMenuItemRes() {}
 
 // NewOptInt returns new OptInt with value set to v.
 func NewOptInt(v int) OptInt {
@@ -182,11 +274,16 @@ type R400 struct {
 	Errors jx.Raw "json:\"errors\""
 }
 
-func (*R400) createUserRes() {}
-func (*R400) deleteUserRes() {}
-func (*R400) listUserRes()   {}
-func (*R400) readUserRes()   {}
-func (*R400) updateUserRes() {}
+func (*R400) createGuestRes()    {}
+func (*R400) createMenuItemRes() {}
+func (*R400) deleteGuestRes()    {}
+func (*R400) deleteMenuItemRes() {}
+func (*R400) listGuestRes()      {}
+func (*R400) listMenuItemRes()   {}
+func (*R400) readGuestRes()      {}
+func (*R400) readMenuItemRes()   {}
+func (*R400) updateGuestRes()    {}
+func (*R400) updateMenuItemRes() {}
 
 type R404 struct {
 	Code   int    "json:\"code\""
@@ -194,10 +291,14 @@ type R404 struct {
 	Errors jx.Raw "json:\"errors\""
 }
 
-func (*R404) deleteUserRes() {}
-func (*R404) listUserRes()   {}
-func (*R404) readUserRes()   {}
-func (*R404) updateUserRes() {}
+func (*R404) deleteGuestRes()    {}
+func (*R404) deleteMenuItemRes() {}
+func (*R404) listGuestRes()      {}
+func (*R404) listMenuItemRes()   {}
+func (*R404) readGuestRes()      {}
+func (*R404) readMenuItemRes()   {}
+func (*R404) updateGuestRes()    {}
+func (*R404) updateMenuItemRes() {}
 
 type R409 struct {
 	Code   int    "json:\"code\""
@@ -205,11 +306,16 @@ type R409 struct {
 	Errors jx.Raw "json:\"errors\""
 }
 
-func (*R409) createUserRes() {}
-func (*R409) deleteUserRes() {}
-func (*R409) listUserRes()   {}
-func (*R409) readUserRes()   {}
-func (*R409) updateUserRes() {}
+func (*R409) createGuestRes()    {}
+func (*R409) createMenuItemRes() {}
+func (*R409) deleteGuestRes()    {}
+func (*R409) deleteMenuItemRes() {}
+func (*R409) listGuestRes()      {}
+func (*R409) listMenuItemRes()   {}
+func (*R409) readGuestRes()      {}
+func (*R409) readMenuItemRes()   {}
+func (*R409) updateGuestRes()    {}
+func (*R409) updateMenuItemRes() {}
 
 type R500 struct {
 	Code   int    "json:\"code\""
@@ -217,47 +323,25 @@ type R500 struct {
 	Errors jx.Raw "json:\"errors\""
 }
 
-func (*R500) createUserRes() {}
-func (*R500) deleteUserRes() {}
-func (*R500) listUserRes()   {}
-func (*R500) readUserRes()   {}
-func (*R500) updateUserRes() {}
+func (*R500) createGuestRes()    {}
+func (*R500) createMenuItemRes() {}
+func (*R500) deleteGuestRes()    {}
+func (*R500) deleteMenuItemRes() {}
+func (*R500) listGuestRes()      {}
+func (*R500) listMenuItemRes()   {}
+func (*R500) readGuestRes()      {}
+func (*R500) readMenuItemRes()   {}
+func (*R500) updateGuestRes()    {}
+func (*R500) updateMenuItemRes() {}
 
-type UpdateUserReq struct {
-	Age  OptInt    "json:\"age\""
-	Name OptString "json:\"name\""
+type UpdateGuestReq struct {
+	Name  OptString "json:\"name\""
+	Email OptString "json:\"email\""
 }
 
-// Ref: #/components/schemas/UserCreate
-type UserCreate struct {
-	ID   int    "json:\"id\""
-	Age  int    "json:\"age\""
-	Name string "json:\"name\""
+type UpdateMenuItemReq struct {
+	Name        OptString "json:\"name\""
+	Description OptString "json:\"description\""
+	Image       OptString "json:\"image\""
+	CategoryId  OptInt    "json:\"categoryId\""
 }
-
-func (*UserCreate) createUserRes() {}
-
-// Ref: #/components/schemas/UserList
-type UserList struct {
-	ID   int    "json:\"id\""
-	Age  int    "json:\"age\""
-	Name string "json:\"name\""
-}
-
-// Ref: #/components/schemas/UserRead
-type UserRead struct {
-	ID   int    "json:\"id\""
-	Age  int    "json:\"age\""
-	Name string "json:\"name\""
-}
-
-func (*UserRead) readUserRes() {}
-
-// Ref: #/components/schemas/UserUpdate
-type UserUpdate struct {
-	ID   int    "json:\"id\""
-	Age  int    "json:\"age\""
-	Name string "json:\"name\""
-}
-
-func (*UserUpdate) updateUserRes() {}

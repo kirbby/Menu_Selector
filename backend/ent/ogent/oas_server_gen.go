@@ -72,36 +72,66 @@ var (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
-	// CreateUser implements createUser operation.
+	// CreateGuest implements createGuest operation.
 	//
-	// Creates a new User and persists it to storage.
+	// Creates a new Guest and persists it to storage.
 	//
-	// POST /users
-	CreateUser(ctx context.Context, req CreateUserReq) (CreateUserRes, error)
-	// DeleteUser implements deleteUser operation.
+	// POST /guests
+	CreateGuest(ctx context.Context, req CreateGuestReq) (CreateGuestRes, error)
+	// CreateMenuItem implements createMenuItem operation.
 	//
-	// Deletes the User with the requested ID.
+	// Creates a new MenuItem and persists it to storage.
 	//
-	// DELETE /users/{id}
-	DeleteUser(ctx context.Context, params DeleteUserParams) (DeleteUserRes, error)
-	// ListUser implements listUser operation.
+	// POST /menu-items
+	CreateMenuItem(ctx context.Context, req CreateMenuItemReq) (CreateMenuItemRes, error)
+	// DeleteGuest implements deleteGuest operation.
 	//
-	// List Users.
+	// Deletes the Guest with the requested ID.
 	//
-	// GET /users
-	ListUser(ctx context.Context, params ListUserParams) (ListUserRes, error)
-	// ReadUser implements readUser operation.
+	// DELETE /guests/{id}
+	DeleteGuest(ctx context.Context, params DeleteGuestParams) (DeleteGuestRes, error)
+	// DeleteMenuItem implements deleteMenuItem operation.
 	//
-	// Finds the User with the requested ID and returns it.
+	// Deletes the MenuItem with the requested ID.
 	//
-	// GET /users/{id}
-	ReadUser(ctx context.Context, params ReadUserParams) (ReadUserRes, error)
-	// UpdateUser implements updateUser operation.
+	// DELETE /menu-items/{id}
+	DeleteMenuItem(ctx context.Context, params DeleteMenuItemParams) (DeleteMenuItemRes, error)
+	// ListGuest implements listGuest operation.
 	//
-	// Updates a User and persists changes to storage.
+	// List Guests.
 	//
-	// PATCH /users/{id}
-	UpdateUser(ctx context.Context, req UpdateUserReq, params UpdateUserParams) (UpdateUserRes, error)
+	// GET /guests
+	ListGuest(ctx context.Context, params ListGuestParams) (ListGuestRes, error)
+	// ListMenuItem implements listMenuItem operation.
+	//
+	// List MenuItems.
+	//
+	// GET /menu-items
+	ListMenuItem(ctx context.Context, params ListMenuItemParams) (ListMenuItemRes, error)
+	// ReadGuest implements readGuest operation.
+	//
+	// Finds the Guest with the requested ID and returns it.
+	//
+	// GET /guests/{id}
+	ReadGuest(ctx context.Context, params ReadGuestParams) (ReadGuestRes, error)
+	// ReadMenuItem implements readMenuItem operation.
+	//
+	// Finds the MenuItem with the requested ID and returns it.
+	//
+	// GET /menu-items/{id}
+	ReadMenuItem(ctx context.Context, params ReadMenuItemParams) (ReadMenuItemRes, error)
+	// UpdateGuest implements updateGuest operation.
+	//
+	// Updates a Guest and persists changes to storage.
+	//
+	// PATCH /guests/{id}
+	UpdateGuest(ctx context.Context, req UpdateGuestReq, params UpdateGuestParams) (UpdateGuestRes, error)
+	// UpdateMenuItem implements updateMenuItem operation.
+	//
+	// Updates a MenuItem and persists changes to storage.
+	//
+	// PATCH /menu-items/{id}
+	UpdateMenuItem(ctx context.Context, req UpdateMenuItemReq, params UpdateMenuItemParams) (UpdateMenuItemRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

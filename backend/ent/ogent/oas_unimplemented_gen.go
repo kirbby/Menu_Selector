@@ -75,47 +75,92 @@ var _ Handler = UnimplementedHandler{}
 // UnimplementedHandler is no-op Handler which returns http.ErrNotImplemented.
 type UnimplementedHandler struct{}
 
-// CreateUser implements createUser operation.
+// CreateGuest implements createGuest operation.
 //
-// Creates a new User and persists it to storage.
+// Creates a new Guest and persists it to storage.
 //
-// POST /users
-func (UnimplementedHandler) CreateUser(ctx context.Context, req CreateUserReq) (r CreateUserRes, _ error) {
+// POST /guests
+func (UnimplementedHandler) CreateGuest(ctx context.Context, req CreateGuestReq) (r CreateGuestRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
-// DeleteUser implements deleteUser operation.
+// CreateMenuItem implements createMenuItem operation.
 //
-// Deletes the User with the requested ID.
+// Creates a new MenuItem and persists it to storage.
 //
-// DELETE /users/{id}
-func (UnimplementedHandler) DeleteUser(ctx context.Context, params DeleteUserParams) (r DeleteUserRes, _ error) {
+// POST /menu-items
+func (UnimplementedHandler) CreateMenuItem(ctx context.Context, req CreateMenuItemReq) (r CreateMenuItemRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
-// ListUser implements listUser operation.
+// DeleteGuest implements deleteGuest operation.
 //
-// List Users.
+// Deletes the Guest with the requested ID.
 //
-// GET /users
-func (UnimplementedHandler) ListUser(ctx context.Context, params ListUserParams) (r ListUserRes, _ error) {
+// DELETE /guests/{id}
+func (UnimplementedHandler) DeleteGuest(ctx context.Context, params DeleteGuestParams) (r DeleteGuestRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
-// ReadUser implements readUser operation.
+// DeleteMenuItem implements deleteMenuItem operation.
 //
-// Finds the User with the requested ID and returns it.
+// Deletes the MenuItem with the requested ID.
 //
-// GET /users/{id}
-func (UnimplementedHandler) ReadUser(ctx context.Context, params ReadUserParams) (r ReadUserRes, _ error) {
+// DELETE /menu-items/{id}
+func (UnimplementedHandler) DeleteMenuItem(ctx context.Context, params DeleteMenuItemParams) (r DeleteMenuItemRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
-// UpdateUser implements updateUser operation.
+// ListGuest implements listGuest operation.
 //
-// Updates a User and persists changes to storage.
+// List Guests.
 //
-// PATCH /users/{id}
-func (UnimplementedHandler) UpdateUser(ctx context.Context, req UpdateUserReq, params UpdateUserParams) (r UpdateUserRes, _ error) {
+// GET /guests
+func (UnimplementedHandler) ListGuest(ctx context.Context, params ListGuestParams) (r ListGuestRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// ListMenuItem implements listMenuItem operation.
+//
+// List MenuItems.
+//
+// GET /menu-items
+func (UnimplementedHandler) ListMenuItem(ctx context.Context, params ListMenuItemParams) (r ListMenuItemRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// ReadGuest implements readGuest operation.
+//
+// Finds the Guest with the requested ID and returns it.
+//
+// GET /guests/{id}
+func (UnimplementedHandler) ReadGuest(ctx context.Context, params ReadGuestParams) (r ReadGuestRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// ReadMenuItem implements readMenuItem operation.
+//
+// Finds the MenuItem with the requested ID and returns it.
+//
+// GET /menu-items/{id}
+func (UnimplementedHandler) ReadMenuItem(ctx context.Context, params ReadMenuItemParams) (r ReadMenuItemRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// UpdateGuest implements updateGuest operation.
+//
+// Updates a Guest and persists changes to storage.
+//
+// PATCH /guests/{id}
+func (UnimplementedHandler) UpdateGuest(ctx context.Context, req UpdateGuestReq, params UpdateGuestParams) (r UpdateGuestRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// UpdateMenuItem implements updateMenuItem operation.
+//
+// Updates a MenuItem and persists changes to storage.
+//
+// PATCH /menu-items/{id}
+func (UnimplementedHandler) UpdateMenuItem(ctx context.Context, req UpdateMenuItemReq, params UpdateMenuItemParams) (r UpdateMenuItemRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

@@ -101,17 +101,17 @@ func NewClient(serverURL string, opts ...Option) (*Client, error) {
 	return c, nil
 }
 
-// CreateUser invokes createUser operation.
+// CreateGuest invokes createGuest operation.
 //
-// Creates a new User and persists it to storage.
+// Creates a new Guest and persists it to storage.
 //
-// POST /users
-func (c *Client) CreateUser(ctx context.Context, request CreateUserReq) (res CreateUserRes, err error) {
+// POST /guests
+func (c *Client) CreateGuest(ctx context.Context, request CreateGuestReq) (res CreateGuestRes, err error) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("createUser"),
+		otelogen.OperationID("createGuest"),
 	}
-	ctx, span := c.cfg.Tracer.Start(ctx, "CreateUser",
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateGuest",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindClient),
 	)
@@ -131,7 +131,7 @@ func (c *Client) CreateUser(ctx context.Context, request CreateUserReq) (res Cre
 		reqBody     io.Reader
 	)
 	contentType = "application/json"
-	buf, err := encodeCreateUserRequestJSON(request, span)
+	buf, err := encodeCreateGuestRequestJSON(request, span)
 	if err != nil {
 		return res, err
 	}
@@ -139,7 +139,7 @@ func (c *Client) CreateUser(ctx context.Context, request CreateUserReq) (res Cre
 	reqBody = bytes.NewReader(buf.Buf)
 
 	u := uri.Clone(c.serverURL)
-	u.Path += "/users"
+	u.Path += "/guests"
 
 	r := ht.NewRequest(ctx, "POST", u, reqBody)
 	defer ht.PutRequest(r)
@@ -152,7 +152,7 @@ func (c *Client) CreateUser(ctx context.Context, request CreateUserReq) (res Cre
 	}
 	defer resp.Body.Close()
 
-	result, err := decodeCreateUserResponse(resp, span)
+	result, err := decodeCreateGuestResponse(resp, span)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -160,17 +160,76 @@ func (c *Client) CreateUser(ctx context.Context, request CreateUserReq) (res Cre
 	return result, nil
 }
 
-// DeleteUser invokes deleteUser operation.
+// CreateMenuItem invokes createMenuItem operation.
 //
-// Deletes the User with the requested ID.
+// Creates a new MenuItem and persists it to storage.
 //
-// DELETE /users/{id}
-func (c *Client) DeleteUser(ctx context.Context, params DeleteUserParams) (res DeleteUserRes, err error) {
+// POST /menu-items
+func (c *Client) CreateMenuItem(ctx context.Context, request CreateMenuItemReq) (res CreateMenuItemRes, err error) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("deleteUser"),
+		otelogen.OperationID("createMenuItem"),
 	}
-	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteUser",
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateMenuItem",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindClient),
+	)
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			c.errors.Add(ctx, 1, otelAttrs...)
+		} else {
+			elapsedDuration := time.Since(startTime)
+			c.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+		}
+		span.End()
+	}()
+	c.requests.Add(ctx, 1, otelAttrs...)
+	var (
+		contentType string
+		reqBody     io.Reader
+	)
+	contentType = "application/json"
+	buf, err := encodeCreateMenuItemRequestJSON(request, span)
+	if err != nil {
+		return res, err
+	}
+	defer jx.PutWriter(buf)
+	reqBody = bytes.NewReader(buf.Buf)
+
+	u := uri.Clone(c.serverURL)
+	u.Path += "/menu-items"
+
+	r := ht.NewRequest(ctx, "POST", u, reqBody)
+	defer ht.PutRequest(r)
+
+	r.Header.Set("Content-Type", contentType)
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeCreateMenuItemResponse(resp, span)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteGuest invokes deleteGuest operation.
+//
+// Deletes the Guest with the requested ID.
+//
+// DELETE /guests/{id}
+func (c *Client) DeleteGuest(ctx context.Context, params DeleteGuestParams) (res DeleteGuestRes, err error) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("deleteGuest"),
+	}
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteGuest",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindClient),
 	)
@@ -186,7 +245,7 @@ func (c *Client) DeleteUser(ctx context.Context, params DeleteUserParams) (res D
 	}()
 	c.requests.Add(ctx, 1, otelAttrs...)
 	u := uri.Clone(c.serverURL)
-	u.Path += "/users/"
+	u.Path += "/guests/"
 	{
 		// Encode "id" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -211,7 +270,7 @@ func (c *Client) DeleteUser(ctx context.Context, params DeleteUserParams) (res D
 	}
 	defer resp.Body.Close()
 
-	result, err := decodeDeleteUserResponse(resp, span)
+	result, err := decodeDeleteGuestResponse(resp, span)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -219,17 +278,17 @@ func (c *Client) DeleteUser(ctx context.Context, params DeleteUserParams) (res D
 	return result, nil
 }
 
-// ListUser invokes listUser operation.
+// DeleteMenuItem invokes deleteMenuItem operation.
 //
-// List Users.
+// Deletes the MenuItem with the requested ID.
 //
-// GET /users
-func (c *Client) ListUser(ctx context.Context, params ListUserParams) (res ListUserRes, err error) {
+// DELETE /menu-items/{id}
+func (c *Client) DeleteMenuItem(ctx context.Context, params DeleteMenuItemParams) (res DeleteMenuItemRes, err error) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("listUser"),
+		otelogen.OperationID("deleteMenuItem"),
 	}
-	ctx, span := c.cfg.Tracer.Start(ctx, "ListUser",
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteMenuItem",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindClient),
 	)
@@ -245,7 +304,66 @@ func (c *Client) ListUser(ctx context.Context, params ListUserParams) (res ListU
 	}()
 	c.requests.Add(ctx, 1, otelAttrs...)
 	u := uri.Clone(c.serverURL)
-	u.Path += "/users"
+	u.Path += "/menu-items/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.IntToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		u.Path += e.Result()
+	}
+
+	r := ht.NewRequest(ctx, "DELETE", u, nil)
+	defer ht.PutRequest(r)
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeDeleteMenuItemResponse(resp, span)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListGuest invokes listGuest operation.
+//
+// List Guests.
+//
+// GET /guests
+func (c *Client) ListGuest(ctx context.Context, params ListGuestParams) (res ListGuestRes, err error) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("listGuest"),
+	}
+	ctx, span := c.cfg.Tracer.Start(ctx, "ListGuest",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindClient),
+	)
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			c.errors.Add(ctx, 1, otelAttrs...)
+		} else {
+			elapsedDuration := time.Since(startTime)
+			c.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+		}
+		span.End()
+	}()
+	c.requests.Add(ctx, 1, otelAttrs...)
+	u := uri.Clone(c.serverURL)
+	u.Path += "/guests"
 
 	q := u.Query()
 	{
@@ -291,7 +409,7 @@ func (c *Client) ListUser(ctx context.Context, params ListUserParams) (res ListU
 	}
 	defer resp.Body.Close()
 
-	result, err := decodeListUserResponse(resp, span)
+	result, err := decodeListGuestResponse(resp, span)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -299,17 +417,17 @@ func (c *Client) ListUser(ctx context.Context, params ListUserParams) (res ListU
 	return result, nil
 }
 
-// ReadUser invokes readUser operation.
+// ListMenuItem invokes listMenuItem operation.
 //
-// Finds the User with the requested ID and returns it.
+// List MenuItems.
 //
-// GET /users/{id}
-func (c *Client) ReadUser(ctx context.Context, params ReadUserParams) (res ReadUserRes, err error) {
+// GET /menu-items
+func (c *Client) ListMenuItem(ctx context.Context, params ListMenuItemParams) (res ListMenuItemRes, err error) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("readUser"),
+		otelogen.OperationID("listMenuItem"),
 	}
-	ctx, span := c.cfg.Tracer.Start(ctx, "ReadUser",
+	ctx, span := c.cfg.Tracer.Start(ctx, "ListMenuItem",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindClient),
 	)
@@ -325,7 +443,87 @@ func (c *Client) ReadUser(ctx context.Context, params ReadUserParams) (res ReadU
 	}()
 	c.requests.Add(ctx, 1, otelAttrs...)
 	u := uri.Clone(c.serverURL)
-	u.Path += "/users/"
+	u.Path += "/menu-items"
+
+	q := u.Query()
+	{
+		// Encode "page" parameter.
+		e := uri.NewQueryEncoder(uri.QueryEncoderConfig{
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		})
+		if err := func() error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+		q["page"] = e.Result()
+	}
+	{
+		// Encode "itemsPerPage" parameter.
+		e := uri.NewQueryEncoder(uri.QueryEncoderConfig{
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		})
+		if err := func() error {
+			if val, ok := params.ItemsPerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+		q["itemsPerPage"] = e.Result()
+	}
+	u.RawQuery = q.Encode()
+
+	r := ht.NewRequest(ctx, "GET", u, nil)
+	defer ht.PutRequest(r)
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListMenuItemResponse(resp, span)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReadGuest invokes readGuest operation.
+//
+// Finds the Guest with the requested ID and returns it.
+//
+// GET /guests/{id}
+func (c *Client) ReadGuest(ctx context.Context, params ReadGuestParams) (res ReadGuestRes, err error) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("readGuest"),
+	}
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReadGuest",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindClient),
+	)
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			c.errors.Add(ctx, 1, otelAttrs...)
+		} else {
+			elapsedDuration := time.Since(startTime)
+			c.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+		}
+		span.End()
+	}()
+	c.requests.Add(ctx, 1, otelAttrs...)
+	u := uri.Clone(c.serverURL)
+	u.Path += "/guests/"
 	{
 		// Encode "id" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -350,7 +548,7 @@ func (c *Client) ReadUser(ctx context.Context, params ReadUserParams) (res ReadU
 	}
 	defer resp.Body.Close()
 
-	result, err := decodeReadUserResponse(resp, span)
+	result, err := decodeReadGuestResponse(resp, span)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -358,17 +556,76 @@ func (c *Client) ReadUser(ctx context.Context, params ReadUserParams) (res ReadU
 	return result, nil
 }
 
-// UpdateUser invokes updateUser operation.
+// ReadMenuItem invokes readMenuItem operation.
 //
-// Updates a User and persists changes to storage.
+// Finds the MenuItem with the requested ID and returns it.
 //
-// PATCH /users/{id}
-func (c *Client) UpdateUser(ctx context.Context, request UpdateUserReq, params UpdateUserParams) (res UpdateUserRes, err error) {
+// GET /menu-items/{id}
+func (c *Client) ReadMenuItem(ctx context.Context, params ReadMenuItemParams) (res ReadMenuItemRes, err error) {
 	startTime := time.Now()
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("updateUser"),
+		otelogen.OperationID("readMenuItem"),
 	}
-	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateUser",
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReadMenuItem",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindClient),
+	)
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			c.errors.Add(ctx, 1, otelAttrs...)
+		} else {
+			elapsedDuration := time.Since(startTime)
+			c.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+		}
+		span.End()
+	}()
+	c.requests.Add(ctx, 1, otelAttrs...)
+	u := uri.Clone(c.serverURL)
+	u.Path += "/menu-items/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.IntToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		u.Path += e.Result()
+	}
+
+	r := ht.NewRequest(ctx, "GET", u, nil)
+	defer ht.PutRequest(r)
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeReadMenuItemResponse(resp, span)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateGuest invokes updateGuest operation.
+//
+// Updates a Guest and persists changes to storage.
+//
+// PATCH /guests/{id}
+func (c *Client) UpdateGuest(ctx context.Context, request UpdateGuestReq, params UpdateGuestParams) (res UpdateGuestRes, err error) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateGuest"),
+	}
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateGuest",
 		trace.WithAttributes(otelAttrs...),
 		trace.WithSpanKind(trace.SpanKindClient),
 	)
@@ -388,7 +645,7 @@ func (c *Client) UpdateUser(ctx context.Context, request UpdateUserReq, params U
 		reqBody     io.Reader
 	)
 	contentType = "application/json"
-	buf, err := encodeUpdateUserRequestJSON(request, span)
+	buf, err := encodeUpdateGuestRequestJSON(request, span)
 	if err != nil {
 		return res, err
 	}
@@ -396,7 +653,7 @@ func (c *Client) UpdateUser(ctx context.Context, request UpdateUserReq, params U
 	reqBody = bytes.NewReader(buf.Buf)
 
 	u := uri.Clone(c.serverURL)
-	u.Path += "/users/"
+	u.Path += "/guests/"
 	{
 		// Encode "id" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -423,7 +680,80 @@ func (c *Client) UpdateUser(ctx context.Context, request UpdateUserReq, params U
 	}
 	defer resp.Body.Close()
 
-	result, err := decodeUpdateUserResponse(resp, span)
+	result, err := decodeUpdateGuestResponse(resp, span)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateMenuItem invokes updateMenuItem operation.
+//
+// Updates a MenuItem and persists changes to storage.
+//
+// PATCH /menu-items/{id}
+func (c *Client) UpdateMenuItem(ctx context.Context, request UpdateMenuItemReq, params UpdateMenuItemParams) (res UpdateMenuItemRes, err error) {
+	startTime := time.Now()
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateMenuItem"),
+	}
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateMenuItem",
+		trace.WithAttributes(otelAttrs...),
+		trace.WithSpanKind(trace.SpanKindClient),
+	)
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			c.errors.Add(ctx, 1, otelAttrs...)
+		} else {
+			elapsedDuration := time.Since(startTime)
+			c.duration.Record(ctx, elapsedDuration.Microseconds(), otelAttrs...)
+		}
+		span.End()
+	}()
+	c.requests.Add(ctx, 1, otelAttrs...)
+	var (
+		contentType string
+		reqBody     io.Reader
+	)
+	contentType = "application/json"
+	buf, err := encodeUpdateMenuItemRequestJSON(request, span)
+	if err != nil {
+		return res, err
+	}
+	defer jx.PutWriter(buf)
+	reqBody = bytes.NewReader(buf.Buf)
+
+	u := uri.Clone(c.serverURL)
+	u.Path += "/menu-items/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.IntToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		u.Path += e.Result()
+	}
+
+	r := ht.NewRequest(ctx, "PATCH", u, reqBody)
+	defer ht.PutRequest(r)
+
+	r.Header.Set("Content-Type", contentType)
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeUpdateMenuItemResponse(resp, span)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

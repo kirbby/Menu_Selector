@@ -90,47 +90,23 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/users/"
-			if l := len("/users/"); len(elem) >= l && elem[0:l] == "/users/" {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
-			// Param: "id"
-			// Leaf parameter
-			args[0] = elem
-			elem = ""
-
 			if len(elem) == 0 {
-				// Leaf: DeleteUser
-				s.handleDeleteUserRequest([1]string{
+				s.handleDeleteMenuItemRequest([1]string{
 					args[0],
 				}, w, r)
 
 				return
 			}
-		}
-	case "GET":
-		if len(elem) == 0 {
-			break
-		}
-		switch elem[0] {
-		case '/': // Prefix: "/users"
-			if l := len("/users"); len(elem) >= l && elem[0:l] == "/users" {
-				elem = elem[l:]
-			} else {
-				break
-			}
-
-			if len(elem) == 0 {
-				s.handleListUserRequest([0]string{}, w, r)
-
-				return
-			}
 			switch elem[0] {
-			case '/': // Prefix: "/"
-				if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+			case 'g': // Prefix: "guests/"
+				if l := len("guests/"); len(elem) >= l && elem[0:l] == "guests/" {
 					elem = elem[l:]
 				} else {
 					break
@@ -142,12 +118,120 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				elem = ""
 
 				if len(elem) == 0 {
-					// Leaf: ReadUser
-					s.handleReadUserRequest([1]string{
+					// Leaf: DeleteGuest
+					s.handleDeleteGuestRequest([1]string{
 						args[0],
 					}, w, r)
 
 					return
+				}
+			case 'm': // Prefix: "menu-items/"
+				if l := len("menu-items/"); len(elem) >= l && elem[0:l] == "menu-items/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					// Leaf: DeleteMenuItem
+					s.handleDeleteMenuItemRequest([1]string{
+						args[0],
+					}, w, r)
+
+					return
+				}
+			}
+		}
+	case "GET":
+		if len(elem) == 0 {
+			break
+		}
+		switch elem[0] {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+				elem = elem[l:]
+			} else {
+				break
+			}
+
+			if len(elem) == 0 {
+				s.handleListMenuItemRequest([0]string{}, w, r)
+
+				return
+			}
+			switch elem[0] {
+			case 'g': // Prefix: "guests"
+				if l := len("guests"); len(elem) >= l && elem[0:l] == "guests" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					s.handleListGuestRequest([0]string{}, w, r)
+
+					return
+				}
+				switch elem[0] {
+				case '/': // Prefix: "/"
+					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					// Param: "id"
+					// Leaf parameter
+					args[0] = elem
+					elem = ""
+
+					if len(elem) == 0 {
+						// Leaf: ReadGuest
+						s.handleReadGuestRequest([1]string{
+							args[0],
+						}, w, r)
+
+						return
+					}
+				}
+			case 'm': // Prefix: "menu-items"
+				if l := len("menu-items"); len(elem) >= l && elem[0:l] == "menu-items" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					s.handleListMenuItemRequest([0]string{}, w, r)
+
+					return
+				}
+				switch elem[0] {
+				case '/': // Prefix: "/"
+					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					// Param: "id"
+					// Leaf parameter
+					args[0] = elem
+					elem = ""
+
+					if len(elem) == 0 {
+						// Leaf: ReadMenuItem
+						s.handleReadMenuItemRequest([1]string{
+							args[0],
+						}, w, r)
+
+						return
+					}
 				}
 			}
 		}
@@ -156,25 +240,61 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/users/"
-			if l := len("/users/"); len(elem) >= l && elem[0:l] == "/users/" {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
-			// Param: "id"
-			// Leaf parameter
-			args[0] = elem
-			elem = ""
-
 			if len(elem) == 0 {
-				// Leaf: UpdateUser
-				s.handleUpdateUserRequest([1]string{
+				s.handleUpdateMenuItemRequest([1]string{
 					args[0],
 				}, w, r)
 
 				return
+			}
+			switch elem[0] {
+			case 'g': // Prefix: "guests/"
+				if l := len("guests/"); len(elem) >= l && elem[0:l] == "guests/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					// Leaf: UpdateGuest
+					s.handleUpdateGuestRequest([1]string{
+						args[0],
+					}, w, r)
+
+					return
+				}
+			case 'm': // Prefix: "menu-items/"
+				if l := len("menu-items/"); len(elem) >= l && elem[0:l] == "menu-items/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					// Leaf: UpdateMenuItem
+					s.handleUpdateMenuItemRequest([1]string{
+						args[0],
+					}, w, r)
+
+					return
+				}
 			}
 		}
 	case "POST":
@@ -182,18 +302,45 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/users"
-			if l := len("/users"); len(elem) >= l && elem[0:l] == "/users" {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
 			if len(elem) == 0 {
-				// Leaf: CreateUser
-				s.handleCreateUserRequest([0]string{}, w, r)
+				s.handleCreateMenuItemRequest([0]string{}, w, r)
 
 				return
+			}
+			switch elem[0] {
+			case 'g': // Prefix: "guests"
+				if l := len("guests"); len(elem) >= l && elem[0:l] == "guests" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf: CreateGuest
+					s.handleCreateGuestRequest([0]string{}, w, r)
+
+					return
+				}
+			case 'm': // Prefix: "menu-items"
+				if l := len("menu-items"); len(elem) >= l && elem[0:l] == "menu-items" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf: CreateMenuItem
+					s.handleCreateMenuItemRequest([0]string{}, w, r)
+
+					return
+				}
 			}
 		}
 	}
@@ -232,47 +379,22 @@ func (s *Server) FindRoute(method, path string) (r Route, _ bool) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/users/"
-			if l := len("/users/"); len(elem) >= l && elem[0:l] == "/users/" {
-				elem = elem[l:]
-			} else {
-				break
-			}
-
-			// Param: "id"
-			// Leaf parameter
-			args[0] = elem
-			elem = ""
-
-			if len(elem) == 0 {
-				// Leaf: DeleteUser
-				r.name = "DeleteUser"
-				r.args = args
-				r.count = 1
-				return r, true
-			}
-		}
-	case "GET":
-		if len(elem) == 0 {
-			break
-		}
-		switch elem[0] {
-		case '/': // Prefix: "/users"
-			if l := len("/users"); len(elem) >= l && elem[0:l] == "/users" {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
 			if len(elem) == 0 {
-				r.name = "ListUser"
+				r.name = "DeleteMenuItem"
 				r.args = args
 				r.count = 0
 				return r, true
 			}
 			switch elem[0] {
-			case '/': // Prefix: "/"
-				if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+			case 'g': // Prefix: "guests/"
+				if l := len("guests/"); len(elem) >= l && elem[0:l] == "guests/" {
 					elem = elem[l:]
 				} else {
 					break
@@ -284,11 +406,119 @@ func (s *Server) FindRoute(method, path string) (r Route, _ bool) {
 				elem = ""
 
 				if len(elem) == 0 {
-					// Leaf: ReadUser
-					r.name = "ReadUser"
+					// Leaf: DeleteGuest
+					r.name = "DeleteGuest"
 					r.args = args
 					r.count = 1
 					return r, true
+				}
+			case 'm': // Prefix: "menu-items/"
+				if l := len("menu-items/"); len(elem) >= l && elem[0:l] == "menu-items/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					// Leaf: DeleteMenuItem
+					r.name = "DeleteMenuItem"
+					r.args = args
+					r.count = 1
+					return r, true
+				}
+			}
+		}
+	case "GET":
+		if len(elem) == 0 {
+			break
+		}
+		switch elem[0] {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+				elem = elem[l:]
+			} else {
+				break
+			}
+
+			if len(elem) == 0 {
+				r.name = "ListMenuItem"
+				r.args = args
+				r.count = 0
+				return r, true
+			}
+			switch elem[0] {
+			case 'g': // Prefix: "guests"
+				if l := len("guests"); len(elem) >= l && elem[0:l] == "guests" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					r.name = "ListGuest"
+					r.args = args
+					r.count = 0
+					return r, true
+				}
+				switch elem[0] {
+				case '/': // Prefix: "/"
+					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					// Param: "id"
+					// Leaf parameter
+					args[0] = elem
+					elem = ""
+
+					if len(elem) == 0 {
+						// Leaf: ReadGuest
+						r.name = "ReadGuest"
+						r.args = args
+						r.count = 1
+						return r, true
+					}
+				}
+			case 'm': // Prefix: "menu-items"
+				if l := len("menu-items"); len(elem) >= l && elem[0:l] == "menu-items" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					r.name = "ListMenuItem"
+					r.args = args
+					r.count = 0
+					return r, true
+				}
+				switch elem[0] {
+				case '/': // Prefix: "/"
+					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					// Param: "id"
+					// Leaf parameter
+					args[0] = elem
+					elem = ""
+
+					if len(elem) == 0 {
+						// Leaf: ReadMenuItem
+						r.name = "ReadMenuItem"
+						r.args = args
+						r.count = 1
+						return r, true
+					}
 				}
 			}
 		}
@@ -297,24 +527,58 @@ func (s *Server) FindRoute(method, path string) (r Route, _ bool) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/users/"
-			if l := len("/users/"); len(elem) >= l && elem[0:l] == "/users/" {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
-			// Param: "id"
-			// Leaf parameter
-			args[0] = elem
-			elem = ""
-
 			if len(elem) == 0 {
-				// Leaf: UpdateUser
-				r.name = "UpdateUser"
+				r.name = "UpdateMenuItem"
 				r.args = args
-				r.count = 1
+				r.count = 0
 				return r, true
+			}
+			switch elem[0] {
+			case 'g': // Prefix: "guests/"
+				if l := len("guests/"); len(elem) >= l && elem[0:l] == "guests/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					// Leaf: UpdateGuest
+					r.name = "UpdateGuest"
+					r.args = args
+					r.count = 1
+					return r, true
+				}
+			case 'm': // Prefix: "menu-items/"
+				if l := len("menu-items/"); len(elem) >= l && elem[0:l] == "menu-items/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					// Leaf: UpdateMenuItem
+					r.name = "UpdateMenuItem"
+					r.args = args
+					r.count = 1
+					return r, true
+				}
 			}
 		}
 	case "POST":
@@ -322,19 +586,48 @@ func (s *Server) FindRoute(method, path string) (r Route, _ bool) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/users"
-			if l := len("/users"); len(elem) >= l && elem[0:l] == "/users" {
+		case '/': // Prefix: "/"
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
 			if len(elem) == 0 {
-				// Leaf: CreateUser
-				r.name = "CreateUser"
+				r.name = "CreateMenuItem"
 				r.args = args
 				r.count = 0
 				return r, true
+			}
+			switch elem[0] {
+			case 'g': // Prefix: "guests"
+				if l := len("guests"); len(elem) >= l && elem[0:l] == "guests" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf: CreateGuest
+					r.name = "CreateGuest"
+					r.args = args
+					r.count = 0
+					return r, true
+				}
+			case 'm': // Prefix: "menu-items"
+				if l := len("menu-items"); len(elem) >= l && elem[0:l] == "menu-items" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf: CreateMenuItem
+					r.name = "CreateMenuItem"
+					r.args = args
+					r.count = 0
+					return r, true
+				}
 			}
 		}
 	}

@@ -70,7 +70,13 @@ var (
 	_ = codes.Unset
 )
 
-func (s ListUserOKApplicationJSON) Validate() error {
+func (s ListGuestOKApplicationJSON) Validate() error {
+	if s == nil {
+		return errors.New("nil is invalid value")
+	}
+	return nil
+}
+func (s ListMenuItemOKApplicationJSON) Validate() error {
 	if s == nil {
 		return errors.New("nil is invalid value")
 	}

@@ -70,9 +70,9 @@ var (
 	_ = codes.Unset
 )
 
-func encodeCreateUserResponse(response CreateUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodeCreateGuestResponse(response CreateGuestRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *UserCreate:
+	case *GuestCreate:
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(200)
 		e := jx.GetWriter()
@@ -121,13 +121,68 @@ func encodeCreateUserResponse(response CreateUserRes, w http.ResponseWriter, spa
 
 		return nil
 	default:
-		return errors.Errorf("/users"+`: unexpected response type: %T`, response)
+		return errors.Errorf("/guests"+`: unexpected response type: %T`, response)
 	}
 }
 
-func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodeCreateMenuItemResponse(response CreateMenuItemRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *DeleteUserNoContent:
+	case *MenuItemCreate:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R400:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(400)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R409:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(409)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R500:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(500)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	default:
+		return errors.Errorf("/menu-items"+`: unexpected response type: %T`, response)
+	}
+}
+
+func encodeDeleteGuestResponse(response DeleteGuestRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *DeleteGuestNoContent:
 		w.WriteHeader(204)
 		return nil
 	case *R400:
@@ -179,13 +234,71 @@ func encodeDeleteUserResponse(response DeleteUserRes, w http.ResponseWriter, spa
 
 		return nil
 	default:
-		return errors.Errorf("/users/{id}"+`: unexpected response type: %T`, response)
+		return errors.Errorf("/guests/{id}"+`: unexpected response type: %T`, response)
 	}
 }
 
-func encodeListUserResponse(response ListUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodeDeleteMenuItemResponse(response DeleteMenuItemRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ListUserOKApplicationJSON:
+	case *DeleteMenuItemNoContent:
+		w.WriteHeader(204)
+		return nil
+	case *R400:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(400)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R404:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(404)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R409:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(409)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R500:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(500)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	default:
+		return errors.Errorf("/menu-items/{id}"+`: unexpected response type: %T`, response)
+	}
+}
+
+func encodeListGuestResponse(response ListGuestRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *ListGuestOKApplicationJSON:
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(200)
 		e := jx.GetWriter()
@@ -246,13 +359,13 @@ func encodeListUserResponse(response ListUserRes, w http.ResponseWriter, span tr
 
 		return nil
 	default:
-		return errors.Errorf("/users"+`: unexpected response type: %T`, response)
+		return errors.Errorf("/guests"+`: unexpected response type: %T`, response)
 	}
 }
 
-func encodeReadUserResponse(response ReadUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodeListMenuItemResponse(response ListMenuItemRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *UserRead:
+	case *ListMenuItemOKApplicationJSON:
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(200)
 		e := jx.GetWriter()
@@ -313,13 +426,13 @@ func encodeReadUserResponse(response ReadUserRes, w http.ResponseWriter, span tr
 
 		return nil
 	default:
-		return errors.Errorf("/users/{id}"+`: unexpected response type: %T`, response)
+		return errors.Errorf("/menu-items"+`: unexpected response type: %T`, response)
 	}
 }
 
-func encodeUpdateUserResponse(response UpdateUserRes, w http.ResponseWriter, span trace.Span) error {
+func encodeReadGuestResponse(response ReadGuestRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *UserUpdate:
+	case *GuestRead:
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(200)
 		e := jx.GetWriter()
@@ -380,6 +493,207 @@ func encodeUpdateUserResponse(response UpdateUserRes, w http.ResponseWriter, spa
 
 		return nil
 	default:
-		return errors.Errorf("/users/{id}"+`: unexpected response type: %T`, response)
+		return errors.Errorf("/guests/{id}"+`: unexpected response type: %T`, response)
+	}
+}
+
+func encodeReadMenuItemResponse(response ReadMenuItemRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *MenuItemRead:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R400:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(400)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R404:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(404)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R409:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(409)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R500:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(500)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	default:
+		return errors.Errorf("/menu-items/{id}"+`: unexpected response type: %T`, response)
+	}
+}
+
+func encodeUpdateGuestResponse(response UpdateGuestRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *GuestUpdate:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R400:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(400)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R404:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(404)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R409:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(409)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R500:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(500)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	default:
+		return errors.Errorf("/guests/{id}"+`: unexpected response type: %T`, response)
+	}
+}
+
+func encodeUpdateMenuItemResponse(response UpdateMenuItemRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *MenuItemUpdate:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R400:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(400)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R404:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(404)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R409:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(409)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	case *R500:
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(500)
+		e := jx.GetWriter()
+		defer jx.PutWriter(e)
+
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+	default:
+		return errors.Errorf("/menu-items/{id}"+`: unexpected response type: %T`, response)
 	}
 }

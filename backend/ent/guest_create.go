@@ -25,9 +25,25 @@ func (gc *GuestCreate) SetName(s string) *GuestCreate {
 	return gc
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (gc *GuestCreate) SetNillableName(s *string) *GuestCreate {
+	if s != nil {
+		gc.SetName(*s)
+	}
+	return gc
+}
+
 // SetEmail sets the "email" field.
 func (gc *GuestCreate) SetEmail(s string) *GuestCreate {
 	gc.mutation.SetEmail(s)
+	return gc
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (gc *GuestCreate) SetNillableEmail(s *string) *GuestCreate {
+	if s != nil {
+		gc.SetEmail(*s)
+	}
 	return gc
 }
 
@@ -42,6 +58,7 @@ func (gc *GuestCreate) Save(ctx context.Context) (*Guest, error) {
 		err  error
 		node *Guest
 	)
+	gc.defaults()
 	if len(gc.hooks) == 0 {
 		if err = gc.check(); err != nil {
 			return nil, err
@@ -96,6 +113,18 @@ func (gc *GuestCreate) Exec(ctx context.Context) error {
 func (gc *GuestCreate) ExecX(ctx context.Context) {
 	if err := gc.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (gc *GuestCreate) defaults() {
+	if _, ok := gc.mutation.Name(); !ok {
+		v := guest.DefaultName
+		gc.mutation.SetName(v)
+	}
+	if _, ok := gc.mutation.Email(); !ok {
+		v := guest.DefaultEmail
+		gc.mutation.SetEmail(v)
 	}
 }
 
@@ -167,6 +196,7 @@ func (gcb *GuestCreateBulk) Save(ctx context.Context) ([]*Guest, error) {
 	for i := range gcb.builders {
 		func(i int, root context.Context) {
 			builder := gcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*GuestMutation)
 				if !ok {

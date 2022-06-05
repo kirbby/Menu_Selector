@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// Guest is the client for interacting with the Guest builders.
 	Guest *GuestClient
+	// MenuItem is the client for interacting with the MenuItem builders.
+	MenuItem *MenuItemClient
 
 	// lazily loaded.
 	client     *Client
@@ -150,6 +152,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Guest = NewGuestClient(tx.config)
+	tx.MenuItem = NewMenuItemClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

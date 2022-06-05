@@ -1,3 +1,4 @@
+//create ent schema for guest
 package schema
 
 import (
@@ -13,8 +14,10 @@ type Guest struct {
 // Fields of the Guest.
 func (Guest) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name"),
-		field.String("email"),
+		field.String("name").
+			Default("unknown"),
+		field.String("email").
+			Default("unknown"),
 	}
 }
 

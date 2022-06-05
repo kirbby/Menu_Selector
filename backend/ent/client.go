@@ -10,6 +10,7 @@ import (
 	"github.com/kirbby/Menu_Selector/ent/migrate"
 
 	"github.com/kirbby/Menu_Selector/ent/guest"
+	"github.com/kirbby/Menu_Selector/ent/menuitem"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -22,6 +23,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// Guest is the client for interacting with the Guest builders.
 	Guest *GuestClient
+	// MenuItem is the client for interacting with the MenuItem builders.
+	MenuItem *MenuItemClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -36,6 +39,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Guest = NewGuestClient(c.config)
+	c.MenuItem = NewMenuItemClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -67,9 +71,10 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Guest:  NewGuestClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		Guest:    NewGuestClient(cfg),
+		MenuItem: NewMenuItemClient(cfg),
 	}, nil
 }
 
@@ -87,9 +92,10 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Guest:  NewGuestClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		Guest:    NewGuestClient(cfg),
+		MenuItem: NewMenuItemClient(cfg),
 	}, nil
 }
 
@@ -120,6 +126,7 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Guest.Use(hooks...)
+	c.MenuItem.Use(hooks...)
 }
 
 // GuestClient is a client for the Guest schema.
@@ -210,4 +217,94 @@ func (c *GuestClient) GetX(ctx context.Context, id int) *Guest {
 // Hooks returns the client hooks.
 func (c *GuestClient) Hooks() []Hook {
 	return c.hooks.Guest
+}
+
+// MenuItemClient is a client for the MenuItem schema.
+type MenuItemClient struct {
+	config
+}
+
+// NewMenuItemClient returns a client for the MenuItem from the given config.
+func NewMenuItemClient(c config) *MenuItemClient {
+	return &MenuItemClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `menuitem.Hooks(f(g(h())))`.
+func (c *MenuItemClient) Use(hooks ...Hook) {
+	c.hooks.MenuItem = append(c.hooks.MenuItem, hooks...)
+}
+
+// Create returns a create builder for MenuItem.
+func (c *MenuItemClient) Create() *MenuItemCreate {
+	mutation := newMenuItemMutation(c.config, OpCreate)
+	return &MenuItemCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of MenuItem entities.
+func (c *MenuItemClient) CreateBulk(builders ...*MenuItemCreate) *MenuItemCreateBulk {
+	return &MenuItemCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for MenuItem.
+func (c *MenuItemClient) Update() *MenuItemUpdate {
+	mutation := newMenuItemMutation(c.config, OpUpdate)
+	return &MenuItemUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *MenuItemClient) UpdateOne(mi *MenuItem) *MenuItemUpdateOne {
+	mutation := newMenuItemMutation(c.config, OpUpdateOne, withMenuItem(mi))
+	return &MenuItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *MenuItemClient) UpdateOneID(id int) *MenuItemUpdateOne {
+	mutation := newMenuItemMutation(c.config, OpUpdateOne, withMenuItemID(id))
+	return &MenuItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for MenuItem.
+func (c *MenuItemClient) Delete() *MenuItemDelete {
+	mutation := newMenuItemMutation(c.config, OpDelete)
+	return &MenuItemDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *MenuItemClient) DeleteOne(mi *MenuItem) *MenuItemDeleteOne {
+	return c.DeleteOneID(mi.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *MenuItemClient) DeleteOneID(id int) *MenuItemDeleteOne {
+	builder := c.Delete().Where(menuitem.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &MenuItemDeleteOne{builder}
+}
+
+// Query returns a query builder for MenuItem.
+func (c *MenuItemClient) Query() *MenuItemQuery {
+	return &MenuItemQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a MenuItem entity by its id.
+func (c *MenuItemClient) Get(ctx context.Context, id int) (*MenuItem, error) {
+	return c.Query().Where(menuitem.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *MenuItemClient) GetX(ctx context.Context, id int) *MenuItem {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *MenuItemClient) Hooks() []Hook {
+	return c.hooks.MenuItem
 }

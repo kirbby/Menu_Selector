@@ -8,3 +8,6 @@ import (
 
 // Guest is the predicate function for guest builders.
 type Guest func(*sql.Selector)
+
+// MenuItem is the predicate function for menuitem builders.
+type MenuItem func(*sql.Selector)

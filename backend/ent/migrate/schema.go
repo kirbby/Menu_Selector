@@ -11,8 +11,8 @@ var (
 	// GuestsColumns holds the columns for the "guests" table.
 	GuestsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Default: "unknown"},
+		{Name: "email", Type: field.TypeString, Default: "unknown"},
 	}
 	// GuestsTable holds the schema information for the "guests" table.
 	GuestsTable = &schema.Table{
@@ -20,9 +20,24 @@ var (
 		Columns:    GuestsColumns,
 		PrimaryKey: []*schema.Column{GuestsColumns[0]},
 	}
+	// MenuItemsColumns holds the columns for the "menu_items" table.
+	MenuItemsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Default: "unknown"},
+		{Name: "description", Type: field.TypeString, Default: "unknown"},
+		{Name: "image", Type: field.TypeString, Default: "unknown"},
+		{Name: "category_id", Type: field.TypeInt, Default: 0},
+	}
+	// MenuItemsTable holds the schema information for the "menu_items" table.
+	MenuItemsTable = &schema.Table{
+		Name:       "menu_items",
+		Columns:    MenuItemsColumns,
+		PrimaryKey: []*schema.Column{MenuItemsColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		GuestsTable,
+		MenuItemsTable,
 	}
 )
 

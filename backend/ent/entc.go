@@ -5,20 +5,24 @@ package main
 import (
 	"log"
 
+	"ariga.io/ogent"
+	"entgo.io/contrib/entoas"
 	"entgo.io/ent/entc"
 	"entgo.io/ent/entc/gen"
-	"github.com/masseelch/elk"
+	"github.com/ogen-go/ogen"
 )
 
 func main() {
-	ex, err := elk.NewExtension(
-		elk.GenerateSpec("openapi.json"),
-		elk.GenerateHandlers(),
-	)
+	spec := new(ogen.Spec)
+	oas, err := entoas.NewExtension(entoas.Spec(spec))
 	if err != nil {
-		log.Fatalf("creating elk extension: %v", err)
+		log.Fatalf("creating entoas extension: %v", err)
 	}
-	err = entc.Generate("./schema", &gen.Config{}, entc.Extensions(ex))
+	ogent, err := ogent.NewExtension(spec)
+	if err != nil {
+		log.Fatalf("creating ogent extension: %v", err)
+	}
+	err = entc.Generate("./schema", &gen.Config{}, entc.Extensions(ogent, oas))
 	if err != nil {
 		log.Fatalf("running ent codegen: %v", err)
 	}

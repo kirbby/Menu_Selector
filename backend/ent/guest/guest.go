@@ -31,3 +31,10 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultName holds the default value on creation for the "name" field.
+	DefaultName string
+	// DefaultEmail holds the default value on creation for the "email" field.
+	DefaultEmail string
+)

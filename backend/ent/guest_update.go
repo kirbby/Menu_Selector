@@ -33,9 +33,25 @@ func (gu *GuestUpdate) SetName(s string) *GuestUpdate {
 	return gu
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (gu *GuestUpdate) SetNillableName(s *string) *GuestUpdate {
+	if s != nil {
+		gu.SetName(*s)
+	}
+	return gu
+}
+
 // SetEmail sets the "email" field.
 func (gu *GuestUpdate) SetEmail(s string) *GuestUpdate {
 	gu.mutation.SetEmail(s)
+	return gu
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (gu *GuestUpdate) SetNillableEmail(s *string) *GuestUpdate {
+	if s != nil {
+		gu.SetEmail(*s)
+	}
 	return gu
 }
 
@@ -155,9 +171,25 @@ func (guo *GuestUpdateOne) SetName(s string) *GuestUpdateOne {
 	return guo
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (guo *GuestUpdateOne) SetNillableName(s *string) *GuestUpdateOne {
+	if s != nil {
+		guo.SetName(*s)
+	}
+	return guo
+}
+
 // SetEmail sets the "email" field.
 func (guo *GuestUpdateOne) SetEmail(s string) *GuestUpdateOne {
 	guo.mutation.SetEmail(s)
+	return guo
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (guo *GuestUpdateOne) SetNillableEmail(s *string) *GuestUpdateOne {
+	if s != nil {
+		guo.SetEmail(*s)
+	}
 	return guo
 }
 

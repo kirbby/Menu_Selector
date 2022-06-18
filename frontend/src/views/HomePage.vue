@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent } from "vue";
 import MenuSelector from "@/components/MenuSelector.vue";
 import { saveMenu } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";

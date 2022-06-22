@@ -14,6 +14,7 @@ import HomePage from "./views/HomePage.vue";
     text-align: center;
     color: white;
     margin-top: 60px;
+    margin-bottom: 60px;
 }
 
 body {

@@ -8,8 +8,8 @@
             Menü speichern
         </button>
     </div>
-    <MenuSelector :menu-category-id="1"></MenuSelector>
-    <MenuSelector :menu-category-id="2"></MenuSelector>
+    <MenuSelector :menu-course-id="1"></MenuSelector>
+    <MenuSelector :menu-course-id="2"></MenuSelector>
 </div>
 </template>
 

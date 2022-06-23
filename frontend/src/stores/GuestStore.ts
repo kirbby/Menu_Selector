@@ -18,15 +18,15 @@ export const useGuestStore = defineStore("guest", {
         getActiveGuest(state): Guest | undefined {
             return state.guests.find((guest: Guest) => guest.id === state.activeGuestId);
         },
-        getActiveGuestMenuIdOnCategoryId(): (categoryId: number) => number {
-            return (categoryId: number) => {
+        getActiveGuestMenuIdOnCourseId(): (courseId: number) => number {
+            return (courseId: number) => {
                 const activeGuest = this.getActiveGuest;
 
                 if (!activeGuest) {
                     return 0;
                 }
 
-                return activeGuest.selectedMenus.find((menuItem: MenuItem) => menuItem.categoryId === categoryId)?.id ?? 0;
+                return activeGuest.selectedMenus.find((menuItem: MenuItem) => menuItem.courseId === courseId)?.id ?? 0;
             };
         }
     },
@@ -49,7 +49,7 @@ export const useGuestStore = defineStore("guest", {
                 }
 
                 activeGuest.selectedMenus = activeGuest.selectedMenus.filter(
-                    x => x.categoryId !== menuItem.categoryId
+                    x => x.courseId !== menuItem.courseId
                 );
                 activeGuest.selectedMenus.push(menuItem);
             }

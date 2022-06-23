@@ -6,7 +6,6 @@
             <div class="name">{{ menuItem.name }}</div>
             <div class="image-container">
                 <img v-if="menuItem.image != null && menuItem.image != ''" :src="menuItem.image" />
-                <span v-else class="material-icon">ramen</span>
             </div>
             <div class="description">{{ menuItem.description }}</div>
         </div>

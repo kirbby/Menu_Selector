@@ -2,7 +2,7 @@
 <div>
     <div class="list">
         <div class="menu-item" v-for="menuItem in menuItems" :key="menuItem.id">
-            <MenuItem :menu-item="menuItem" :is-selected="menuItem.id === selectedMenuId" :radio-group="'menu-' + menuItem.categoryId"
+            <MenuItem :menu-item="menuItem" :is-selected="menuItem.id === selectedMenuId" :radio-group="'menu-' + menuItem.courseId"
                       @menu-item-selected="setSelectedMenuItem">
             </MenuItem>
         </div>
@@ -25,7 +25,7 @@ import { storeToRefs } from "pinia";
 
 export default defineComponent({
     props: {
-        menuCategoryId: {
+        menuCourseId: {
             type: Number as PropType<number>,
             required: true,
         },
@@ -35,16 +35,18 @@ export default defineComponent({
     },
     setup(props) {
         const guestStore = useGuestStore();
-        const menuItems = ref<MenuItemType[]>(getMenuItems(props.menuCategoryId));
+        const menuItems = ref<MenuItemType[]>([]);
         const {
             getActiveGuest: activeGuest,
-            getActiveGuestMenuIdOnCategoryId: getActiveGuestMenuIdOnCategoryId
+            getActiveGuestMenuIdOnCourseId: getActiveGuestMenuIdOnCourseId
         } = storeToRefs(guestStore);
-        const selectedMenuId = ref(getActiveGuestMenuIdOnCategoryId.value(props.menuCategoryId));
+        const selectedMenuId = ref(getActiveGuestMenuIdOnCourseId.value(props.menuCourseId));
 
         watch(() => activeGuest.value, function () {
-            selectedMenuId.value = getActiveGuestMenuIdOnCategoryId.value(props.menuCategoryId);
+            selectedMenuId.value = getActiveGuestMenuIdOnCourseId.value(props.menuCourseId);
         });
+
+        (async () => menuItems.value = await getMenuItems(props.menuCourseId))();
 
         function setSelectedMenuItem(menuItem: MenuItemType) {
             guestStore.changeGuestMenu(menuItem);

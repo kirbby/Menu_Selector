@@ -39,7 +39,7 @@ export default defineComponent({
         const {
             getActiveGuest: activeGuest,
             getActiveGuestMenuIdOnCategoryId: getActiveGuestMenuIdOnCategoryId
-        } = storeToRefs(guestStore); 
+        } = storeToRefs(guestStore);
         const selectedMenuId = ref(getActiveGuestMenuIdOnCategoryId.value(props.menuCategoryId));
 
         watch(() => activeGuest.value, function () {

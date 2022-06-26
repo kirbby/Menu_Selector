@@ -3,10 +3,10 @@
     <label>
         <input type="radio" :name="$props.radioGroup" @change="update($event, menuItem)" :value="menuItem.id" :checked="selected" />
         <div class="item">
-            <div class="name">{{ menuItem.name }}</div>
             <div class="image-container">
-                <img v-if="menuItem.image != null && menuItem.image != ''" :src="menuItem.image" />
+                <img v-if="menuItem.imageUrl != null && menuItem.imageUrl != ''" :src="menuItem.imageUrl" />
             </div>
+            <div class="name">{{ menuItem.name }}</div>
             <div class="description">{{ menuItem.description }}</div>
         </div>
     </label>
@@ -63,7 +63,7 @@ export default defineComponent({
 
 <style scoped lang="postcss">
 .item {
-    @apply border-2 border-gray-300 rounded-lg p-4;
+    @apply border-2 border-gray-300 rounded-lg p-4 space-y-2;
 }
 
 label {
@@ -79,7 +79,7 @@ label {
 }
 
 .image-container img {
-    @apply h-40;
+    @apply h-40 rounded;
 }
 
 input[type="radio"] {

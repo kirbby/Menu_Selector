@@ -2,7 +2,7 @@
 <form class="form-widget" @submit.prevent="updateProfile">
     <div>
         <label for="email">Email</label>
-        <input id="email" type="text" :value="store.user.email" disabled />
+        <input id="email" type="text" :value="userStore.currentUser.email" disabled />
     </div>
     <div>
         <label for="username">Name</label>
@@ -110,7 +110,7 @@ export default {
         });
 
         return {
-            store: userStore,
+            userStore,
             loading,
             username,
             website,

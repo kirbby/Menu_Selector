@@ -13,6 +13,7 @@ module.exports = {
         ecmaVersion: 2020,
         parser: "@typescript-eslint/parser",
     },
+    ignorePatterns: ["**/supabase.ts"],
     rules: {
         "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
         "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",

@@ -3,7 +3,7 @@
     <GuestList class="guest-list"></GuestList>
     <GuestAdd class="guest-add"></GuestAdd>
     <!--  <div class="flex flex-row justify-center space-x-4">
-        <div v-if="activeGuest?.id">Menü für {{ activeGuest.name }}:</div>
+        <div v-if="currentGuest?.id">Menü für {{ currentGuest.name }}:</div>
         <button class="button save-button" @click="saveMenu">
             Menü speichern
         </button>
@@ -30,11 +30,11 @@ export default defineComponent({
     },
     setup() {
         const guestStore = useGuestStore();
-        const { getActiveGuest: activeGuest } = storeToRefs(guestStore);
+        const { getCurrentGuest: currentGuest } = storeToRefs(guestStore);
 
         return {
             saveMenu,
-            activeGuest,
+            currentGuest,
         };
     },
 });

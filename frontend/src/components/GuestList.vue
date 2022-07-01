@@ -3,7 +3,7 @@
     <div>Deine Gäste:</div>
     <ul>
         <li v-for="guest in guests" :key="guest.id" @click="onGuestClick(guest)" class="guest-item"
-            :class="activeGuest?.id == guest.id ? 'active' : ''">
+            :class="currentGuest?.id == guest.id ? 'active' : ''">
             <div>{{ guest.name }}</div>
             <button class="delete-button" @click.stop="deleteGuest(guest)">X</button>
         </li>
@@ -20,10 +20,10 @@ import { defineComponent } from "vue";
 export default defineComponent({
     setup() {
         const guestStore = useGuestStore();
-        const { getActiveGuest: activeGuest, getGuests: guests } = storeToRefs(guestStore);
+        const { getCurrentGuest: currentGuest, getGuests: guests } = storeToRefs(guestStore);
 
         function onGuestClick(guest: Guest) {
-            guestStore.$state.activeGuestId = guest.id;
+            guestStore.$state.currentGuestId = guest.id;
         }
 
         function deleteGuest(guest: Guest) {
@@ -33,7 +33,7 @@ export default defineComponent({
         return {
             guests,
             onGuestClick,
-            activeGuest,
+            currentGuest,
             deleteGuest,
         };
     },

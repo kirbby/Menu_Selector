@@ -51,7 +51,7 @@ export default {
                 const { data, error, status } = await supabase
                     .from("profiles")
                     .select(`username, website, avatar_url`)
-                    .eq("id", useUserStore.currentUser.id)
+                    .eq("id", userStore.getCurrentUser?.id)
                     .single();
 
                 if (error && status !== 406) throw error;
@@ -74,7 +74,7 @@ export default {
                 userStore.currentUser = supabase.auth.user();
 
                 const updates = {
-                    id: userStore.currentUser.id,
+                    id: userStore.getCurrentUser?.id,
                     username: username.value,
                     website: website.value,
                     avatar_url: avatar_url.value,

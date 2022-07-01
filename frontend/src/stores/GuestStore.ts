@@ -5,7 +5,7 @@ import { defineStore } from "pinia";
 export const useGuestStore = defineStore("guest", {
     state: () => ({
         guests: [] as Guest[],
-        activeGuestId: 0,
+        currentGuestId: 0,
     }),
     getters: {
         getGuests(state): Guest[] {
@@ -15,18 +15,18 @@ export const useGuestStore = defineStore("guest", {
             return (id: number) =>
                 state.guests.find((guest: Guest) => guest.id === id);
         },
-        getActiveGuest(state): Guest | undefined {
-            return state.guests.find((guest: Guest) => guest.id === state.activeGuestId);
+        getCurrentGuest(state): Guest | undefined {
+            return state.guests.find((guest: Guest) => guest.id === state.currentGuestId);
         },
-        getActiveGuestMenuIdOnCourseId(): (courseId: number) => number {
+        getCurrentGuestMenuIdOnCourseId(): (courseId: number) => number {
             return (courseId: number) => {
-                const activeGuest = this.getActiveGuest;
+                const currentGuest = this.getCurrentGuest;
 
-                if (!activeGuest) {
+                if (!currentGuest) {
                     return 0;
                 }
 
-                return activeGuest.selectedMenus.find((menuItem: MenuItem) => menuItem.courseId === courseId)?.id ?? 0;
+                return currentGuest.selectedMenus.find((menuItem: MenuItem) => menuItem.courseId === courseId)?.id ?? 0;
             };
         }
     },
@@ -36,22 +36,22 @@ export const useGuestStore = defineStore("guest", {
                 (g: Guest) => g.id !== guest.id
             );
 
-            if (guest.id == this.activeGuestId && this.guests.length > 0) {
-                this.activeGuestId = this.guests[0].id;
+            if (guest.id == this.currentGuestId && this.guests.length > 0) {
+                this.currentGuestId = this.guests[0].id;
             }
         },
         changeGuestMenu(menuItem: MenuItem) {
-            if (!this.getActiveGuest?.selectedMenus.includes(menuItem)) {
-                const activeGuest = this.getActiveGuest;
+            if (!this.getCurrentGuest?.selectedMenus.includes(menuItem)) {
+                const currentGuest = this.getCurrentGuest;
 
-                if (!activeGuest) {
+                if (!currentGuest) {
                     return;
                 }
 
-                activeGuest.selectedMenus = activeGuest.selectedMenus.filter(
+                currentGuest.selectedMenus = currentGuest.selectedMenus.filter(
                     x => x.courseId !== menuItem.courseId
                 );
-                activeGuest.selectedMenus.push(menuItem);
+                currentGuest.selectedMenus.push(menuItem);
             }
         }
     },

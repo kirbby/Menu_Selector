@@ -1,6 +1,6 @@
 <template>
 <div class="container" style="padding: 50px 0 100px 0">
-    <div v-if="userStore.currentUser">
+    <div v-if="currentUser">
         <UserProfile />
         <HomePage></HomePage>
     </div>
@@ -29,7 +29,8 @@ export default defineComponent({
     setup() {
         const guestStore = useGuestStore();
         const userStore = useUserStore();
-        const { getActiveGuest: activeGuest } = storeToRefs(guestStore);
+        const { getCurrentGuest: currentGuest } = storeToRefs(guestStore);
+        const { getCurrentUser: currentUser } = storeToRefs(userStore);
 
         userStore.currentUser = supabase.auth.user();
         supabase.auth.onAuthStateChange((_, session) => {
@@ -38,7 +39,8 @@ export default defineComponent({
 
         return {
             saveMenu,
-            activeGuest,
+            currentGuest,
+            currentUser,
             userStore,
         };
     },

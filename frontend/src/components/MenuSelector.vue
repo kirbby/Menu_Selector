@@ -39,14 +39,14 @@ export default defineComponent({
         const guestStore = useGuestStore();
         const menuItems = ref<MenuItemType[]>([]);
         const {
-            getActiveGuest: activeGuest,
-            getActiveGuestMenuIdOnCourseId: getActiveGuestMenuIdOnCourseId
+            getCurrentGuest: currentGuest,
+            getCurrentGuestMenuIdOnCourseId: getCurrentGuestMenuIdOnCourseId
         } = storeToRefs(guestStore);
-        const selectedMenuId = ref(getActiveGuestMenuIdOnCourseId.value(props.menuCourseId));
+        const selectedMenuId = ref(getCurrentGuestMenuIdOnCourseId.value(props.menuCourseId));
         const menuCourseName = ref("");
 
-        watch(() => activeGuest.value, function () {
-            selectedMenuId.value = getActiveGuestMenuIdOnCourseId.value(props.menuCourseId);
+        watch(() => currentGuest.value, function () {
+            selectedMenuId.value = getCurrentGuestMenuIdOnCourseId.value(props.menuCourseId);
         });
 
         (async () => menuItems.value = await getMenuItems(props.menuCourseId))();
@@ -59,7 +59,7 @@ export default defineComponent({
         return {
             menuItems,
             setSelectedMenuItem,
-            activeGuest,
+            currentGuest,
             selectedMenuId,
             menuCourseName,
         };

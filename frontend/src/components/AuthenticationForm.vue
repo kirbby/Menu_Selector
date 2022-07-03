@@ -51,10 +51,6 @@ form {
     @apply flex flex-col items-center space-y-4;
 }
 
-.button {
-    @apply bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer;
-}
-
 input[type="email"] {
     @apply border border-gray-300 rounded-lg p-2 text-lg text-black/80 font-semibold;
 }

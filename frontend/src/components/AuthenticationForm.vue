@@ -1,24 +1,11 @@
 <template>
-<form class="row flex flex-center" @submit.prevent="handleLogin">
-    <div class="col-6 form-widget">
-        <h1 class="header">Supabase + Vue 3</h1>
-        <p class="description">Sign in via magic link with your email below</p>
-        <div>
-            <input
-                class="inputField"
-                type="email"
-                placeholder="Your email"
-                v-model="email"
-            />
-        </div>
-        <div>
-            <input
-                type="submit"
-                class="button block"
-                :value="loading ? 'Loading' : 'Send magic link'"
-                :disabled="loading"
-            />
-        </div>
+<form @submit.prevent="handleLogin">
+    <p class="description">Sign in via magic link with your email below</p>
+    <div>
+        <input type="email" placeholder="Your email" v-model="email" />
+    </div>
+    <div>
+        <input class="button" type="submit" :value="loading ? 'Loading' : 'Send magic link'" :disabled="loading" />
     </div>
 </form>
 </template>
@@ -38,7 +25,10 @@ export default {
                 const { error } = await supabase.auth.signIn({
                     email: email.value
                 });
-                if (error) throw error;
+                if (error) {
+                    throw error;
+                }
+
                 alert("Check your email for the login link!");
             } catch (error: any) {
                 alert(error.error_description || error.message);
@@ -55,3 +45,17 @@ export default {
     },
 };
 </script>
+
+<style scoped lang="postcss">
+form {
+    @apply flex flex-col items-center space-y-4;
+}
+
+.button {
+    @apply bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer;
+}
+
+input[type="email"] {
+    @apply border border-gray-300 rounded-lg p-2 text-lg text-black/80 font-semibold;
+}
+</style>

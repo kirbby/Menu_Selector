@@ -13,11 +13,13 @@
 <script lang="ts">
 import { ref } from "vue";
 import supabase from "@/supabaseClient";
+import { useToast } from "vue-toastification";
 
 export default {
     setup() {
         const loading = ref(false);
         const email = ref("");
+        const toast = useToast();
 
         const handleLogin = async () => {
             try {
@@ -29,9 +31,9 @@ export default {
                     throw error;
                 }
 
-                alert("Check your email for the login link!");
+                toast.info("Check your email for the login link!");
             } catch (error: any) {
-                alert(error.error_description || error.message);
+                toast.error(error.error_description || error.message);
             } finally {
                 loading.value = false;
             }

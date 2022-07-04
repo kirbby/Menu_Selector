@@ -12,14 +12,14 @@ export interface paths {
       };
     };
   };
-  "/Guests": {
+  "/guests": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Guests.id"];
-          created_at?: parameters["rowFilter.Guests.created_at"];
-          name?: parameters["rowFilter.Guests.name"];
-          email?: parameters["rowFilter.Guests.email"];
+          created_at?: parameters["rowFilter.guests.created_at"];
+          name?: parameters["rowFilter.guests.name"];
+          email?: parameters["rowFilter.guests.email"];
+          id?: parameters["rowFilter.guests.id"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -41,7 +41,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["Guests"][];
+          schema: definitions["guests"][];
         };
         /** Partial Content */
         206: unknown;
@@ -50,8 +50,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** Guests */
-          Guests?: definitions["Guests"];
+          /** guests */
+          guests?: definitions["guests"];
         };
         query: {
           /** Filtering Columns */
@@ -70,10 +70,10 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Guests.id"];
-          created_at?: parameters["rowFilter.Guests.created_at"];
-          name?: parameters["rowFilter.Guests.name"];
-          email?: parameters["rowFilter.Guests.email"];
+          created_at?: parameters["rowFilter.guests.created_at"];
+          name?: parameters["rowFilter.guests.name"];
+          email?: parameters["rowFilter.guests.email"];
+          id?: parameters["rowFilter.guests.id"];
         };
         header: {
           /** Preference */
@@ -88,14 +88,14 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Guests.id"];
-          created_at?: parameters["rowFilter.Guests.created_at"];
-          name?: parameters["rowFilter.Guests.name"];
-          email?: parameters["rowFilter.Guests.email"];
+          created_at?: parameters["rowFilter.guests.created_at"];
+          name?: parameters["rowFilter.guests.name"];
+          email?: parameters["rowFilter.guests.email"];
+          id?: parameters["rowFilter.guests.id"];
         };
         body: {
-          /** Guests */
-          Guests?: definitions["Guests"];
+          /** guests */
+          guests?: definitions["guests"];
         };
         header: {
           /** Preference */
@@ -108,15 +108,15 @@ export interface paths {
       };
     };
   };
-  "/Users": {
+  "/users": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Users.id"];
-          updated_at?: parameters["rowFilter.Users.updated_at"];
-          username?: parameters["rowFilter.Users.username"];
-          avatar_url?: parameters["rowFilter.Users.avatar_url"];
-          email?: parameters["rowFilter.Users.email"];
+          id?: parameters["rowFilter.users.id"];
+          updated_at?: parameters["rowFilter.users.updated_at"];
+          username?: parameters["rowFilter.users.username"];
+          avatar_url?: parameters["rowFilter.users.avatar_url"];
+          email?: parameters["rowFilter.users.email"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -138,7 +138,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["Users"][];
+          schema: definitions["users"][];
         };
         /** Partial Content */
         206: unknown;
@@ -147,8 +147,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** Users */
-          Users?: definitions["Users"];
+          /** users */
+          users?: definitions["users"];
         };
         query: {
           /** Filtering Columns */
@@ -167,11 +167,11 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Users.id"];
-          updated_at?: parameters["rowFilter.Users.updated_at"];
-          username?: parameters["rowFilter.Users.username"];
-          avatar_url?: parameters["rowFilter.Users.avatar_url"];
-          email?: parameters["rowFilter.Users.email"];
+          id?: parameters["rowFilter.users.id"];
+          updated_at?: parameters["rowFilter.users.updated_at"];
+          username?: parameters["rowFilter.users.username"];
+          avatar_url?: parameters["rowFilter.users.avatar_url"];
+          email?: parameters["rowFilter.users.email"];
         };
         header: {
           /** Preference */
@@ -186,15 +186,15 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Users.id"];
-          updated_at?: parameters["rowFilter.Users.updated_at"];
-          username?: parameters["rowFilter.Users.username"];
-          avatar_url?: parameters["rowFilter.Users.avatar_url"];
-          email?: parameters["rowFilter.Users.email"];
+          id?: parameters["rowFilter.users.id"];
+          updated_at?: parameters["rowFilter.users.updated_at"];
+          username?: parameters["rowFilter.users.username"];
+          avatar_url?: parameters["rowFilter.users.avatar_url"];
+          email?: parameters["rowFilter.users.email"];
         };
         body: {
-          /** Users */
-          Users?: definitions["Users"];
+          /** users */
+          users?: definitions["users"];
         };
         header: {
           /** Preference */
@@ -207,13 +207,13 @@ export interface paths {
       };
     };
   };
-  "/Courses": {
+  "/courses": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Courses.id"];
-          created_at?: parameters["rowFilter.Courses.created_at"];
-          name?: parameters["rowFilter.Courses.name"];
+          id?: parameters["rowFilter.courses.id"];
+          created_at?: parameters["rowFilter.courses.created_at"];
+          name?: parameters["rowFilter.courses.name"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -235,7 +235,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["Courses"][];
+          schema: definitions["courses"][];
         };
         /** Partial Content */
         206: unknown;
@@ -244,8 +244,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** Courses */
-          Courses?: definitions["Courses"];
+          /** courses */
+          courses?: definitions["courses"];
         };
         query: {
           /** Filtering Columns */
@@ -264,9 +264,9 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Courses.id"];
-          created_at?: parameters["rowFilter.Courses.created_at"];
-          name?: parameters["rowFilter.Courses.name"];
+          id?: parameters["rowFilter.courses.id"];
+          created_at?: parameters["rowFilter.courses.created_at"];
+          name?: parameters["rowFilter.courses.name"];
         };
         header: {
           /** Preference */
@@ -281,13 +281,13 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.Courses.id"];
-          created_at?: parameters["rowFilter.Courses.created_at"];
-          name?: parameters["rowFilter.Courses.name"];
+          id?: parameters["rowFilter.courses.id"];
+          created_at?: parameters["rowFilter.courses.created_at"];
+          name?: parameters["rowFilter.courses.name"];
         };
         body: {
-          /** Courses */
-          Courses?: definitions["Courses"];
+          /** courses */
+          courses?: definitions["courses"];
         };
         header: {
           /** Preference */
@@ -300,16 +300,16 @@ export interface paths {
       };
     };
   };
-  "/MenuItems": {
+  "/menuItems": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.MenuItems.id"];
-          created_at?: parameters["rowFilter.MenuItems.created_at"];
-          name?: parameters["rowFilter.MenuItems.name"];
-          description?: parameters["rowFilter.MenuItems.description"];
-          imageUrl?: parameters["rowFilter.MenuItems.imageUrl"];
-          courseId?: parameters["rowFilter.MenuItems.courseId"];
+          id?: parameters["rowFilter.menuItems.id"];
+          created_at?: parameters["rowFilter.menuItems.created_at"];
+          name?: parameters["rowFilter.menuItems.name"];
+          description?: parameters["rowFilter.menuItems.description"];
+          imageUrl?: parameters["rowFilter.menuItems.imageUrl"];
+          courseId?: parameters["rowFilter.menuItems.courseId"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -331,7 +331,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["MenuItems"][];
+          schema: definitions["menuItems"][];
         };
         /** Partial Content */
         206: unknown;
@@ -340,8 +340,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** MenuItems */
-          MenuItems?: definitions["MenuItems"];
+          /** menuItems */
+          menuItems?: definitions["menuItems"];
         };
         query: {
           /** Filtering Columns */
@@ -360,12 +360,12 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.MenuItems.id"];
-          created_at?: parameters["rowFilter.MenuItems.created_at"];
-          name?: parameters["rowFilter.MenuItems.name"];
-          description?: parameters["rowFilter.MenuItems.description"];
-          imageUrl?: parameters["rowFilter.MenuItems.imageUrl"];
-          courseId?: parameters["rowFilter.MenuItems.courseId"];
+          id?: parameters["rowFilter.menuItems.id"];
+          created_at?: parameters["rowFilter.menuItems.created_at"];
+          name?: parameters["rowFilter.menuItems.name"];
+          description?: parameters["rowFilter.menuItems.description"];
+          imageUrl?: parameters["rowFilter.menuItems.imageUrl"];
+          courseId?: parameters["rowFilter.menuItems.courseId"];
         };
         header: {
           /** Preference */
@@ -380,16 +380,16 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.MenuItems.id"];
-          created_at?: parameters["rowFilter.MenuItems.created_at"];
-          name?: parameters["rowFilter.MenuItems.name"];
-          description?: parameters["rowFilter.MenuItems.description"];
-          imageUrl?: parameters["rowFilter.MenuItems.imageUrl"];
-          courseId?: parameters["rowFilter.MenuItems.courseId"];
+          id?: parameters["rowFilter.menuItems.id"];
+          created_at?: parameters["rowFilter.menuItems.created_at"];
+          name?: parameters["rowFilter.menuItems.name"];
+          description?: parameters["rowFilter.menuItems.description"];
+          imageUrl?: parameters["rowFilter.menuItems.imageUrl"];
+          courseId?: parameters["rowFilter.menuItems.courseId"];
         };
         body: {
-          /** MenuItems */
-          MenuItems?: definitions["MenuItems"];
+          /** menuItems */
+          menuItems?: definitions["menuItems"];
         };
         header: {
           /** Preference */
@@ -405,13 +405,7 @@ export interface paths {
 }
 
 export interface definitions {
-  Guests: {
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: number;
+  guests: {
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -421,8 +415,14 @@ export interface definitions {
     name: string;
     /** Format: text */
     email?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
   };
-  Users: {
+  users: {
     /**
      * Format: uuid
      * @description Note:
@@ -438,7 +438,7 @@ export interface definitions {
     /** Format: text */
     email?: string;
   };
-  Courses: {
+  courses: {
     /**
      * Format: bigint
      * @description Note:
@@ -453,7 +453,7 @@ export interface definitions {
     /** Format: text */
     name: string;
   };
-  MenuItems: {
+  menuItems: {
     /**
      * Format: bigint
      * @description Note:
@@ -474,7 +474,7 @@ export interface definitions {
     /**
      * Format: bigint
      * @description Note:
-     * This is a Foreign Key to `Courses.id`.<fk table='Courses' column='id'/>
+     * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
      */
     courseId?: number;
   };
@@ -513,50 +513,50 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description Guests */
-  "body.Guests": definitions["Guests"];
-  /** Format: bigint */
-  "rowFilter.Guests.id": string;
+  /** @description guests */
+  "body.guests": definitions["guests"];
   /** Format: timestamp with time zone */
-  "rowFilter.Guests.created_at": string;
+  "rowFilter.guests.created_at": string;
   /** Format: text */
-  "rowFilter.Guests.name": string;
+  "rowFilter.guests.name": string;
   /** Format: text */
-  "rowFilter.Guests.email": string;
-  /** @description Users */
-  "body.Users": definitions["Users"];
+  "rowFilter.guests.email": string;
   /** Format: uuid */
-  "rowFilter.Users.id": string;
+  "rowFilter.guests.id": string;
+  /** @description users */
+  "body.users": definitions["users"];
+  /** Format: uuid */
+  "rowFilter.users.id": string;
   /** Format: timestamp with time zone */
-  "rowFilter.Users.updated_at": string;
+  "rowFilter.users.updated_at": string;
   /** Format: text */
-  "rowFilter.Users.username": string;
+  "rowFilter.users.username": string;
   /** Format: text */
-  "rowFilter.Users.avatar_url": string;
+  "rowFilter.users.avatar_url": string;
   /** Format: text */
-  "rowFilter.Users.email": string;
-  /** @description Courses */
-  "body.Courses": definitions["Courses"];
+  "rowFilter.users.email": string;
+  /** @description courses */
+  "body.courses": definitions["courses"];
   /** Format: bigint */
-  "rowFilter.Courses.id": string;
+  "rowFilter.courses.id": string;
   /** Format: timestamp with time zone */
-  "rowFilter.Courses.created_at": string;
+  "rowFilter.courses.created_at": string;
   /** Format: text */
-  "rowFilter.Courses.name": string;
-  /** @description MenuItems */
-  "body.MenuItems": definitions["MenuItems"];
+  "rowFilter.courses.name": string;
+  /** @description menuItems */
+  "body.menuItems": definitions["menuItems"];
   /** Format: bigint */
-  "rowFilter.MenuItems.id": string;
+  "rowFilter.menuItems.id": string;
   /** Format: timestamp with time zone */
-  "rowFilter.MenuItems.created_at": string;
+  "rowFilter.menuItems.created_at": string;
   /** Format: text */
-  "rowFilter.MenuItems.name": string;
+  "rowFilter.menuItems.name": string;
   /** Format: text */
-  "rowFilter.MenuItems.description": string;
+  "rowFilter.menuItems.description": string;
   /** Format: text */
-  "rowFilter.MenuItems.imageUrl": string;
+  "rowFilter.menuItems.imageUrl": string;
   /** Format: bigint */
-  "rowFilter.MenuItems.courseId": string;
+  "rowFilter.menuItems.courseId": string;
 }
 
 export interface operations {}

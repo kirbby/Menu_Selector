@@ -14,12 +14,7 @@
     </div>
 
     <div>
-        <input
-            type="submit"
-            class="button"
-            :value="loading ? 'Loading ...' : 'Update'"
-            :disabled="loading"
-        />
+        <input type="submit" class="button" :value="loading ? 'Loading ...' : 'Update'" :disabled="loading" />
     </div>
 
     <div>
@@ -34,6 +29,8 @@
 import supabase from "@/supabaseClient";
 import { useUserStore } from "@/stores/UserStore";
 import { onMounted, ref } from "vue";
+import { useToast } from "vue-toastification";
+import { definitions } from "@/types/supabase";
 
 export default {
     setup() {
@@ -42,6 +39,7 @@ export default {
         const website = ref("");
         const avatar_url = ref("");
         const userStore = useUserStore();
+        const toast = useToast();
 
         async function getProfile() {
             try {
@@ -49,8 +47,8 @@ export default {
                 userStore.currentUser = supabase.auth.user();
 
                 const { data, error, status } = await supabase
-                    .from("profiles")
-                    .select(`username, website, avatar_url`)
+                    .from("guests")
+                    .select(`name, email`)
                     .eq("id", userStore.getCurrentUser?.id)
                     .single();
 
@@ -60,31 +58,29 @@ export default {
 
 
                 if (data) {
-                    username.value = data.username;
-                    website.value = data.website;
-                    avatar_url.value = data.avatar_url;
+                    username.value = data.name;
+                    website.value = data.email;
                 }
             } catch (error: any) {
-                alert(error.message);
+                toast.error(error.message);
             } finally {
                 loading.value = false;
             }
         }
 
         async function updateProfile() {
-            try {
+
+        /*     try {
                 loading.value = true;
                 userStore.currentUser = supabase.auth.user();
 
-                const updates = {
-                    id: userStore.getCurrentUser?.id,
-                    username: username.value,
-                    website: website.value,
-                    avatar_url: avatar_url.value,
-                    updated_at: new Date(),
+                const updates: definitions["guests"] = {
+                    id: userStore.getCurrentUser?.id ?? "",
+                    name: username.value,
+                    email: website.value,
                 };
 
-                const { error } = await supabase.from("profiles").upsert(updates, {
+                const { error } = await supabase.from("guests").upsert(updates, {
                     returning: "minimal", // Don't return the value after inserting
                 });
 
@@ -92,10 +88,10 @@ export default {
                     throw error;
                 }
             } catch (error: any) {
-                alert(error.message);
+                toast.error(error.message);
             } finally {
                 loading.value = false;
-            }
+            } */
         }
 
         async function signOut() {
@@ -106,7 +102,7 @@ export default {
                     throw error;
                 }
             } catch (error: any) {
-                alert(error.message);
+                toast.error(error.message);
             } finally {
                 loading.value = false;
             }

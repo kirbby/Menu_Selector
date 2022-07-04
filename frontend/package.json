@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build-beta": "vue-tsc --noEmit && vite --mode beta --base=/planner-beta/ build",
     "preview": "vite preview",
     "beautify": "eslint --fix .",
     "update-types": "npx openapi-typescript \"https://jqqgchderbtpopobtzar.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxcWdjaGRlcmJ0cG9wb2J0emFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTU5OTMwMzUsImV4cCI6MTk3MTU2OTAzNX0.oaTnuAYA2nBsFUvvb4dhCVYsXTf3d_h5uAxkTECKPOE\" --version=2 --output src/types/supabase.ts"

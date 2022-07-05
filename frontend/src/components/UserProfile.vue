@@ -2,20 +2,16 @@
 <form @submit.prevent="updateProfile">
     <div class="grid grid-col-2">
         <label for="email">Email</label>
-        <input id="email" class="email" type="text" :value="userStore.currentUser.email" disabled />
+        <input id="email" class="disabled-textbox" type="text" :value="userStore.currentUser.email" disabled />
     </div>
     <div class="grid grid-col-2">
         <label for="username">Name</label>
-        <input id="username" type="text" v-model="username" />
-    </div>
-    <div class="grid grid-col-2">
-        <label for="website">Website</label>
-        <input id="website" type="website" v-model="website" />
+        <input id="username" class="disabled-textbox" type="text" :value="userStore.currentUser.email" disabled />
     </div>
 
-    <div>
+    <!--     <div>
         <input type="submit" class="button" :value="loading ? 'Loading ...' : 'Update'" :disabled="loading" />
-    </div>
+    </div> -->
 
     <div>
         <button class="button" @click="signOut" :disabled="loading">
@@ -36,7 +32,7 @@ export default {
     setup() {
         const loading = ref(true);
         const username = ref("");
-        const website = ref("");
+        const email = ref("");
         const avatar_url = ref("");
         const userStore = useUserStore();
         const toast = useToast();
@@ -47,8 +43,8 @@ export default {
                 userStore.currentUser = supabase.auth.user();
 
                 const { data, error, status } = await supabase
-                    .from("guests")
-                    .select(`name, email`)
+                    .from<definitions["users"]>("users")
+                    .select(`username, email`)
                     .eq("id", userStore.getCurrentUser?.id)
                     .single();
 
@@ -58,8 +54,8 @@ export default {
 
 
                 if (data) {
-                    username.value = data.name;
-                    website.value = data.email;
+                    username.value = data.username || "";
+                    email.value = data.email || "";
                 }
             } catch (error: any) {
                 toast.error(error.message);
@@ -116,7 +112,7 @@ export default {
             userStore,
             loading,
             username,
-            website,
+            email,
             avatar_url,
 
             updateProfile,
@@ -131,12 +127,11 @@ form {
     @apply flex flex-col items-center space-y-4;
 }
 
-input[type="text"]
-,input[type="website"] {
+input[type="text"] {
     @apply border border-gray-300 rounded-lg text-black/80 p-2 font-semibold;
 }
 
-.email {
+.disabled-textbox {
     @apply !text-white;
 }
 

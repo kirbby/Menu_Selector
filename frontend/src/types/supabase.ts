@@ -12,102 +12,6 @@ export interface paths {
       };
     };
   };
-  "/guests": {
-    get: {
-      parameters: {
-        query: {
-          created_at?: parameters["rowFilter.guests.created_at"];
-          name?: parameters["rowFilter.guests.name"];
-          email?: parameters["rowFilter.guests.email"];
-          id?: parameters["rowFilter.guests.id"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["guests"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** guests */
-          guests?: definitions["guests"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          created_at?: parameters["rowFilter.guests.created_at"];
-          name?: parameters["rowFilter.guests.name"];
-          email?: parameters["rowFilter.guests.email"];
-          id?: parameters["rowFilter.guests.id"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          created_at?: parameters["rowFilter.guests.created_at"];
-          name?: parameters["rowFilter.guests.name"];
-          email?: parameters["rowFilter.guests.email"];
-          id?: parameters["rowFilter.guests.id"];
-        };
-        body: {
-          /** guests */
-          guests?: definitions["guests"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
   "/users": {
     get: {
       parameters: {
@@ -117,6 +21,7 @@ export interface paths {
           username?: parameters["rowFilter.users.username"];
           avatar_url?: parameters["rowFilter.users.avatar_url"];
           email?: parameters["rowFilter.users.email"];
+          created_at?: parameters["rowFilter.users.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -172,6 +77,7 @@ export interface paths {
           username?: parameters["rowFilter.users.username"];
           avatar_url?: parameters["rowFilter.users.avatar_url"];
           email?: parameters["rowFilter.users.email"];
+          created_at?: parameters["rowFilter.users.created_at"];
         };
         header: {
           /** Preference */
@@ -191,6 +97,7 @@ export interface paths {
           username?: parameters["rowFilter.users.username"];
           avatar_url?: parameters["rowFilter.users.avatar_url"];
           email?: parameters["rowFilter.users.email"];
+          created_at?: parameters["rowFilter.users.created_at"];
         };
         body: {
           /** users */
@@ -405,23 +312,6 @@ export interface paths {
 }
 
 export interface definitions {
-  guests: {
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-    /** Format: text */
-    name: string;
-    /** Format: text */
-    email?: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: string;
-  };
   users: {
     /**
      * Format: uuid
@@ -437,6 +327,11 @@ export interface definitions {
     avatar_url?: string;
     /** Format: text */
     email?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
   };
   courses: {
     /**
@@ -513,16 +408,6 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description guests */
-  "body.guests": definitions["guests"];
-  /** Format: timestamp with time zone */
-  "rowFilter.guests.created_at": string;
-  /** Format: text */
-  "rowFilter.guests.name": string;
-  /** Format: text */
-  "rowFilter.guests.email": string;
-  /** Format: uuid */
-  "rowFilter.guests.id": string;
   /** @description users */
   "body.users": definitions["users"];
   /** Format: uuid */
@@ -535,6 +420,8 @@ export interface parameters {
   "rowFilter.users.avatar_url": string;
   /** Format: text */
   "rowFilter.users.email": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.users.created_at": string;
   /** @description courses */
   "body.courses": definitions["courses"];
   /** Format: bigint */

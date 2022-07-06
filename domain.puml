@@ -1,0 +1,12 @@
+@startuml test
+object user
+object guest
+object menuItem
+object course
+object role
+
+user "1" -- "n" guest
+user "1" -- "n" role
+guest "1" -- "n" menuItem
+course "1" -- "n" menuItem
+@enduml

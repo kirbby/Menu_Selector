@@ -3,9 +3,9 @@
     <div class="header">{{ menuCourseName }}</div>
     <div class="list">
         <div class="menu-item" v-for="menuItem in menuItems" :key="menuItem.id">
-            <MenuItem :menu-item="menuItem" :is-selected="menuItem.id === selectedMenuId" :radio-group="'menu-' + menuItem.courseId"
-                      @menu-item-selected="setSelectedMenuItem">
-            </MenuItem>
+            <MenuItemComponent :menu-item="menuItem" :is-selected="menuItem.id === selectedMenuId" :radio-group="'menu-' + menuItem.courseId"
+                               @menu-item-selected="setSelectedMenuItem">
+            </MenuItemComponent>
         </div>
     </div>
 </div>
@@ -18,12 +18,12 @@ import {
     ref,
     watch
 } from "vue";
-import MenuItem from "@/components/MenuItem.vue";
-import MenuItemType from "@/types/MenuItem";
+import MenuItemComponent from "@/components/MenuItem.vue";
 import { getMenuItems } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";
 import { storeToRefs } from "pinia";
 import { getCourse } from "@/interfaces/course";
+import MenuItem from "@/types/MenuItem";
 
 export default defineComponent({
     props: {
@@ -33,11 +33,11 @@ export default defineComponent({
         },
     },
     components: {
-        MenuItem,
+        MenuItemComponent,
     },
     setup(props) {
         const guestStore = useGuestStore();
-        const menuItems = ref<MenuItemType[]>([]);
+        const menuItems = ref<MenuItem[]>([]);
         const {
             getCurrentGuest: currentGuest,
             getCurrentGuestMenuIdOnCourseId: getCurrentGuestMenuIdOnCourseId
@@ -52,7 +52,7 @@ export default defineComponent({
         (async () => menuItems.value = await getMenuItems(props.menuCourseId))();
         (async () => menuCourseName.value = (await getCourse(props.menuCourseId))?.name ?? "")();
 
-        function setSelectedMenuItem(menuItem: MenuItemType) {
+        function setSelectedMenuItem(menuItem: MenuItem) {
             guestStore.changeGuestMenu(menuItem);
         }
 

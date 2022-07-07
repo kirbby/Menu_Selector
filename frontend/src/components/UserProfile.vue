@@ -26,7 +26,7 @@ import supabase from "@/supabaseClient";
 import { useUserStore } from "@/stores/UserStore";
 import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
-import { definitions } from "@/types/supabase";
+import User from "@/types/User";
 
 export default {
     setup() {
@@ -43,7 +43,7 @@ export default {
                 userStore.currentUser = supabase.auth.user();
 
                 const { data, error, status } = await supabase
-                    .from<definitions["users"]>("users")
+                    .from<User>("users")
                     .select(`username, email`)
                     .eq("id", userStore.getCurrentUser?.id)
                     .single();
@@ -70,7 +70,7 @@ export default {
                 loading.value = true;
                 userStore.currentUser = supabase.auth.user();
 
-                const updates: definitions["guests"] = {
+                const updates: Guests = {
                     id: userStore.getCurrentUser?.id ?? "",
                     name: username.value,
                     email: website.value,

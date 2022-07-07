@@ -26,7 +26,7 @@ export const useGuestStore = defineStore("guest", {
                     return 0;
                 }
 
-                return currentGuest.selectedMenus.find((menuItem: MenuItem) => menuItem.courseId === courseId)?.id ?? 0;
+                return currentGuest.selectedMenuItems.find((menuItem: MenuItem) => menuItem.courseId === courseId)?.id ?? 0;
             };
         }
     },
@@ -41,17 +41,17 @@ export const useGuestStore = defineStore("guest", {
             }
         },
         changeGuestMenu(menuItem: MenuItem) {
-            if (!this.getCurrentGuest?.selectedMenus.includes(menuItem)) {
+            if (!this.getCurrentGuest?.selectedMenuItems.includes(menuItem)) {
                 const currentGuest = this.getCurrentGuest;
 
                 if (!currentGuest) {
                     return;
                 }
 
-                currentGuest.selectedMenus = currentGuest.selectedMenus.filter(
+                currentGuest.selectedMenuItems = currentGuest.selectedMenuItems.filter(
                     x => x.courseId !== menuItem.courseId
                 );
-                currentGuest.selectedMenus.push(menuItem);
+                currentGuest.selectedMenuItems.push(menuItem);
             }
         }
     },

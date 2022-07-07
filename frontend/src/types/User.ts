@@ -1,9 +1,11 @@
+import Guest from "./Guest";
+import Role from "./Role";
 import { definitions } from "./supabase";
 
-interface User {
-    user: definitions["users"]
-    roles: definitions["roles"][]
-    guests: definitions["guests"][]
-}
+type User = definitions["users"]
+            & {
+                roles: Role[],
+                guests: Guest[]
+            };
 
 export default User;

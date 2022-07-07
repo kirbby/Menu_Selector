@@ -1,7 +1,6 @@
+import Course from "./Course";
 import { definitions } from "./supabase";
 
-interface MenuItem {
-    menuItem: definitions["menuItems"]
-}
+type MenuItem = definitions["menuItems"] & { course: Course };
 
 export default MenuItem;

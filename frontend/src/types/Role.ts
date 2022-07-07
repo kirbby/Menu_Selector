@@ -1,7 +1,5 @@
 import { definitions } from "./supabase";
 
-interface Role {
-    role: definitions["roles"]
-}
+type Role = definitions["roles"];
 
 export default Role;

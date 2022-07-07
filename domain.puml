@@ -1,4 +1,6 @@
 @startuml test
+left to right direction
+
 object user
 object guest
 object menuItem
@@ -9,4 +11,5 @@ user "1" -- "n" guest
 user "1" -- "n" role
 guest "1" -- "n" menuItem
 course "1" -- "n" menuItem
+
 @enduml

@@ -1,6 +1,7 @@
+import { definitions } from "./supabase";
+
 interface Course {
-    id: number;
-    name: string;
+    course: definitions["courses"]
 }
 
 export default Course;

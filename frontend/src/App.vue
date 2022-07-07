@@ -6,7 +6,6 @@
     </div>
     <AuthenticationForm v-else />
 </div>
-
 </template>
 
 <script lang="ts">

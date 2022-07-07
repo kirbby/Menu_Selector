@@ -1,9 +1,7 @@
+import { definitions } from "./supabase";
+
 interface MenuItem {
-    id: number;
-    name: string;
-    description: string;
-    imageUrl: string;
-    courseId: number;
+    menuItem: definitions["menuItems"]
 }
 
 export default MenuItem;

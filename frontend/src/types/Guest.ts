@@ -1,10 +1,9 @@
-import MenuItem from "./MenuItem";
+import { definitions } from "./supabase";
 
 interface Guest {
-    id: number;
-    name: string;
-    email: string;
-    selectedMenus: MenuItem[];
+    user: definitions["users"]
+    guest: definitions["guests"]
+    selectedMenus: definitions["menuItems"][]
 }
 
 export default Guest;

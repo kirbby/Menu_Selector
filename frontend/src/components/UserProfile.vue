@@ -57,8 +57,12 @@ export default {
                     username.value = data.username || "";
                     email.value = data.email || "";
                 }
-            } catch (error: any) {
-                toast.error(error.message);
+            } catch (error: unknown) {
+                if (typeof error === "string") {
+                    toast.error(error);
+                } else if (error instanceof Error) {
+                    toast.error(error.message);
+                }
             } finally {
                 loading.value = false;
             }
@@ -97,8 +101,12 @@ export default {
                 if (error) {
                     throw error;
                 }
-            } catch (error: any) {
-                toast.error(error.message);
+            } catch (error: unknown) {
+                if (typeof error === "string") {
+                    toast.error(error);
+                } else if (error instanceof Error) {
+                    toast.error(error.message);
+                }
             } finally {
                 loading.value = false;
             }

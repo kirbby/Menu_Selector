@@ -23,7 +23,7 @@ export default defineComponent({
         const { getCurrentGuest: currentGuest, getGuests: guests } = storeToRefs(guestStore);
 
         function onGuestClick(guest: Guest) {
-            guestStore.$state.currentGuestId = guest.id;
+            guestStore.$state.currentGuest = guest;
         }
 
         function deleteGuest(guest: Guest) {

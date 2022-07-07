@@ -47,7 +47,7 @@ export default defineComponent({
             };
 
             guestStore.$state.guests.push(newGuest);
-            guestStore.$state.currentGuestId = newGuest.id;
+            guestStore.$state.currentGuest = newGuest;
 
             name.value = "";
         }

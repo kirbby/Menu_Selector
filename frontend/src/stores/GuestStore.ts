@@ -5,7 +5,7 @@ import { defineStore } from "pinia";
 export const useGuestStore = defineStore("guest", {
     state: () => ({
         guests: [] as Guest[],
-        currentGuestId: 0,
+        currentGuest: undefined as Guest | undefined,
     }),
     getters: {
         getGuests(state): Guest[] {
@@ -16,7 +16,7 @@ export const useGuestStore = defineStore("guest", {
                 state.guests.find((guest: Guest) => guest.id === id);
         },
         getCurrentGuest(state): Guest | undefined {
-            return state.guests.find((guest: Guest) => guest.id === state.currentGuestId);
+            return state.currentGuest;
         },
         getCurrentGuestMenuIdOnCourseId(): (courseId: number) => number {
             return (courseId: number) => {
@@ -36,8 +36,8 @@ export const useGuestStore = defineStore("guest", {
                 (g: Guest) => g.id !== guest.id
             );
 
-            if (guest.id == this.currentGuestId && this.guests.length > 0) {
-                this.currentGuestId = this.guests[0].id;
+            if (guest.id == this.currentGuest?.id && this.guests.length > 0) {
+                this.currentGuest = this.guests[0];
             }
         },
         changeGuestMenu(menuItem: MenuItem) {

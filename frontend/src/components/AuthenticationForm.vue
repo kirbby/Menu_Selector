@@ -34,8 +34,12 @@ export default {
                 }
 
                 toast.info("Check your email for the login link!");
-            } catch (error: any) {
-                toast.error(error.error_description || error.message);
+            } catch (error: unknown) {
+                if (typeof error === "string") {
+                    console.error(error);
+                } else if (error instanceof Error) {
+                    console.error(error.message);
+                }
             } finally {
                 loading.value = false;
             }

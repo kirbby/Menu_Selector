@@ -1,7 +1,7 @@
 <template>
 <div>
     <Transition>
-        <div v-if="isGuestInputVisible"  class="guest-data">
+        <form v-if="isGuestInputVisible" class="guest-data" @submit.prevent="addGuest">
             <label class="guest-label">
                 <span>Name:</span>
                 <input class="input" type="text" v-model="name" />
@@ -10,11 +10,11 @@
                 <span>Email:</span>
                 <input class="input" type="email" v-model="email" />
             </label>
-            <button class="button add-button" @click="addGuest">
+            <button class="button add-button" type="submit">
                 Gast hinzufügen
             </button>
             <button class="button close-button" @click="isGuestInputVisible = false">X</button>
-        </div>
+        </form>
     </Transition>
     <Transition name="button">
         <button v-if="!isGuestInputVisible" class="button" @click="isGuestInputVisible = true">+</button>

@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import { useGuestStore } from "@/stores/GuestStore";
+import Guest from "@/types/Guest";
 import { computed, defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -39,11 +40,10 @@ export default defineComponent({
                 return;
             }
 
-            const newGuest = {
+            const newGuest: Guest = {
                 id: Math.random(),
                 name: name.value,
-                email: email.value,
-                selectedMenus: [],
+                selectedMenuItems: [],
             };
 
             guestStore.$state.guests.push(newGuest);

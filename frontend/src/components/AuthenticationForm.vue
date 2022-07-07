@@ -26,6 +26,8 @@ export default {
                 loading.value = true;
                 const { error } = await supabase.auth.signIn({
                     email: email.value
+                }, {
+                    redirectTo: window.location.origin + import.meta.env.BASE_URL
                 });
                 if (error) {
                     throw error;

@@ -6,14 +6,14 @@
                 <span>Name:</span>
                 <input class="input" type="text" v-model="name" />
             </label>
-            <label class="guest-label">
+            <!--   <label class="guest-label">
                 <span>Email:</span>
                 <input class="input" type="email" v-model="email" />
-            </label>
+            </label> -->
             <button class="button add-button" type="submit">
                 Gast hinzufügen
             </button>
-            <button class="button close-button" @click="isGuestInputVisible = false">X</button>
+            <!-- <button class="button close-button" @click="isGuestInputVisible = false">X</button> -->
         </form>
     </Transition>
     <Transition name="button">
@@ -65,7 +65,7 @@ export default defineComponent({
 
 <style scoped lang="postcss">
 .guest-data {
-    @apply w-fit py-8 px-12 m-auto flex flex-col space-y-6 border-2 border-gray-300 rounded-lg relative;
+    @apply w-fit py-8 px-4 m-auto flex flex-col space-y-4 border-2 border-gray-300 rounded-lg relative;
 }
 
 .guest-label {
@@ -82,11 +82,11 @@ export default defineComponent({
 
 .add-button {
     @apply mx-auto;
-    transition-delay: 1s;
 }
 
 .close-button {
-    @apply absolute top-0 right-0 !px-3 !py-1 !m-1;
+    @apply absolute top-0 right-0 !p-2 !py-1 !m-1;
+    transition-delay: 1s;
 }
 
 .v-enter-active {

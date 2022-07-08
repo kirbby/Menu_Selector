@@ -26,7 +26,7 @@ export default defineComponent({
     components: {
         MenuSelector,
         GuestList,
-        GuestAdd
+        // GuestAdd
     },
     setup() {
         const guestStore = useGuestStore();
@@ -56,6 +56,6 @@ export default defineComponent({
 }
 
 .guest-list {
-    @apply absolute top-10 right-10 bg-blue-400 p-4 rounded-lg;
+    @apply absolute top-2 right-2 bg-blue-400 rounded-lg;
 }
 </style>

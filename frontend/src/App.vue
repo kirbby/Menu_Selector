@@ -1,9 +1,7 @@
 <template>
-<div class="container" style="padding: 50px 0 100px 0">
-    <div v-if="currentUser">
-        <UserProfile />
-        <HomePage></HomePage>
-    </div>
+<div>
+    <UserProfile v-if="currentUser" />
+    <HomePage v-if="currentUser"></HomePage>
     <AuthenticationForm v-else />
 </div>
 </template>
@@ -51,13 +49,13 @@ export default defineComponent({
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: white;
-    margin-top: 60px;
-    margin-bottom: 60px;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+    @apply text-white text-center h-full w-full overflow-hidden;
 }
 
-body {
-    @apply bg-gray-900;
+html,
+ body {
+    @apply bg-gray-900 w-screen h-screen;
 }
 </style>

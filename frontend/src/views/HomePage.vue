@@ -1,7 +1,7 @@
 <template>
-<div class="home-page">
+<div class="homepage">
     <GuestList class="guest-list"></GuestList>
-    <GuestAdd class="guest-add"></GuestAdd>
+    <!-- <GuestAdd class="guest-add"></GuestAdd> -->
     <!--  <div class="flex flex-row justify-center space-x-4">
         <div v-if="currentGuest?.id">Menü für {{ currentGuest.name }}:</div>
         <button class="button save-button" @click="saveMenu">
@@ -45,8 +45,14 @@ export default defineComponent({
     @apply py-2 px-5 bg-blue-500 text-white rounded-lg;
 }
 
-.home-page {
-    @apply space-y-10;
+.homepage {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+    @apply space-y-10 relative pb-10 overflow-y-auto h-full;
+}
+
+.homepage::-webkit-scrollbar {
+    @apply hidden;
 }
 
 .guest-list {

@@ -1,13 +1,10 @@
 <template>
 <form @submit.prevent="updateProfile">
-    <div class="grid grid-col-2">
-        <label for="email">Email</label>
-        <input id="email" class="disabled-textbox" type="text" :value="userStore.currentUser.email" disabled />
-    </div>
-    <div class="grid grid-col-2">
-        <label for="username">Name</label>
-        <input id="username" class="disabled-textbox" type="text" :value="userStore.currentUser.email" disabled />
-    </div>
+    <!-- <label for="email">Email</label>
+    <input id="email" class="disabled-textbox" type="text" :value="userStore.currentUser.email" disabled /> -->
+
+    <!-- <label for="username">Name</label> -->
+    <div id="username">{{ userStore.currentUser.email }}</div>
 
     <!--     <div>
         <input type="submit" class="button" :value="loading ? 'Loading ...' : 'Update'" :disabled="loading" />
@@ -132,18 +129,18 @@ export default {
 
 <style scoped lang="postcss">
 form {
-    @apply flex flex-col items-center space-y-4;
+    @apply w-full px-2 py-1 flex flex-row items-center justify-between space-x-4 bg-blue-800/80;
 }
 
 input[type="text"] {
     @apply border border-gray-300 rounded-lg text-black/80 p-2 font-semibold;
 }
 
-.disabled-textbox {
-    @apply !text-white;
-}
-
 label {
     @apply pr-3;
+}
+
+.button {
+    @apply px-3 py-1;
 }
 </style>

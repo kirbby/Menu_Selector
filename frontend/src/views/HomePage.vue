@@ -40,7 +40,7 @@ export default defineComponent({
 
 <style scoped lang="postcss">
 .homepage {
-    @apply relative py-6 h-full space-y-4 overflow-y-auto overflow-x-hidden scrollbar-hide;
+    @apply relative py-8 h-full space-y-4 overflow-y-auto overflow-x-hidden scrollbar-hide;
 }
 
 .menu-selector {

@@ -1,7 +1,7 @@
 <template>
 <div>
     <Transition name="button">
-        <button v-if="!isGuestListVisible" class="button open-guest-list" @click="isGuestListVisible = true">-</button>
+        <button v-if="!isGuestListVisible" class="button open-guest-list" @click="isGuestListVisible = true">G</button>
     </Transition>
     <Transition>
         <div v-if="isGuestListVisible" class="guest-list">

@@ -1,7 +1,6 @@
 <template>
 <div class="homepage">
     <GuestList class="guest-list"></GuestList>
-    <!-- <GuestAdd class="guest-add"></GuestAdd> -->
     <!--  <div class="flex flex-row justify-center space-x-4">
         <div v-if="currentGuest?.id">Menü für {{ currentGuest.name }}:</div>
         <button class="button save-button" @click="saveMenu">
@@ -20,13 +19,11 @@ import { saveMenu } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";
 import GuestList from "@/components/GuestList.vue";
 import { storeToRefs } from "pinia";
-import GuestAdd from "@/components/GuestAdd.vue";
 
 export default defineComponent({
     components: {
         MenuSelector,
         GuestList,
-        // GuestAdd
     },
     setup() {
         const guestStore = useGuestStore();

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="w-full h-full">
     <UserProfile v-if="currentUser" />
     <HomePage v-if="currentUser"></HomePage>
     <AuthenticationForm v-else />
@@ -51,7 +51,7 @@ export default defineComponent({
     -moz-osx-font-smoothing: grayscale;
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;  /* Firefox */
-    @apply text-white text-center h-full w-full overflow-hidden;
+    @apply text-white text-center w-screen h-screen overflow-hidden;
 }
 
 html,

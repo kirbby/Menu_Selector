@@ -1,10 +1,10 @@
 <template>
 <div>
     <Transition name="button">
-        <button v-if="!isGuestListVisible" class="button" @click="isGuestListVisible = true">-</button>
+        <button v-if="!isGuestListVisible" class="button open-guest-list" @click="isGuestListVisible = true">-</button>
     </Transition>
     <Transition>
-        <div v-if="isGuestListVisible">
+        <div v-if="isGuestListVisible" class="guest-list">
             <button class="button close-button" @click="isGuestListVisible = false">X</button>
             <div class="guest-container">
                 <div>Deine Gäste:</div>
@@ -35,7 +35,7 @@ export default defineComponent({
     setup() {
         const guestStore = useGuestStore();
         const { getCurrentGuest: currentGuest, getGuests: guests } = storeToRefs(guestStore);
-        const isGuestListVisible = ref(true);
+        const isGuestListVisible = ref(false);
         const name = ref("");
 
         function onGuestClick(guest: Guest) {
@@ -77,8 +77,16 @@ export default defineComponent({
 </script>
 
 <style scoped lang="postcss">
+.open-guest-list {
+    @apply fixed top-12 right-5 border;
+}
+
+.guest-list {
+    @apply w-fit mx-auto bg-blue-400 rounded-lg relative;
+}
+
 .guest-container {
-    @apply w-fit m-4 flex flex-col space-y-2;
+    @apply w-fit p-3 flex flex-col space-y-2;
 }
 
 .guest-item {

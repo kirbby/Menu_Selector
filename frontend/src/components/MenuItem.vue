@@ -67,7 +67,7 @@ label {
 }
 
 .name {
-    @apply text-lg font-bold break-words;
+    @apply text-lg leading-6 tracking-wide font-bold break-words;
 }
 
 .image {

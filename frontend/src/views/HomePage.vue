@@ -1,14 +1,15 @@
 <template>
 <div class="homepage">
-    <GuestList class="guest-list"></GuestList>
+    <GuestList></GuestList>
     <!--  <div class="flex flex-row justify-center space-x-4">
-        <div v-if="currentGuest?.id">Menü für {{ currentGuest.name }}:</div>
-        <button class="button save-button" @click="saveMenu">
-            Menü speichern
-        </button>
-    </div> -->
+                    <div v-if="currentGuest?.id">Menü für {{ currentGuest.name }}:</div>
+                    <button class="button save-button" @click="saveMenu">
+                        Menü speichern
+                    </button>
+                </div> -->
     <MenuSelector class="menu-selector" :menu-course-id="1"></MenuSelector>
     <MenuSelector class="menu-selector" :menu-course-id="2"></MenuSelector>
+    <MenuSelector class="menu-selector" :menu-course-id="3"></MenuSelector>
 </div>
 </template>
 
@@ -39,14 +40,10 @@ export default defineComponent({
 
 <style scoped lang="postcss">
 .homepage {
-    @apply space-y-10 relative pb-16 overflow-y-auto overflow-x-hidden h-full scrollbar-hide;
-}
-
-.guest-list {
-    @apply absolute top-2 right-2 bg-blue-400 rounded-lg;
+    @apply relative py-6 h-full space-y-4 overflow-y-auto overflow-x-hidden scrollbar-hide;
 }
 
 .menu-selector {
-    @apply h-1/3 overflow-hidden;
+    @apply h-1/3;
 }
 </style>

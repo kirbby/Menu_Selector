@@ -49,8 +49,6 @@ export default defineComponent({
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
     @apply text-white text-center w-screen h-screen overflow-hidden;
 }
 

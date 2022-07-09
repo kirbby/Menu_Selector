@@ -43,13 +43,7 @@ export default defineComponent({
 }
 
 .homepage {
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
-    @apply space-y-10 relative pb-16 overflow-y-auto h-full;
-}
-
-.homepage::-webkit-scrollbar {
-    @apply hidden;
+    @apply space-y-10 relative pb-16 overflow-y-auto overflow-x-hidden h-full scrollbar-hide;
 }
 
 .guest-list {

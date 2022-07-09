@@ -1,11 +1,10 @@
 <template>
 <form @submit.prevent="handleLogin">
-    <p class="description">Sign in via magic link with your email below</p>
-    <div>
-        <input type="email" placeholder="Your email" v-model="email" />
-    </div>
-    <div>
-        <input class="button" type="submit" :value="loading ? 'Loading' : 'Send magic link'" :disabled="loading" />
+    <h1>Cater <br><span class="text-green-700">Buddy</span></h1>
+    <div class="sign-in-container">
+        <p class="description">Melde dich mit deiner E-Mail per Einmalcode an</p>
+        <input type="email" placeholder="E-Mail" v-model="email" />
+        <input class="button px-6" type="submit" :value="loading ? 'Loading' : 'Login'" :disabled="loading" />
     </div>
 </form>
 </template>
@@ -33,7 +32,7 @@ export default {
                     throw error;
                 }
 
-                toast.info("Check your email for the login link!");
+                toast.info("Du bekommst ein E-Mail mit dem Login Link!");
             } catch (error: unknown) {
                 if (typeof error === "string") {
                     console.error(error);
@@ -56,10 +55,22 @@ export default {
 
 <style scoped lang="postcss">
 form {
-    @apply flex flex-col items-center space-y-4;
+    @apply h-full py-10 mb-24 flex flex-col items-center justify-center space-y-8;
 }
 
 input[type="email"] {
     @apply border border-gray-300 rounded-lg p-2 text-lg text-black/80 font-semibold;
+}
+
+h1 {
+    @apply text-6xl text-gray-300 font-bold;
+}
+
+.sign-in-container {
+    @apply flex flex-col items-center space-y-4;
+}
+
+.description {
+    @apply text-gray-300 text-center text-sm;
 }
 </style>

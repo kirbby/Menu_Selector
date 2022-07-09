@@ -1,12 +1,10 @@
 <template>
-<div>
+<div class="menu-selector">
     <div class="header">{{ menuCourseName }}</div>
     <div class="list">
-        <div class="menu-item" v-for="menuItem in menuItems" :key="menuItem.id">
-            <MenuItemComponent :menu-item="menuItem" :is-selected="menuItem.id === selectedMenuId" :radio-group="'menu-' + menuItem.courseId"
-                               @menu-item-selected="setSelectedMenuItem">
-            </MenuItemComponent>
-        </div>
+        <MenuItemComponent v-for="menuItem in menuItems" :key="menuItem.id" :menu-item="menuItem" :is-selected="menuItem.id === selectedMenuId" :radio-group="'menu-' + menuItem.courseId"
+                           @menu-item-selected="setSelectedMenuItem">
+        </MenuItemComponent>
     </div>
 </div>
 </template>
@@ -68,12 +66,12 @@ export default defineComponent({
 </script>
 
 <style scoped lang="postcss">
-.list {
-    @apply grid grid-cols-2 justify-around;
+.menu-selector {
+    @apply h-full flex flex-col;
 }
 
-.menu-item {
-    @apply px-10;
+.list {
+    @apply flex flex-1 overflow-x-auto space-x-2 px-8 my-2 scrollbar-hide;
 }
 
 .header {

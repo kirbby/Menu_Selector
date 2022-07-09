@@ -1,16 +1,12 @@
 <template>
-<div>
-    <label>
-        <input type="radio" :name="$props.radioGroup" @change="update($event, menuItem)" :value="menuItem.id" :checked="selected" />
-        <div class="item">
-            <div class="image-container">
-                <img v-if="menuItem.imageUrl != null && menuItem.imageUrl != ''" :src="menuItem.imageUrl" />
-            </div>
-            <div class="name">{{ menuItem.name }}</div>
-            <div class="description">{{ menuItem.description }}</div>
-        </div>
-    </label>
-</div>
+<label>
+    <input type="radio" :name="$props.radioGroup" @change="update($event, menuItem)" :value="menuItem.id" :checked="selected" />
+    <div class="item">
+        <img class="image" v-if="menuItem.imageUrl != null && menuItem.imageUrl != ''" :src="menuItem.imageUrl" />
+        <div class="name">{{ menuItem.name }}</div>
+        <!-- <div class="description">{{ menuItem.description }}</div> -->
+    </div>
+</label>
 </template>
 
 <script lang="ts">
@@ -63,23 +59,19 @@ export default defineComponent({
 
 <style scoped lang="postcss">
 .item {
-    @apply border-2 border-gray-300 rounded-lg p-4 space-y-2;
+    @apply flex flex-col p-4 md:p-8 justify-evenly border-2 border-gray-300 rounded-lg h-full;
 }
 
 label {
-    @apply flex flex-col space-y-4 justify-between;
+    @apply flex flex-col justify-between mx-auto flex-shrink-0 w-1/2 h-full;
 }
 
 .name {
-    @apply text-2xl font-bold;
+    @apply text-lg font-bold break-words;
 }
 
-.image-container {
-    @apply flex flex-row justify-center items-center;
-}
-
-.image-container img {
-    @apply h-40 rounded;
+.image {
+    @apply flex mx-auto justify-center items-center max-h-20 md:max-h-full rounded;
 }
 
 input[type="radio"] {

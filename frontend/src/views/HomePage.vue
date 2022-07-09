@@ -7,8 +7,8 @@
             Menü speichern
         </button>
     </div> -->
-    <MenuSelector :menu-course-id="1"></MenuSelector>
-    <MenuSelector :menu-course-id="2"></MenuSelector>
+    <MenuSelector class="menu-selector" :menu-course-id="1"></MenuSelector>
+    <MenuSelector class="menu-selector" :menu-course-id="2"></MenuSelector>
 </div>
 </template>
 
@@ -38,15 +38,15 @@ export default defineComponent({
 </script>
 
 <style scoped lang="postcss">
-:deep(.button) {
-    @apply py-2 px-5 bg-blue-500 text-white rounded-lg;
-}
-
 .homepage {
     @apply space-y-10 relative pb-16 overflow-y-auto overflow-x-hidden h-full scrollbar-hide;
 }
 
 .guest-list {
     @apply absolute top-2 right-2 bg-blue-400 rounded-lg;
+}
+
+.menu-selector {
+    @apply h-1/3 overflow-hidden;
 }
 </style>

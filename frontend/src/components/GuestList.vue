@@ -6,7 +6,7 @@
     <Transition>
         <div v-if="isGuestListVisible">
             <button class="button close-button" @click="isGuestListVisible = false">X</button>
-            <div class="container">
+            <div class="guest-container">
                 <div>Deine Gäste:</div>
                 <ul>
                     <li v-for="guest in guests" :key="guest.id" @click="onGuestClick(guest)" class="guest-item"
@@ -77,7 +77,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="postcss">
-.container {
+.guest-container {
     @apply w-fit m-4 flex flex-col space-y-2;
 }
 

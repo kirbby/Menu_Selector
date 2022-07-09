@@ -1,7 +1,7 @@
 <template>
 <div>
     <Transition name="button">
-        <button v-if="!isGuestListVisible" class="button open-guest-list" @click="isGuestListVisible = true">-</button>
+        <button v-if="!isGuestListVisible" class="button open-guest-list" @click="isGuestListVisible = true">G</button>
     </Transition>
     <Transition>
         <div v-if="isGuestListVisible" class="guest-list">
@@ -82,7 +82,7 @@ export default defineComponent({
 }
 
 .guest-list {
-    @apply w-fit mx-auto bg-blue-400 rounded-lg relative;
+    @apply w-fit mx-auto bg-gray-700 rounded-lg relative;
 }
 
 .guest-container {
@@ -90,7 +90,7 @@ export default defineComponent({
 }
 
 .guest-item {
-    @apply flex flex-row justify-between space-x-2 px-2 rounded-md cursor-pointer;
+    @apply flex flex-row justify-between space-x-2 px-2 rounded cursor-pointer;
 }
 
 .guest-item.active {
@@ -102,7 +102,7 @@ export default defineComponent({
 }
 
 .add-button {
-    @apply m-auto px-2 bg-blue-500 text-3xl rounded-lg;
+    @apply m-auto px-2 bg-blue-500 text-3xl rounded;
 }
 
 .add-container {
@@ -110,11 +110,11 @@ export default defineComponent({
 }
 
 .new-guest-name {
-    @apply w-40 pl-2 rounded-lg text-black;
+    @apply w-40 pl-2 rounded text-black;
 }
 
 .close-button {
-    @apply absolute top-0 right-0 !p-2 !py-1 !m-1;
+    @apply absolute top-0 right-2 !px-3 !py-1 !m-1;
 }
 
 .v-enter-active {

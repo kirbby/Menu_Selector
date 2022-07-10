@@ -9,5 +9,6 @@ export const useUserStore = defineStore("user", {
         getCurrentUser(state): User | null {
             return state.currentUser;
         },
-    }
+    },
+    persist: true,
 });

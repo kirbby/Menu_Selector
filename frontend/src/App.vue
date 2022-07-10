@@ -1,13 +1,13 @@
 <template>
 <UserProfile class="profile-component" v-if="currentUser" />
+<button @click="guestStore.loadCurrentUserGuests();">Load Guests</button>
 <HomePage class="homepage-component" v-if="currentUser"></HomePage>
 <AuthenticationForm v-else />
 </template>
 
 <script lang="ts">
 import { storeToRefs } from "pinia";
-import { defineComponent } from "vue";
-import { saveMenu } from "./interfaces/menu";
+import { defineComponent, watch } from "vue";
 import { useGuestStore } from "./stores/GuestStore";
 import HomePage from "@/views/HomePage.vue";
 import UserProfile from "@/components/UserProfile.vue";
@@ -32,11 +32,17 @@ export default defineComponent({
             userStore.currentUser = session?.user ?? null;
         });
 
+        watch(() => currentUser.value, function () {
+            if (currentUser.value?.id) {
+                guestStore.loadCurrentUserGuests();
+            }
+        });
+
         return {
-            saveMenu,
             currentGuest,
             currentUser,
             userStore,
+            guestStore,
         };
     },
 });

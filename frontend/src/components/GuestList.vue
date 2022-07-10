@@ -35,7 +35,7 @@ export default defineComponent({
     setup() {
         const guestStore = useGuestStore();
         const { getCurrentGuest: currentGuest, getGuests: guests } = storeToRefs(guestStore);
-        const isGuestListVisible = ref(false);
+        const isGuestListVisible = ref(true);
         const name = ref("");
 
         function onGuestClick(guest: Guest) {
@@ -52,9 +52,9 @@ export default defineComponent({
             }
 
             const newGuest: Guest = {
-                id: Math.random(),
+                id: 0,
                 name: name.value,
-                selectedMenuItems: [],
+                guestMenuItems: [],
             };
 
             guestStore.$state.guests.push(newGuest);

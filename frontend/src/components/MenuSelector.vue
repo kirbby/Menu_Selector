@@ -17,10 +17,10 @@ import {
     watch
 } from "vue";
 import MenuItemComponent from "@/components/MenuItem.vue";
-import { getMenuItems } from "@/interfaces/menu";
+import { getMenuItems } from "@/interfaces/menuRest";
 import { useGuestStore } from "@/stores/GuestStore";
 import { storeToRefs } from "pinia";
-import { getCourse } from "@/interfaces/course";
+import { getCourse } from "@/interfaces/courseRest";
 import MenuItem from "@/types/MenuItem";
 
 export default defineComponent({

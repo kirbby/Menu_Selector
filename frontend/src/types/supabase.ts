@@ -12,15 +12,15 @@ export interface paths {
       };
     };
   };
-  "/userMenuItems": {
+  "/guestMenuItems": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.userMenuItems.id"];
-          userId?: parameters["rowFilter.userMenuItems.userId"];
-          menuItemId?: parameters["rowFilter.userMenuItems.menuItemId"];
-          created_at?: parameters["rowFilter.userMenuItems.created_at"];
-          updated_at?: parameters["rowFilter.userMenuItems.updated_at"];
+          id?: parameters["rowFilter.guestMenuItems.id"];
+          menuItemId?: parameters["rowFilter.guestMenuItems.menuItemId"];
+          created_at?: parameters["rowFilter.guestMenuItems.created_at"];
+          updated_at?: parameters["rowFilter.guestMenuItems.updated_at"];
+          guestId?: parameters["rowFilter.guestMenuItems.guestId"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -42,7 +42,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["userMenuItems"][];
+          schema: definitions["guestMenuItems"][];
         };
         /** Partial Content */
         206: unknown;
@@ -51,8 +51,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** userMenuItems */
-          userMenuItems?: definitions["userMenuItems"];
+          /** guestMenuItems */
+          guestMenuItems?: definitions["guestMenuItems"];
         };
         query: {
           /** Filtering Columns */
@@ -71,11 +71,11 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.userMenuItems.id"];
-          userId?: parameters["rowFilter.userMenuItems.userId"];
-          menuItemId?: parameters["rowFilter.userMenuItems.menuItemId"];
-          created_at?: parameters["rowFilter.userMenuItems.created_at"];
-          updated_at?: parameters["rowFilter.userMenuItems.updated_at"];
+          id?: parameters["rowFilter.guestMenuItems.id"];
+          menuItemId?: parameters["rowFilter.guestMenuItems.menuItemId"];
+          created_at?: parameters["rowFilter.guestMenuItems.created_at"];
+          updated_at?: parameters["rowFilter.guestMenuItems.updated_at"];
+          guestId?: parameters["rowFilter.guestMenuItems.guestId"];
         };
         header: {
           /** Preference */
@@ -90,15 +90,15 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.userMenuItems.id"];
-          userId?: parameters["rowFilter.userMenuItems.userId"];
-          menuItemId?: parameters["rowFilter.userMenuItems.menuItemId"];
-          created_at?: parameters["rowFilter.userMenuItems.created_at"];
-          updated_at?: parameters["rowFilter.userMenuItems.updated_at"];
+          id?: parameters["rowFilter.guestMenuItems.id"];
+          menuItemId?: parameters["rowFilter.guestMenuItems.menuItemId"];
+          created_at?: parameters["rowFilter.guestMenuItems.created_at"];
+          updated_at?: parameters["rowFilter.guestMenuItems.updated_at"];
+          guestId?: parameters["rowFilter.guestMenuItems.guestId"];
         };
         body: {
-          /** userMenuItems */
-          userMenuItems?: definitions["userMenuItems"];
+          /** guestMenuItems */
+          guestMenuItems?: definitions["guestMenuItems"];
         };
         header: {
           /** Preference */
@@ -807,19 +807,13 @@ export interface paths {
 }
 
 export interface definitions {
-  userMenuItems: {
+  guestMenuItems: {
     /**
      * Format: bigint
      * @description Note:
      * This is a Primary Key.<pk/>
      */
     id: number;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `users.id`.<fk table='users' column='id'/>
-     */
-    userId: string;
     /**
      * Format: bigint
      * @description Note:
@@ -833,6 +827,12 @@ export interface definitions {
     created_at?: string;
     /** Format: timestamp with time zone */
     updated_at?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `guests.id`.<fk table='guests' column='id'/>
+     */
+    guestId: number;
   };
   userGuests: {
     /**
@@ -1022,18 +1022,18 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description userMenuItems */
-  "body.userMenuItems": definitions["userMenuItems"];
+  /** @description guestMenuItems */
+  "body.guestMenuItems": definitions["guestMenuItems"];
   /** Format: bigint */
-  "rowFilter.userMenuItems.id": string;
-  /** Format: uuid */
-  "rowFilter.userMenuItems.userId": string;
+  "rowFilter.guestMenuItems.id": string;
   /** Format: bigint */
-  "rowFilter.userMenuItems.menuItemId": string;
+  "rowFilter.guestMenuItems.menuItemId": string;
   /** Format: timestamp with time zone */
-  "rowFilter.userMenuItems.created_at": string;
+  "rowFilter.guestMenuItems.created_at": string;
   /** Format: timestamp with time zone */
-  "rowFilter.userMenuItems.updated_at": string;
+  "rowFilter.guestMenuItems.updated_at": string;
+  /** Format: bigint */
+  "rowFilter.guestMenuItems.guestId": string;
   /** @description userGuests */
   "body.userGuests": definitions["userGuests"];
   /** Format: bigint */

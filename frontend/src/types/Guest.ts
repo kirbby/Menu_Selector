@@ -1,6 +1,10 @@
-import MenuItem from "./MenuItem";
+import GuestMenuItem from "./GuestMenuItems";
 import { definitions } from "./supabase";
 
-type Guest = definitions["guests"] & { selectedMenuItems: MenuItem[] };
+type Guest = definitions["guests"] &
+            {
+                guestMenuItems: GuestMenuItem[],
+                userGuest?: definitions["userGuests"],
+            };
 
 export default Guest;

@@ -16,7 +16,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MenuSelector from "@/components/MenuSelector.vue";
-import { saveMenu } from "@/interfaces/menu";
 import { useGuestStore } from "@/stores/GuestStore";
 import GuestList from "@/components/GuestList.vue";
 import { storeToRefs } from "pinia";
@@ -31,7 +30,6 @@ export default defineComponent({
         const { getCurrentGuest: currentGuest } = storeToRefs(guestStore);
 
         return {
-            saveMenu,
             currentGuest,
         };
     },

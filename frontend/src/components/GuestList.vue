@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts">
+import { saveGuest } from "@/interfaces/guestRest";
 import { useGuestStore } from "@/stores/GuestStore";
 import Guest from "@/types/Guest";
 import { storeToRefs } from "pinia";
@@ -46,19 +47,12 @@ export default defineComponent({
             guestStore.deleteGuest(guest);
         }
 
-        function addGuest() {
+        async function addGuest() {
             if (name.value === "") {
                 return;
             }
 
-            const newGuest: Guest = {
-                id: 0,
-                name: name.value,
-                guestMenuItems: [],
-            };
-
-            guestStore.$state.guests.push(newGuest);
-            guestStore.$state.currentGuest = newGuest;
+            guestStore.addGuest(name.value);
 
             name.value = "";
         }

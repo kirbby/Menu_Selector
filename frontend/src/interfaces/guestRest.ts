@@ -13,3 +13,19 @@ export async function getUserGuests(userId: string): Promise<Guest[]> {
 
     return guests as Guest[];
 }
+
+export async function saveGuest(guest: Guest): Promise<Guest> {
+    delete guest.guestMenuItems;
+    delete guest.userGuest;
+
+    const { data: guestNew, error: upsertError } = await supabase
+        .from("guest")
+        .upsert(guest);
+
+    if (upsertError || !guestNew?.some(Boolean)) {
+        console.log(upsertError);
+        throw upsertError;
+    }
+
+    return guestNew[0];
+}

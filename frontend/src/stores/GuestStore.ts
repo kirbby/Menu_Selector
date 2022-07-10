@@ -1,4 +1,4 @@
-import { getUserGuests } from "@/interfaces/guestRest";
+import { getUserGuests, saveGuest } from "@/interfaces/guestRest";
 import { saveGuestMenuItem } from "@/interfaces/menuRest";
 import Guest from "@/types/Guest";
 import GuestMenuItem from "@/types/GuestMenuItem";
@@ -30,7 +30,7 @@ export const useGuestStore = defineStore("guest", {
                     return 0;
                 }
 
-                return currentGuest.guestMenuItems.find((guestMenuItem: GuestMenuItem) => guestMenuItem.menuItem?.courseId === courseId)?.menuItemId ?? 0;
+                return currentGuest.guestMenuItems?.find((guestMenuItem: GuestMenuItem) => guestMenuItem.menuItem?.courseId === courseId)?.menuItemId ?? 0;
             };
         }
     },
@@ -43,6 +43,17 @@ export const useGuestStore = defineStore("guest", {
             if (guest.id == this.currentGuest?.id && this.guests.length > 0) {
                 this.currentGuest = this.guests[0];
             }
+        },
+        async addGuest(name: string) {
+            let newGuest: Guest = {
+                id: 0,
+                name: name,
+            };
+
+            newGuest = await saveGuest(newGuest);
+
+            this.guests.push(newGuest);
+            this.currentGuest = newGuest;
         },
         async changeGuestMenu(menuItem: MenuItem) {
             const currentGuest = this.getCurrentGuest;

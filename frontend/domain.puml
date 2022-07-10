@@ -1,11 +1,14 @@
 @startuml test
 left to right direction
 
-object user
+object course
+object guestMenuItem
 object guest
 object menuItem
-object course
 object role
+object userGuest
+object userRole
+object user
 
 user "1" -- "n" guest
 user "1" -- "n" role

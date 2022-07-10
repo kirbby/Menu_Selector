@@ -10,7 +10,7 @@
                 <div>Deine Gäste:</div>
                 <ul>
                     <li v-for="guest in guests" :key="guest.id" @click="onGuestClick(guest)" class="guest-item"
-                        :class="currentGuest?.id == guest.id ? 'active' : ''">
+                        :class="currentGuest?.id === guest.id ? 'active' : ''">
                         <div>{{ guest.name }}</div>
                         <button class="delete-button" @click.stop="deleteGuest(guest)">X</button>
                     </li>

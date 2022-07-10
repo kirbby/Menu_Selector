@@ -2,11 +2,11 @@
 <div class="homepage">
     <GuestList></GuestList>
     <!--  <div class="flex flex-row justify-center space-x-4">
-                    <div v-if="currentGuest?.id">Menü für {{ currentGuest.name }}:</div>
-                    <button class="button save-button" @click="saveMenu">
-                        Menü speichern
-                    </button>
-                </div> -->
+        <div v-if="currentGuest?.id">Menü für {{ currentGuest.name }}:</div>
+        <button class="button save-button" @click="saveMenu">
+            Menü speichern
+        </button>
+    </div> -->
     <MenuSelector class="menu-selector" :menu-course-id="1"></MenuSelector>
     <MenuSelector class="menu-selector" :menu-course-id="2"></MenuSelector>
     <MenuSelector class="menu-selector" :menu-course-id="3"></MenuSelector>

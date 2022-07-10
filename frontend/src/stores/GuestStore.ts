@@ -1,4 +1,8 @@
-import { getUserGuests, saveGuest } from "@/interfaces/guestRest";
+import {
+    deleteGuest as deleteGuestRest,
+    getUserGuests,
+    saveGuest
+} from "@/interfaces/guestRest";
 import { saveGuestMenuItem } from "@/interfaces/menuRest";
 import Guest from "@/types/Guest";
 import GuestMenuItem from "@/types/GuestMenuItem";
@@ -29,18 +33,21 @@ export const useGuestStore = defineStore("guest", {
                 if (!currentGuest) {
                     return 0;
                 }
+                const menuId = currentGuest.guestMenuItems?.find((guestMenuItem: GuestMenuItem) => guestMenuItem.menuItem?.courseId === courseId)?.menuItemId ?? 0;
 
-                return currentGuest.guestMenuItems?.find((guestMenuItem: GuestMenuItem) => guestMenuItem.menuItem?.courseId === courseId)?.menuItemId ?? 0;
+                return menuId;
             };
         }
     },
     actions: {
         deleteGuest(guest: Guest) {
+            deleteGuestRest(guest);
+
             this.guests = this.guests.filter(
                 (g: Guest) => g.id !== guest.id
             );
 
-            if (guest.id == this.currentGuest?.id && this.guests.length > 0) {
+            if (guest.id === this.currentGuest?.id && this.guests.length > 0) {
                 this.currentGuest = this.guests[0];
             }
         },
@@ -62,8 +69,24 @@ export const useGuestStore = defineStore("guest", {
                 return;
             }
 
-            if (await saveGuestMenuItem(menuItem, currentGuest.id)) {
-                this.loadCurrentUserGuests();
+            const guestMenuItemNew = await saveGuestMenuItem(menuItem, currentGuest.id);
+
+            if (guestMenuItemNew) {
+                if (currentGuest.guestMenuItems?.some(x => x.menuItem?.courseId === menuItem.courseId)) {
+                    currentGuest.guestMenuItems = currentGuest.guestMenuItems.map((x) => {
+                        if (x.menuItem?.courseId === menuItem.courseId) {
+                            x.menuItemId = menuItem.id;
+                        }
+
+                        return x;
+                    });
+                } else {
+                    if (!currentGuest.guestMenuItems) {
+                        currentGuest.guestMenuItems = [];
+                    }
+
+                    currentGuest.guestMenuItems?.push(guestMenuItemNew);
+                }
             }
         },
         async loadCurrentUserGuests() {

@@ -16,32 +16,63 @@ export async function getMenuItems(courseId: number): Promise<MenuItem[]> {
     return MenuItems ?? [];
 }
 
-export async function saveGuestMenuItem(menuItem: MenuItem, guestId: number): Promise<GuestMenuItem> {
-    const { data: guestMenuItemOld, error: selectError } = await supabase
-        .from("guestMenuItems")
-        .select("*, menuItem:menuItems!inner(*)")
-        .eq("guestId", guestId)
-        .eq("menuItem.courseId", menuItem.courseId);
+export async function saveGuestMenuItem(menuItem: MenuItem, guestId: number): Promise<GuestMenuItem | undefined> {
+    const guestMenuItemOld = await getGuestMenuItem(guestId, menuItem?.courseId ?? 0);
 
-    if (selectError) {
-        console.log(selectError);
-        throw selectError;
-    }
-
-    const guestMenuItemTemp: GuestMenuItem = guestMenuItemOld?.some(Boolean) ? guestMenuItemOld[0] : {
+    const guestMenuItemTemp: GuestMenuItem = guestMenuItemOld ? guestMenuItemOld : {
         guestId: guestId,
     } as GuestMenuItem;
+
     guestMenuItemTemp.menuItemId = menuItem.id;
     delete guestMenuItemTemp.menuItem;
 
+    const guestMenuItemNew = await upsertGuestMenuItem(guestMenuItemTemp);
+
+    return await getGuestMenuItemById(guestMenuItemNew?.id);
+}
+
+async function upsertGuestMenuItem(guestMenuItem: GuestMenuItem): Promise<GuestMenuItem | undefined> {
     const { data: guestMenuItemNew, error: upsertError } = await supabase
         .from<definitions["guestMenuItems"]>("guestMenuItems")
-        .upsert(guestMenuItemTemp);
-
+        .upsert(guestMenuItem);
+    debugger;
     if (upsertError || !guestMenuItemNew?.some(Boolean)) {
         console.log(upsertError);
         throw upsertError;
     }
 
-    return guestMenuItemNew[0];
+    return guestMenuItemNew?.some(Boolean) ? guestMenuItemNew[0] : undefined;
+}
+
+async function getGuestMenuItemById(guestMenuItemId: number | undefined): Promise<GuestMenuItem | undefined> {
+    if (!guestMenuItemId) {
+        return undefined;
+    }
+
+    const { data: guestMenuItem, error } = await supabase
+        .from("guestMenuItems")
+        .select("*, menuItem:menuItems!inner(*)")
+        .eq("id", guestMenuItemId);
+
+    if (error) {
+        console.log(error);
+        throw error;
+    }
+
+    return guestMenuItem?.some(Boolean) ? guestMenuItem[0] : undefined;
+}
+
+async function getGuestMenuItem(guestId: number, courseId: number): Promise<GuestMenuItem | undefined> {
+    const { data: guestMenuItem, error } = await supabase
+        .from("guestMenuItems")
+        .select("*, menuItem:menuItems!inner(*)")
+        .eq("guestId", guestId)
+        .eq("menuItem.courseId", courseId);
+
+    if (error) {
+        console.log(error);
+        throw error;
+    }
+
+    return guestMenuItem?.some(Boolean) ? guestMenuItem[0] : undefined;
 }

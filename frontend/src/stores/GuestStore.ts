@@ -1,7 +1,7 @@
 import { getUserGuests } from "@/interfaces/guestRest";
 import { saveGuestMenuItem } from "@/interfaces/menuRest";
 import Guest from "@/types/Guest";
-import GuestMenuItem from "@/types/GuestMenuItems";
+import GuestMenuItem from "@/types/GuestMenuItem";
 import MenuItem from "@/types/MenuItem";
 import { defineStore } from "pinia";
 import { useUserStore } from "./UserStore";
@@ -30,7 +30,7 @@ export const useGuestStore = defineStore("guest", {
                     return 0;
                 }
 
-                return currentGuest.guestMenuItems.find((guestMenuItem: GuestMenuItem) => guestMenuItem.menuItem?.courseId === courseId)?.id ?? 0;
+                return currentGuest.guestMenuItems.find((guestMenuItem: GuestMenuItem) => guestMenuItem.menuItem?.courseId === courseId)?.menuItemId ?? 0;
             };
         }
     },
@@ -44,40 +44,25 @@ export const useGuestStore = defineStore("guest", {
                 this.currentGuest = this.guests[0];
             }
         },
-        changeGuestMenu(menuItem: MenuItem) {
-            if (!this.getCurrentGuest?.guestMenuItems.some(x => x.menuItem?.id === menuItem.id)) {
-                const currentGuest = this.getCurrentGuest;
+        async changeGuestMenu(menuItem: MenuItem) {
+            const currentGuest = this.getCurrentGuest;
 
-                if (!currentGuest) {
-                    return;
-                }
+            if (!currentGuest) {
+                return;
+            }
 
-                currentGuest.guestMenuItems = currentGuest.guestMenuItems.filter(
-                    x => x.menuItem?.courseId !== menuItem.courseId
-                );
-
-                const index = currentGuest.guestMenuItems.findIndex(x => x.menuItem?.courseId === menuItem.courseId);
-                if (index > -1) {
-                    const updatedGuestMenuItem = currentGuest.guestMenuItems[index];
-
-                    updatedGuestMenuItem.menuItem = menuItem;
-                    currentGuest.guestMenuItems[index] = updatedGuestMenuItem;
-                } else {
-                    const newGuestMenuItem = {
-                        id: 0,
-                        guestId: currentGuest.id,
-                        menuItemId: menuItem.id,
-                    };
-
-                    currentGuest.guestMenuItems.push(newGuestMenuItem);
-                }
-
-                saveGuestMenuItem(menuItem, currentGuest.id);
+            if (await saveGuestMenuItem(menuItem, currentGuest.id)) {
+                this.loadCurrentUserGuests();
             }
         },
         async loadCurrentUserGuests() {
             this.guests = await getUserGuests(useUserStore().getCurrentUser?.id ?? "");
-            this.currentGuest = undefined;
+
+            if (this.guests.some(Boolean)) {
+                this.currentGuest = this.guests[0];
+            } else {
+                this.currentGuest = undefined;
+            }
         }
     },
     persist: true,

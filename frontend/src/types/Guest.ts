@@ -1,4 +1,4 @@
-import GuestMenuItem from "./GuestMenuItems";
+import GuestMenuItem from "./GuestMenuItem";
 import { definitions } from "./supabase";
 
 type Guest = definitions["guests"] &

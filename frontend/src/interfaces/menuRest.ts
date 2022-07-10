@@ -1,4 +1,5 @@
 import supabase from "@/supabaseClient";
+import GuestMenuItem from "@/types/GuestMenuItem";
 import MenuItem from "@/types/MenuItem";
 import { definitions } from "@/types/supabase";
 
@@ -15,27 +16,32 @@ export async function getMenuItems(courseId: number): Promise<MenuItem[]> {
     return MenuItems ?? [];
 }
 
-export async function saveGuestMenuItem(menuItem: MenuItem, guestId: number): Promise<boolean> {
-    const { data: guestMenuItem } = await supabase
-        .from<definitions["guestMenuItems"]>("guestMenuItems")
-        .select("*")
+export async function saveGuestMenuItem(menuItem: MenuItem, guestId: number): Promise<GuestMenuItem> {
+    const { data: guestMenuItemOld, error: selectError } = await supabase
+        .from("guestMenuItems")
+        .select("*, menuItem:menuItems!inner(*)")
         .eq("guestId", guestId)
-        .eq("menuItemId", menuItem.id);
+        .eq("menuItem.courseId", menuItem.courseId);
 
-    /*     if (!guestMenuItem) {
-        guestMenuItem = {
-            guestId: guestId,
-            menuItemId: menuItem.id,
-        };
-    } */
-
-    const { data, error: error } = await supabase
-        .from<definitions["guestMenuItems"]>("guestMenuItems")
-        .upsert(menuItem);
-
-    if (error) {
-        console.log(error);
+    if (selectError) {
+        console.log(selectError);
+        throw selectError;
     }
 
-    return true;
+    const guestMenuItemTemp: GuestMenuItem = guestMenuItemOld?.some(Boolean) ? guestMenuItemOld[0] : {
+        guestId: guestId,
+    } as GuestMenuItem;
+    guestMenuItemTemp.menuItemId = menuItem.id;
+    delete guestMenuItemTemp.menuItem;
+
+    const { data: guestMenuItemNew, error: upsertError } = await supabase
+        .from<definitions["guestMenuItems"]>("guestMenuItems")
+        .upsert(guestMenuItemTemp);
+
+    if (upsertError || !guestMenuItemNew?.some(Boolean)) {
+        console.log(upsertError);
+        throw upsertError;
+    }
+
+    return guestMenuItemNew[0];
 }

@@ -1,6 +1,5 @@
 <template>
 <UserProfile class="profile-component" v-if="currentUser" />
-<button @click="guestStore.loadCurrentUserGuests();">Load Guests</button>
 <HomePage class="homepage-component" v-if="currentUser"></HomePage>
 <AuthenticationForm v-else />
 </template>

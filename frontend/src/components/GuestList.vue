@@ -1,10 +1,10 @@
 <template>
 <div>
     <Transition name="button">
-        <button v-if="!isGuestListVisible" class="button open-guest-list" @click="isGuestListVisible = true">G</button>
+        <button v-if="!isGuestListVisible" class="button open-guest-list" @click="openGuestList">G</button>
     </Transition>
     <Transition>
-        <div v-if="isGuestListVisible" class="guest-list">
+        <div v-if="isGuestListVisible" class="guest-list" ref="guestList">
             <button class="button close-button" @click="isGuestListVisible = false">X</button>
             <div class="guest-container">
                 <div>Deine Gäste:</div>
@@ -26,11 +26,10 @@
 </template>
 
 <script lang="ts">
-import { saveGuest } from "@/interfaces/guestRest";
 import { useGuestStore } from "@/stores/GuestStore";
 import Guest from "@/types/Guest";
 import { storeToRefs } from "pinia";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 
 export default defineComponent({
     setup() {
@@ -38,6 +37,15 @@ export default defineComponent({
         const { getCurrentGuest: currentGuest, getGuests: guests } = storeToRefs(guestStore);
         const isGuestListVisible = ref(true);
         const name = ref("");
+        const guestList = ref<HTMLDivElement | null>(null);
+
+        watch(() => guestList.value, function () {
+            setTimeout(() => {
+                if (guestList.value) {
+                    guestList.value.scrollIntoView({ behavior: "smooth" });
+                }
+            }, 100);
+        });
 
         function onGuestClick(guest: Guest) {
             guestStore.$state.currentGuest = guest;
@@ -57,6 +65,10 @@ export default defineComponent({
             name.value = "";
         }
 
+        function openGuestList() {
+            isGuestListVisible.value = true;
+        }
+
         return {
             guests,
             onGuestClick,
@@ -65,6 +77,8 @@ export default defineComponent({
             isGuestListVisible,
             addGuest,
             name,
+            openGuestList,
+            guestList,
         };
     },
 });
@@ -76,7 +90,7 @@ export default defineComponent({
 }
 
 .guest-list {
-    @apply w-fit mx-auto bg-gray-700 rounded-lg relative;
+    @apply w-fit mx-auto bg-gray-700 rounded-lg relative scroll-m-8;
 }
 
 .guest-container {

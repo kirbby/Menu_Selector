@@ -2,6 +2,7 @@
 <UserProfile class="profile-component" v-if="currentUser" />
 <HomePage class="homepage-component" v-if="currentUser"></HomePage>
 <AuthenticationForm v-else />
+<div class="version">v{{ version }}</div>
 </template>
 
 <script lang="ts">
@@ -25,6 +26,7 @@ export default defineComponent({
         const userStore = useUserStore();
         const { getCurrentGuest: currentGuest } = storeToRefs(guestStore);
         const { getCurrentUser: currentUser } = storeToRefs(userStore);
+        const version = APP_VERSION;
 
         userStore.currentUser = supabase.auth.user();
         supabase.auth.onAuthStateChange((_, session) => {
@@ -42,6 +44,7 @@ export default defineComponent({
             currentUser,
             userStore,
             guestStore,
+            version,
         };
     },
 });
@@ -70,5 +73,9 @@ html,
 
 .homepage-component {
     @apply flex-1 overflow-hidden;
+}
+
+.version {
+    @apply w-fit fixed bottom-0 bg-gray-900 px-2 flex justify-start rounded-t text-sm;
 }
 </style>

@@ -16,7 +16,7 @@
                     </li>
                 </ul>
                 <form class="add-container" @submit.prevent="addGuest">
-                    <input class="new-guest-name" type="text" v-model="name" />
+                    <input class="new-guest-name" type="text" placeholder="Name" v-model="name" />
                     <button class="add-button">+</button>
                 </form>
             </div>

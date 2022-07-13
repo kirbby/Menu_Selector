@@ -35,7 +35,7 @@ async function upsertGuestMenuItem(guestMenuItem: GuestMenuItem): Promise<GuestM
     const { data: guestMenuItemNew, error: upsertError } = await supabase
         .from<definitions["guestMenuItems"]>("guestMenuItems")
         .upsert(guestMenuItem);
-    debugger;
+
     if (upsertError || !guestMenuItemNew?.some(Boolean)) {
         console.log(upsertError);
         throw upsertError;

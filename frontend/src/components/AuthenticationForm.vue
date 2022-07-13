@@ -2,7 +2,7 @@
 <form @submit.prevent="handleLogin">
     <h1>Cater <br><span class="text-green-700">Buddy</span></h1>
     <div class="sign-in-container">
-        <p class="description">Melde dich mit deiner E-Mail per Einmalcode an</p>
+        <p class="description">Melde dich mit deiner E-Mail per Loginlink an</p>
         <input type="email" placeholder="E-Mail" v-model="email" />
         <input class="button px-6" type="submit" :value="loading ? 'Loading' : 'Login'" :disabled="loading" />
     </div>

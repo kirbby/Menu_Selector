@@ -1,7 +1,10 @@
 <template>
 <div>
-    <Transition name="button">
+    <!--     <Transition name="button">
         <button v-if="!isGuestListVisible" class="button open-guest-list" @click="openGuestList">G</button>
+    </Transition> -->
+    <Transition name="current-guest">
+        <div v-if="!isGuestListVisible && currentGuest" class="guest-item active current-guest" @click="openGuestList">{{ currentGuest.name }}</div>
     </Transition>
     <Transition>
         <div v-if="isGuestListVisible" class="guest-list" ref="guestList">
@@ -10,7 +13,7 @@
                 <div>Deine Gäste:</div>
                 <ul>
                     <li v-for="guest in guests" :key="guest.id" @click="onGuestClick(guest)" class="guest-item"
-                        :class="currentGuest?.id === guest.id ? 'active' : ''">
+                        :class="{active: currentGuest?.id === guest.id}">
                         <div>{{ guest.name }}</div>
                         <button class="delete-button" @click.stop="deleteGuest(guest)">X</button>
                     </li>
@@ -125,6 +128,10 @@ export default defineComponent({
     @apply absolute top-0 right-2 !px-3 !py-1 !m-1;
 }
 
+.current-guest {
+    @apply w-fit h-fit px-3 fixed top-14 right-2;
+}
+
 .v-enter-active {
   animation: bounce-in 0.5s;
 }
@@ -145,14 +152,16 @@ export default defineComponent({
   }
 }
 
-.button-enter-active {
+.button-enter-active,
+ .current-guest-enter-active {
     transition: opacity 0.5s ease;
     transition-delay: 0.5s;
     animation: bounce-in 0.5s;
     animation-delay: 0.5s;
 }
 
-.button-enter-from {
+.button-enter-from,
+ .current-guest-enter-from {
     opacity: 0;
 }
 </style>

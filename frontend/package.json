@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "tsc": "vue-tsc --noEmit",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite --base=/planner/ build",
     "build-beta": "vue-tsc --noEmit && vite --mode beta --base=/planner-beta/ build",
     "preview": "vite preview",
     "beautify": "eslint --fix .",

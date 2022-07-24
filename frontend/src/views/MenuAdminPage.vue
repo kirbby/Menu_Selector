@@ -3,8 +3,14 @@
     <button class="button add-button">+</button>
     <ol class="list">
         <li class="menu-item" v-for="menuItem in menuItems" :key="menuItem.id">
-            <span>{{ menuItem.name }}</span>
-            <span>{{ menuItem.courseId }}</span>
+            <img class="image" :src="menuItem.imageUrl">
+            <div class="item-details">
+                <div class="name">{{ menuItem.name }}</div>
+                <div class="course">{{ menuItem.course.name }}</div>
+            </div>
+            <div class="button-container">
+                <button class="button">edit</button>
+            </div>
         </li>
     </ol>
 </div>
@@ -41,6 +47,26 @@ export default defineComponent({
 }
 
 .menu-item {
-    @apply flex flex-row justify-between space-x-2 p-2 rounded bg-gray-500 border font-semibold;
+    @apply h-20 flex items-center space-x-4 p-3 rounded bg-gray-500 border font-semibold;
+}
+
+.item-details {
+    @apply flex-auto;
+}
+
+.name {
+    @apply flex text-left line-clamp-2;
+}
+
+.course {
+    @apply flex flex-row justify-between space-x-2 text-xs;
+}
+
+.button-container {
+    @apply flex flex-row justify-between space-x-2 mr-3;
+}
+
+.image {
+    @apply w-20 justify-center items-center max-h-20 md:max-h-full rounded;
 }
 </style>

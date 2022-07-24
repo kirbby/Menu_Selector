@@ -1,6 +1,6 @@
 <template>
 <UserProfile class="profile-component" v-if="currentUser" />
-<HomePage class="homepage-component" v-if="currentUser"></HomePage>
+<router-view class="router-view" v-if="currentUser"></router-view>
 <AuthenticationForm v-else />
 <div class="version">v{{ version }}</div>
 </template>
@@ -9,7 +9,6 @@
 import { storeToRefs } from "pinia";
 import { defineComponent, watch } from "vue";
 import { useGuestStore } from "./stores/GuestStore";
-import HomePage from "@/views/HomePage.vue";
 import UserProfile from "@/components/UserProfile.vue";
 import AuthenticationForm from "@/components/AuthenticationForm.vue";
 import { useUserStore } from "./stores/UserStore";
@@ -18,7 +17,6 @@ import supabase from "./supabaseClient";
 export default defineComponent({
     components: {
         UserProfile,
-        HomePage,
         AuthenticationForm,
     },
     setup() {
@@ -71,7 +69,7 @@ html,
     @apply flex;
 }
 
-.homepage-component {
+.router-view {
     @apply flex-1 overflow-hidden;
 }
 

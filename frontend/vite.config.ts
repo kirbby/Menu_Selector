@@ -15,5 +15,8 @@ export default defineConfig({
             }
         ]
     },
-    base: "/planner/"
+    base: "/planner/",
+    server: {
+        port: 3000,
+    },
 });

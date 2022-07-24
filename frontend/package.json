@@ -1,7 +1,7 @@
 {
   "name": "menu-selector",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "vite",
     "tsc": "vue-tsc --noEmit",

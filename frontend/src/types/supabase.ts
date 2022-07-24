@@ -12,6 +12,105 @@ export interface paths {
       };
     };
   };
+  "/projects": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.projects.id"];
+          created_at?: parameters["rowFilter.projects.created_at"];
+          updated_at?: parameters["rowFilter.projects.updated_at"];
+          name?: parameters["rowFilter.projects.name"];
+          userId?: parameters["rowFilter.projects.userId"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["projects"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** projects */
+          projects?: definitions["projects"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.projects.id"];
+          created_at?: parameters["rowFilter.projects.created_at"];
+          updated_at?: parameters["rowFilter.projects.updated_at"];
+          name?: parameters["rowFilter.projects.name"];
+          userId?: parameters["rowFilter.projects.userId"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.projects.id"];
+          created_at?: parameters["rowFilter.projects.created_at"];
+          updated_at?: parameters["rowFilter.projects.updated_at"];
+          name?: parameters["rowFilter.projects.name"];
+          userId?: parameters["rowFilter.projects.userId"];
+        };
+        body: {
+          /** projects */
+          projects?: definitions["projects"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/guestMenuItems": {
     get: {
       parameters: {
@@ -804,9 +903,131 @@ export interface paths {
       };
     };
   };
+  "/userProjects": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.userProjects.id"];
+          created_at?: parameters["rowFilter.userProjects.created_at"];
+          updated_at?: parameters["rowFilter.userProjects.updated_at"];
+          projectId?: parameters["rowFilter.userProjects.projectId"];
+          userId?: parameters["rowFilter.userProjects.userId"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["userProjects"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** userProjects */
+          userProjects?: definitions["userProjects"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.userProjects.id"];
+          created_at?: parameters["rowFilter.userProjects.created_at"];
+          updated_at?: parameters["rowFilter.userProjects.updated_at"];
+          projectId?: parameters["rowFilter.userProjects.projectId"];
+          userId?: parameters["rowFilter.userProjects.userId"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.userProjects.id"];
+          created_at?: parameters["rowFilter.userProjects.created_at"];
+          updated_at?: parameters["rowFilter.userProjects.updated_at"];
+          projectId?: parameters["rowFilter.userProjects.projectId"];
+          userId?: parameters["rowFilter.userProjects.userId"];
+        };
+        body: {
+          /** userProjects */
+          userProjects?: definitions["userProjects"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
 }
 
 export interface definitions {
+  projects: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /** Format: timestamp with time zone */
+    updated_at?: string;
+    /** Format: text */
+    name?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `users.id`.<fk table='users' column='id'/>
+     */
+    userId: string;
+  };
   guestMenuItems: {
     /**
      * Format: bigint
@@ -987,6 +1208,33 @@ export interface definitions {
     /** Format: text */
     name: string;
   };
+  userProjects: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /** Format: timestamp with time zone */
+    updated_at?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `projects.id`.<fk table='projects' column='id'/>
+     */
+    projectId: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `users.id`.<fk table='users' column='id'/>
+     */
+    userId: string;
+  };
 }
 
 export interface parameters {
@@ -1022,6 +1270,18 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
+  /** @description projects */
+  "body.projects": definitions["projects"];
+  /** Format: uuid */
+  "rowFilter.projects.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.projects.created_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.projects.updated_at": string;
+  /** Format: text */
+  "rowFilter.projects.name": string;
+  /** Format: uuid */
+  "rowFilter.projects.userId": string;
   /** @description guestMenuItems */
   "body.guestMenuItems": definitions["guestMenuItems"];
   /** Format: bigint */
@@ -1118,6 +1378,18 @@ export interface parameters {
   "rowFilter.roles.updated_at": string;
   /** Format: text */
   "rowFilter.roles.name": string;
+  /** @description userProjects */
+  "body.userProjects": definitions["userProjects"];
+  /** Format: uuid */
+  "rowFilter.userProjects.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.userProjects.created_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.userProjects.updated_at": string;
+  /** Format: uuid */
+  "rowFilter.userProjects.projectId": string;
+  /** Format: uuid */
+  "rowFilter.userProjects.userId": string;
 }
 
 export interface operations {}

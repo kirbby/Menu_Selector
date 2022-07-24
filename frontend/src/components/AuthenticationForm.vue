@@ -23,6 +23,7 @@ export default {
         const handleLogin = async () => {
             try {
                 loading.value = true;
+
                 const { error } = await supabase.auth.signIn({
                     email: email.value
                 }, {

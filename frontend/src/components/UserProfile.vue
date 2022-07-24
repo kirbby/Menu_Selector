@@ -4,7 +4,8 @@
     <input id="email" class="disabled-textbox" type="text" :value="userStore.currentUser.email" disabled /> -->
 
     <!-- <label for="username">Name</label> -->
-    <div id="username">{{ userStore.currentUser.email }}</div>
+    <div id="username" @click="router.push({name: 'MenuAdminPage'})">{{ userStore.currentUser.email }}</div>
+    <div class="flex-auto h-full" @click="router.push({name: 'HomePage'})"></div>
 
     <!--     <div>
         <input type="submit" class="button" :value="loading ? 'Loading ...' : 'Update'" :disabled="loading" />
@@ -21,6 +22,7 @@
 <script lang="ts">
 import supabase from "@/supabaseClient";
 import { useUserStore } from "@/stores/UserStore";
+import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
 import User from "@/types/User";
@@ -33,6 +35,7 @@ export default {
         const avatar_url = ref("");
         const userStore = useUserStore();
         const toast = useToast();
+        const router = useRouter();
 
         async function getProfile() {
             try {
@@ -119,9 +122,9 @@ export default {
             username,
             email,
             avatar_url,
-
             updateProfile,
             signOut,
+            router,
         };
     },
 };

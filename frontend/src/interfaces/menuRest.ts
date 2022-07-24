@@ -16,6 +16,18 @@ export async function getMenuItems(courseId: number): Promise<MenuItem[]> {
     return MenuItems ?? [];
 }
 
+export async function getAllMenuItems(): Promise<MenuItem[]> {
+    const { data: MenuItems, error } = await supabase
+        .from<MenuItem>("menuItems")
+        .select("*, course:courses!inner(*)");
+
+    if (error) {
+        console.log(error);
+    }
+
+    return MenuItems ?? [];
+}
+
 export async function saveGuestMenuItem(menuItem: MenuItem, guestId: number): Promise<GuestMenuItem | undefined> {
     const guestMenuItemOld = await getGuestMenuItem(guestId, menuItem?.courseId ?? 0);
 

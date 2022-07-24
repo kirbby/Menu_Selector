@@ -5,6 +5,7 @@ import {
 } from "vue-router";
 
 const HomePage = () => import("@/views/HomePage.vue");
+const MenuAdminPage = () => import("@/views/MenuAdminPage.vue");
 const NotFound = () => import("@/views/NotFound.vue");
 
 const routes: Array<RouteRecordRaw> = [
@@ -12,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/",
         name: "HomePage",
         component: HomePage,
+    },
+    {
+        path: "/MenuAdmin",
+        name: "MenuAdminPage",
+        component: MenuAdminPage,
     },
     {
         path: "/:pathMatch(.*)*",

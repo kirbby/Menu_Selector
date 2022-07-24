@@ -5,7 +5,6 @@
 
     <!-- <label for="username">Name</label> -->
     <div id="username" @click="router.push({name: 'MenuAdminPage'})">{{ userStore.currentUser.email }}</div>
-    <div class="flex-auto h-full" @click="router.push({name: 'HomePage'})"></div>
 
     <!--     <div>
         <input type="submit" class="button" :value="loading ? 'Loading ...' : 'Update'" :disabled="loading" />

@@ -1,6 +1,7 @@
 <template>
 <div>
     <button class="button add-button">+</button>
+    <button class="button back-button" @click="router.push({name: 'HomePage'})">&lt;</button>
     <ol class="list">
         <li class="menu-item" v-for="menuItem in menuItems" :key="menuItem.id">
             <img class="image" :src="menuItem.imageUrl">
@@ -20,10 +21,12 @@
 import { getAllMenuItems } from "@/interfaces/menuRest";
 import MenuItem from "@/types/MenuItem";
 import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     setup() {
         const menuItems = ref<MenuItem[]>([]);
+        const router = useRouter();
 
         (async () => {
             menuItems.value = await getAllMenuItems();
@@ -32,6 +35,7 @@ export default defineComponent({
 
         return {
             menuItems,
+            router,
         };
     }
 });
@@ -40,6 +44,10 @@ export default defineComponent({
 <style scoped lang="postcss">
 .add-button {
     @apply fixed top-12 right-6 m-auto py-0 px-2 bg-blue-500 text-2xl rounded;
+}
+
+.back-button {
+    @apply fixed top-12 left-6 m-auto py-0 px-2 bg-blue-500 text-2xl rounded;
 }
 
 .list {

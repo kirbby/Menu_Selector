@@ -317,6 +317,7 @@ export interface paths {
           created_at?: parameters["rowFilter.guests.created_at"];
           name?: parameters["rowFilter.guests.name"];
           updated_at?: parameters["rowFilter.guests.updated_at"];
+          projectId?: parameters["rowFilter.guests.projectId"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -371,6 +372,7 @@ export interface paths {
           created_at?: parameters["rowFilter.guests.created_at"];
           name?: parameters["rowFilter.guests.name"];
           updated_at?: parameters["rowFilter.guests.updated_at"];
+          projectId?: parameters["rowFilter.guests.projectId"];
         };
         header: {
           /** Preference */
@@ -389,6 +391,7 @@ export interface paths {
           created_at?: parameters["rowFilter.guests.created_at"];
           name?: parameters["rowFilter.guests.name"];
           updated_at?: parameters["rowFilter.guests.updated_at"];
+          projectId?: parameters["rowFilter.guests.projectId"];
         };
         body: {
           /** guests */
@@ -909,7 +912,6 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.userProjects.id"];
           created_at?: parameters["rowFilter.userProjects.created_at"];
-          updated_at?: parameters["rowFilter.userProjects.updated_at"];
           projectId?: parameters["rowFilter.userProjects.projectId"];
           userId?: parameters["rowFilter.userProjects.userId"];
           /** Filtering Columns */
@@ -964,7 +966,6 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.userProjects.id"];
           created_at?: parameters["rowFilter.userProjects.created_at"];
-          updated_at?: parameters["rowFilter.userProjects.updated_at"];
           projectId?: parameters["rowFilter.userProjects.projectId"];
           userId?: parameters["rowFilter.userProjects.userId"];
         };
@@ -983,7 +984,6 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.userProjects.id"];
           created_at?: parameters["rowFilter.userProjects.created_at"];
-          updated_at?: parameters["rowFilter.userProjects.updated_at"];
           projectId?: parameters["rowFilter.userProjects.projectId"];
           userId?: parameters["rowFilter.userProjects.userId"];
         };
@@ -1098,6 +1098,12 @@ export interface definitions {
     name: string;
     /** Format: timestamp with time zone */
     updated_at?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `projects.id`.<fk table='projects' column='id'/>
+     */
+    projectId?: string;
   };
   users: {
     /**
@@ -1220,8 +1226,6 @@ export interface definitions {
      * @default now()
      */
     created_at?: string;
-    /** Format: timestamp with time zone */
-    updated_at?: string;
     /**
      * Format: uuid
      * @description Note:
@@ -1316,6 +1320,8 @@ export interface parameters {
   "rowFilter.guests.name": string;
   /** Format: timestamp with time zone */
   "rowFilter.guests.updated_at": string;
+  /** Format: uuid */
+  "rowFilter.guests.projectId": string;
   /** @description users */
   "body.users": definitions["users"];
   /** Format: uuid */
@@ -1384,8 +1390,6 @@ export interface parameters {
   "rowFilter.userProjects.id": string;
   /** Format: timestamp with time zone */
   "rowFilter.userProjects.created_at": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.userProjects.updated_at": string;
   /** Format: uuid */
   "rowFilter.userProjects.projectId": string;
   /** Format: uuid */

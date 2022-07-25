@@ -7,13 +7,12 @@
 
 <script lang="ts">
 import { storeToRefs } from "pinia";
-import { defineComponent, watch } from "vue";
+import { defineComponent, registerRuntimeCompiler, watch } from "vue";
 import { useGuestStore } from "./stores/GuestStore";
 import UserProfile from "@/components/UserProfile.vue";
 import AuthenticationForm from "@/components/AuthenticationForm.vue";
 import { useUserStore } from "./stores/UserStore";
 import supabase from "./supabaseClient";
-import { useRoute, useRouter } from "vue-router";
 import { upsertUserProject } from "./interfaces/userRest";
 
 export default defineComponent({
@@ -27,12 +26,8 @@ export default defineComponent({
         const { getCurrentGuest: currentGuest } = storeToRefs(guestStore);
         const { getCurrentUserData: currentUserData, getCurrentUser: currentUser } = storeToRefs(userStore);
         const version = APP_VERSION;
-        const router = useRouter();
-        const route = useRoute();
 
-        debugger;
-        userStore.projectId = route.query.projectId?.toString() ?? "";
-        router.replace({ query: {} });
+        saveProjectIdToStore();
 
         userStore.currentUserData = supabase.auth.user();
 
@@ -45,16 +40,31 @@ export default defineComponent({
 
             if (userId) {
                 guestStore.loadCurrentUserGuests();
-                async () => {
-                    debugger;
+                (async () => {
                     if (userStore.projectId) {
                         await upsertUserProject(userId, userStore.projectId);
                         userStore.resetProjectId();
                     }
                     userStore.loadCurrentUser();
-                };
+                })();
             }
         });
+
+        function saveProjectIdToStore() {
+            const hashUrl = window.location.hash;
+
+            if (!hashUrl) {
+                return;
+            }
+
+            const hashArray = hashUrl.split("?");
+            let urlParams;
+
+            if (hashArray.length > 1) {
+                urlParams = new URLSearchParams(hashArray[1]);
+                userStore.projectId = urlParams.get("projectId") ?? "";
+            }
+        }
 
         return {
             currentGuest,
